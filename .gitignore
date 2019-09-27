@@ -3,6 +3,7 @@
 .import/
 export.cfg
 export_presets.cfg
+.sconsign.dblite
 
 # Mono-specific ignores
 .mono/
