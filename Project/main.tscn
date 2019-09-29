@@ -9,7 +9,7 @@
 [node name="StaticBody" parent="." instance=ExtResource( 1 )]
 
 [node name="StaticBody3" parent="." instance=ExtResource( 1 )]
-transform = Transform( 9.9361, 0.0112868, 0, -1.12868, 0.099361, 0, 0, 0, 10, -10.9935, 0.181658, 0.0167007 )
+transform = Transform( 7.07107, -0.0707107, 0, 7.07107, 0.0707107, 0, 0, 0, 10, 14.1369, 4.88011, -0.0257064 )
 
 [node name="StaticBody2" parent="." instance=ExtResource( 1 )]
 transform = Transform( 9.65926, 0.0258819, 0, -2.58819, 0.0965926, 0, 0, 0, 10, -13.5049, 1, 0 )

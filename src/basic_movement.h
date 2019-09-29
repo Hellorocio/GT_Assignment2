@@ -17,8 +17,6 @@ class BasicMovement : public KinematicBody {
 private:
     // movement
     Vector3 motion;
-    Vector3 snap_vector = Vector3();
-    bool snap = true;
     PlayerState state = GROUNDED;
 
 
@@ -27,7 +25,6 @@ private:
     float movement_speed = 8;
     float gravity = -10.0;
     float falling_speed;
-    int jump_frame;
 
     // camera properties
     Vector2 mouse_delta;
