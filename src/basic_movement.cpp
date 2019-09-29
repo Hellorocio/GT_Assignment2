@@ -32,7 +32,6 @@ void BasicMovement::_init() {
     // initialize any variables here
 	forward = Vector3{0, 0, 1};
 	right = Vector3{-1, 0, 0};
-	jump_frame = 0;
 
 	mouse_delta = Vector2{0, 0};
 }
@@ -53,13 +52,8 @@ void BasicMovement::_process(float delta) {
 
 void BasicMovement::_physics_process(float delta) {
 	update_movement_from_input(delta);
-	if (snap)
-		snap_vector = Vector3(0, -1, 0);
-	else
-		snap_vector = Vector3(0, 0, 0);
-	move_and_slide_with_snap(motion, snap_vector, Vector3(0, 1, 0));
+	move_and_slide(motion, Vector3(0, 1, 0), true, 4, 0.685398);
 	if (is_on_floor()){
-		snap = true;
 		falling_speed = 0;
 	}
 
@@ -105,7 +99,7 @@ void BasicMovement::update_movement_from_input(float delta) {
 	motion.x = 0.0;
 	motion.z = 0.0;
 	if (falling_speed <= 5.0){
-		printf("%g\n",delta);
+		//printf("%g\n",delta);
 		falling_speed += delta * gravity;
 	}
 	motion.y += falling_speed;
@@ -123,7 +117,6 @@ void BasicMovement::update_movement_from_input(float delta) {
 		motion += right * movement_speed;
 	}
 	if (i->is_action_pressed("ui_select") && is_on_floor()) {
-		snap = false;
 		motion.y = 20.0;
 	}
 
