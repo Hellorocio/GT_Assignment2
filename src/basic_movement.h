@@ -4,6 +4,7 @@
 #include <Godot.hpp>
 #include <KinematicBody.hpp>
 #include <Input.hpp>
+#include <InputEvent.hpp>
 
 namespace godot {
 
@@ -19,6 +20,7 @@ private:
     float movement_speed = 8;
 
     // camera properties
+    Vector2 mouse_delta;
     float yaw = 0; // horizontal
     float pitch = 0; // vertical
 
@@ -33,7 +35,9 @@ public:
     BasicMovement();
     ~BasicMovement();
 
-    void _init(); // our initializer called by Godot
+    void _init();
+
+    void _input(InputEvent *event);
 
     void _process(float delta);
 
