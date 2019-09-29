@@ -4,6 +4,7 @@ using namespace godot;
 
 void BasicMovement::_register_methods() {
     register_method("_process", &BasicMovement::_process);
+    register_method("_physics_process", &BasicMovement::_physics_process);
     register_method("update_movement_from_input", &BasicMovement::update_movement_from_input);
 
     // camera properties
@@ -29,16 +30,17 @@ void BasicMovement::_init() {
 	right = Vector3{-1, 0, 0};
 
 	Input* i = Input::get_singleton();
-	i->set_mouse_mode(Input::MouseMode::MOUSE_MODE_CAPTURED);
+	//i->set_mouse_mode(Input::MouseMode::MOUSE_MODE_CAPTURED);
 }
 
 void BasicMovement::_process(float delta) {
 	update_camera(delta);
+}
+
+void BasicMovement::_physics_process(float delta) {
 	update_movement_from_input();
 	move_and_slide(motion);
-
-	Godot::print(get_slide_count());
-}
+} 
 
 void BasicMovement::update_camera(float delta) {
 	constexpr float PI = Math_PI;

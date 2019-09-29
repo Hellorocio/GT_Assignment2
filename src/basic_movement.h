@@ -37,6 +37,8 @@ public:
 
     void _process(float delta);
 
+    void _physics_process(float delta);
+
     void update_camera(float delta);
 
     void update_movement_from_input();
