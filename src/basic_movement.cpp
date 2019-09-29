@@ -6,7 +6,6 @@ void BasicMovement::_register_methods() {
     register_method("_process", &BasicMovement::_process);
     register_method("_physics_process", &BasicMovement::_physics_process);
     register_method("update_movement_from_input", &BasicMovement::update_movement_from_input);
-
     // camera properties
     register_property<BasicMovement, float>("horiz_camera_sensitivity", &BasicMovement::horiz_camera_sensitivity, 6.0f);
     register_property<BasicMovement, float>("vert_camera_sensitivity", &BasicMovement::vert_camera_sensitivity, 6.0f);
@@ -15,6 +14,9 @@ void BasicMovement::_register_methods() {
 
     // movement
     register_property<BasicMovement, float>("movement_speed", &BasicMovement::movement_speed, 8.0f);
+
+    //gravity
+    register_property<BasicMovement, float>("gravity", &BasicMovement::movement_speed, -10.0f);
 }
 
 BasicMovement::BasicMovement() {
@@ -28,6 +30,7 @@ void BasicMovement::_init() {
     // initialize any variables here
 	forward = Vector3{0, 0, 1};
 	right = Vector3{-1, 0, 0};
+	jump_frame = 0;
 
 	Input* i = Input::get_singleton();
 	//i->set_mouse_mode(Input::MouseMode::MOUSE_MODE_CAPTURED);
@@ -38,8 +41,12 @@ void BasicMovement::_process(float delta) {
 }
 
 void BasicMovement::_physics_process(float delta) {
-	update_movement_from_input();
-	move_and_slide(motion);
+	update_movement_from_input(delta);
+	move_and_slide(motion, Vector3(0, 1, 0));
+	if (is_on_floor()){
+		falling_speed = 0;
+	}
+
 } 
 
 void BasicMovement::update_camera(float delta) {
@@ -70,8 +77,15 @@ void BasicMovement::update_camera(float delta) {
 	}*/
 }
 
-void BasicMovement::update_movement_from_input() {
-	motion = Vector3(0.0, 0.0, 0.0);
+void BasicMovement::update_movement_from_input(float delta) {
+	//motion = Vector3(0.0, 0.0, 0.0);
+	motion.x = 0.0;
+	motion.z = 0.0;
+	if (falling_speed <= 5.0){
+		printf("%g\n",delta);
+		falling_speed += delta * gravity;
+	}
+	motion.y += falling_speed;
 	Input* i = Input::get_singleton();
 	if (i->is_action_pressed("ui_up")) {
 		motion += forward * movement_speed;
@@ -85,5 +99,9 @@ void BasicMovement::update_movement_from_input() {
 	if (i->is_action_pressed("ui_right")) {
 		motion += right * movement_speed;
 	}
+	if (i->is_action_pressed("ui_select") && is_on_floor()) {
+		motion.y = 20.0;
+	}
+
 	//translate(motion);
 }

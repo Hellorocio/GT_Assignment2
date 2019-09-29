@@ -4,6 +4,7 @@
 #include <Godot.hpp>
 #include <KinematicBody.hpp>
 #include <Input.hpp>
+#include <string>
 
 namespace godot {
 
@@ -17,6 +18,9 @@ private:
     Vector3 forward;
     Vector3 right;
     float movement_speed = 8;
+    float gravity = -10.0;
+    float falling_speed;
+    int jump_frame;
 
     // camera properties
     float yaw = 0; // horizontal
@@ -41,7 +45,7 @@ public:
 
     void update_camera(float delta);
 
-    void update_movement_from_input();
+    void update_movement_from_input(float delta);
 };
 
 }
