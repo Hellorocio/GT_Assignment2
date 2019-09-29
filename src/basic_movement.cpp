@@ -36,6 +36,8 @@ void BasicMovement::_process(float delta) {
 	update_camera(delta);
 	update_movement_from_input();
 	move_and_slide(motion);
+
+	Godot::print(get_slide_count());
 }
 
 void BasicMovement::update_camera(float delta) {
