@@ -9,6 +9,8 @@
 
 namespace godot {
 
+enum PlayerState { GROUNDED, JUMP, SLIDE, FALL, GLIDING };
+
 class BasicMovement : public KinematicBody {
     GODOT_CLASS(BasicMovement, KinematicBody)
 
@@ -17,6 +19,8 @@ private:
     Vector3 motion;
     Vector3 snap_vector = Vector3();
     bool snap = true;
+    PlayerState state = GROUNDED;
+
 
     Vector3 forward;
     Vector3 right;
