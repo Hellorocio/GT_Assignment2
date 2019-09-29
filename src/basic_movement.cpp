@@ -7,7 +7,7 @@ void BasicMovement::_register_methods() {
     register_method("_input", &BasicMovement::_input);
     register_method("_process", &BasicMovement::_process);
     register_method("_physics_process", &BasicMovement::_physics_process);
-    register_method("update_movement_from_input", &BasicMovement::update_movement_from_input);
+    register_method("update_movement", &BasicMovement::update_movement);
     // camera properties
     register_property<BasicMovement, float>("horiz_camera_sensitivity", &BasicMovement::horiz_camera_sensitivity, 6.0f);
     register_property<BasicMovement, float>("vert_camera_sensitivity", &BasicMovement::vert_camera_sensitivity, 6.0f);
@@ -51,7 +51,7 @@ void BasicMovement::_process(float delta) {
 }
 
 void BasicMovement::_physics_process(float delta) {
-	update_movement_from_input(delta);
+	update_movement(delta);
 	move_and_slide(motion, Vector3(0, 1, 0), true, 4, 0.685398);
 	if (is_on_floor()){
 		falling_speed = 0;
@@ -94,7 +94,7 @@ void BasicMovement::update_camera(float delta) {
 	mouse_delta = Vector2{0, 0};
 }
 
-void BasicMovement::update_movement_from_input(float delta) {
+void BasicMovement::update_movement(float delta) {
 	//motion = Vector3(0.0, 0.0, 0.0);
 	motion.x = 0.0;
 	motion.z = 0.0;
