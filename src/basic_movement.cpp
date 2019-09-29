@@ -53,8 +53,13 @@ void BasicMovement::_process(float delta) {
 
 void BasicMovement::_physics_process(float delta) {
 	update_movement_from_input(delta);
-	move_and_slide(motion, Vector3(0, 1, 0));
+	if (snap)
+		snap_vector = Vector3(0, -1, 0);
+	else
+		snap_vector = Vector3(0, 0, 0);
+	move_and_slide_with_snap(motion, snap_vector, Vector3(0, 1, 0));
 	if (is_on_floor()){
+		snap = true;
 		falling_speed = 0;
 	}
 
@@ -118,6 +123,7 @@ void BasicMovement::update_movement_from_input(float delta) {
 		motion += right * movement_speed;
 	}
 	if (i->is_action_pressed("ui_select") && is_on_floor()) {
+		snap = false;
 		motion.y = 20.0;
 	}
 

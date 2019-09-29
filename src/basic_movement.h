@@ -15,6 +15,8 @@ class BasicMovement : public KinematicBody {
 private:
     // movement
     Vector3 motion;
+    Vector3 snap_vector = Vector3();
+    bool snap = true;
 
     Vector3 forward;
     Vector3 right;
