@@ -11,8 +11,21 @@ class BasicMovement : public KinematicBody {
     GODOT_CLASS(BasicMovement, KinematicBody)
 
 private:
-    //float time_passed;
+    // movement
     Vector3 motion;
+
+    Vector3 forward;
+    Vector3 right;
+    float movement_speed = 8;
+
+    // camera properties
+    float yaw = 0; // horizontal
+    float pitch = 0; // vertical
+
+    float horiz_camera_sensitivity = 6;
+    float vert_camera_sensitivity = 6;
+    bool invert_x_axis = false;
+    bool invert_y_axis = false;
 
 public:
     static void _register_methods();
@@ -24,7 +37,9 @@ public:
 
     void _process(float delta);
 
-    void UpdateMovementFromInput();
+    void update_camera(float delta);
+
+    void update_movement_from_input();
 };
 
 }

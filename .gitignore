@@ -7,3 +7,9 @@ export_presets.cfg
 
 # Mono-specific ignores
 .mono/
+
+# nativescript
+*.obj
+*.os
+*/bin/win64/*
+*/bin/x11/*
