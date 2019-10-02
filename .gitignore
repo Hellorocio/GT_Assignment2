@@ -13,3 +13,4 @@ export_presets.cfg
 *.os
 */bin/win64/*
 */bin/x11/*
+.vscode/
