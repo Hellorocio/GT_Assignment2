@@ -23,8 +23,9 @@ private:
     Vector3 forward;
     Vector3 right;
     float movement_speed = 8;
-    float gravity = -10.0;
+    float gravity = -40.0;
     float falling_speed;
+    float falling_speed_max;
 
     // camera properties
     Vector2 mouse_delta;

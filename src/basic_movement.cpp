@@ -18,7 +18,7 @@ void BasicMovement::_register_methods() {
     register_property<BasicMovement, float>("movement_speed", &BasicMovement::movement_speed, 8.0f);
 
     //gravity
-    register_property<BasicMovement, float>("gravity", &BasicMovement::movement_speed, -10.0f);
+    register_property<BasicMovement, float>("gravity", &BasicMovement::gravity, -10.0f);
 }
 
 BasicMovement::BasicMovement() {
@@ -30,6 +30,7 @@ BasicMovement::~BasicMovement() {
 
 void BasicMovement::_init() {
     // initialize any variables here
+	falling_speed_max = -100.0;
 	forward = Vector3{0, 0, 1};
 	right = Vector3{-1, 0, 0};
 
@@ -54,7 +55,9 @@ void BasicMovement::_physics_process(float delta) {
 	update_movement(delta);
 	move_and_slide(motion, Vector3(0, 1, 0), true, 4, 0.685398);
 	if (is_on_floor()){
-		falling_speed = 0;
+		// can this be changed to "when hit floor" instead of every _physics_process?
+		falling_speed_max = -100.0;
+		motion.y = 0;
 	}
 
 } 
@@ -98,11 +101,14 @@ void BasicMovement::update_movement(float delta) {
 	//motion = Vector3(0.0, 0.0, 0.0);
 	motion.x = 0.0;
 	motion.z = 0.0;
-	if (falling_speed <= 5.0){
+	if (motion.y >= falling_speed_max){
 		//printf("%g\n",delta);
-		falling_speed += delta * gravity;
+		//falling_speed += delta * gravity;
+		motion.y += delta * gravity;
 	}
-	motion.y += falling_speed;
+	//std::string fallsped = std::to_string(motion.y);
+	//String fall = fallsped.c_str();
+	//Godot::print("" + fall);
 	Input* i = Input::get_singleton();
 	if (i->is_action_pressed("ui_up")) {
 		motion += forward * movement_speed;
@@ -117,7 +123,12 @@ void BasicMovement::update_movement(float delta) {
 		motion += right * movement_speed;
 	}
 	if (i->is_action_pressed("ui_select") && is_on_floor()) {
-		motion.y = 20.0;
+		motion.y = 16.0;
+	}
+	if (i->is_action_pressed("glide") && !is_on_floor()) {
+		// How to make this a state change?
+		falling_speed_max = -3.0;
+		motion.y = 0;
 	}
 
 	//translate(motion);
