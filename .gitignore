@@ -14,5 +14,6 @@ export_presets.cfg
 */bin/win64/*
 */bin/x11/*
 
+.vs/
 .vscode/
 *.code-workspace
