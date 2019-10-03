@@ -3,6 +3,7 @@
 
 #include <Godot.hpp>
 #include <Node.hpp>
+#include <string>
 
 namespace godot {
 
@@ -23,7 +24,8 @@ namespace godot {
 		void _ready();
 		void _process(float delta);
 
-		void collect();
+		void collect_acorns();
+		void remove_acorns();
 	};
 }
 

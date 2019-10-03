@@ -6,7 +6,8 @@ void GameState::_register_methods()
 {
 	register_method("_ready", &GameState::_ready);
 	register_method("_process", &GameState::_process);
-	register_method("collect", &GameState::collect);
+	register_method("collect_acorns", &GameState::collect_acorns);
+	register_method("remove_acorns", &GameState::remove_acorns);
 }
 
 GameState::GameState()
@@ -19,16 +20,27 @@ GameState::~GameState()
 
 void GameState::_init()
 {
-	Godot::print("game state init");
 }
 
 void GameState::_ready()
 {
 }
 
-void GameState::collect()
+void GameState::collect_acorns()
 {
 	numCollected++;
+	Godot::print("collect acorn: ");
+	Godot::print(std::to_string(numCollected).c_str());
+}
+
+void GameState::remove_acorns()
+{
+	if (numCollected > 0)
+	{
+		numCollected--;
+	}
+	Godot::print("lose acorn: ");
+	Godot::print(std::to_string(numCollected).c_str());
 }
 
 void GameState::_process(float delta)

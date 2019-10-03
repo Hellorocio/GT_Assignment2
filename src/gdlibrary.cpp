@@ -1,5 +1,6 @@
 #include "basic_movement.h"
 #include "collectable.h"
+#include "trap.h"
 #include "game_state.h"
 
 extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *o) {
@@ -15,5 +16,6 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 
     godot::register_class<godot::BasicMovement>();
 	godot::register_class<godot::Collectable>();
+	godot::register_class<godot::Trap>();
 	godot::register_class<godot::GameState>();
 }

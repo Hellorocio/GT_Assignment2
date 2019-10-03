@@ -31,11 +31,9 @@ void Collectable::_on_body_entered(Node * body)
 {
 	if (body->get_name() == "Player")
 	{
-		Godot::print("Collided with player!!");
-
 		//increment player's acorn count
 		GameState * state = (GameState *)get_node("/root/Spatial/GameState");
-		state->collect();
+		state->collect_acorns();
 
 		//remove this node
 		queue_free();
