@@ -1,4 +1,5 @@
 #include "collectable.h"
+#include "game_state.h"
 
 using namespace godot;
 
@@ -32,7 +33,9 @@ void Collectable::_on_body_entered(Node * body)
 	{
 		Godot::print("Collided with player!!");
 
-		//TODO: increment player's acorn count
+		//increment player's acorn count
+		GameState * state = (GameState *)get_node("/root/Spatial/GameState");
+		state->collect();
 
 		//remove this node
 		queue_free();
