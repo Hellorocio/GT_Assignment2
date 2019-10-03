@@ -8,6 +8,10 @@ void BasicMovement::_register_methods() {
     register_method("_process", &BasicMovement::_process);
     register_method("_physics_process", &BasicMovement::_physics_process);
     register_method("update_movement", &BasicMovement::update_movement);
+
+    // physics
+    register_property<BasicMovement, float>("gravity", &BasicMovement::gravity, -10.0f);
+
     // camera properties
     register_property<BasicMovement, float>("horiz_camera_sensitivity", &BasicMovement::horiz_camera_sensitivity, 6.0f);
     register_property<BasicMovement, float>("vert_camera_sensitivity", &BasicMovement::vert_camera_sensitivity, 6.0f);
@@ -16,9 +20,6 @@ void BasicMovement::_register_methods() {
 
     // movement
     register_property<BasicMovement, float>("movement_speed", &BasicMovement::movement_speed, 8.0f);
-
-    //gravity
-    register_property<BasicMovement, float>("gravity", &BasicMovement::gravity, -10.0f);
 }
 
 BasicMovement::BasicMovement() {
@@ -31,6 +32,8 @@ BasicMovement::~BasicMovement() {
 void BasicMovement::_init() {
     // initialize any variables here
 	falling_speed_max = -100.0;
+	acceleration = Vector3{0, 0, 0};
+	
 	forward = Vector3{0, 0, 1};
 	right = Vector3{-1, 0, 0};
 
@@ -54,12 +57,7 @@ void BasicMovement::_process(float delta) {
 void BasicMovement::_physics_process(float delta) {
 	update_movement(delta);
 	move_and_slide(motion, Vector3(0, 1, 0), true, 4, 0.685398);
-	if (is_on_floor()){
-		// can this be changed to "when hit floor" instead of every _physics_process?
-		falling_speed_max = -100.0;
-		motion.y = 0;
-	}
-
+	acceleration = Vector3{0, 0, 0};
 } 
 
 void BasicMovement::update_camera(float delta) {
@@ -98,18 +96,38 @@ void BasicMovement::update_camera(float delta) {
 }
 
 void BasicMovement::update_movement(float delta) {
-	//motion = Vector3(0.0, 0.0, 0.0);
+	Input* i = Input::get_singleton();
+
+	// state update
+	if (is_on_floor()) {
+		if (state == JUMP || state == FALL || state == GLIDING) {
+			falling_speed_max = -100.0;
+			state = GROUNDED;
+		}
+	} else {
+		if (state == GROUNDED) {
+			state = FALL;
+		}
+		
+		acceleration.y += gravity;
+	}
+	
+	if (state == FALL && i->is_action_pressed("glide")) {
+		falling_speed_max = -3.0;
+		motion.y = 0;
+		state = GLIDING;
+	} else if (state == GLIDING && !i->is_action_pressed("glide")) {
+		falling_speed_max = -100.0;
+		state = FALL;
+	}
+
+	// motion update
 	motion.x = 0.0;
 	motion.z = 0.0;
-	if (motion.y >= falling_speed_max){
-		//printf("%g\n",delta);
-		//falling_speed += delta * gravity;
-		motion.y += delta * gravity;
-	}
-	//std::string fallsped = std::to_string(motion.y);
-	//String fall = fallsped.c_str();
-	//Godot::print("" + fall);
-	Input* i = Input::get_singleton();
+
+	motion += acceleration * delta;
+	
+	// input
 	if (i->is_action_pressed("ui_up")) {
 		motion += forward * movement_speed;
 	}
@@ -122,14 +140,17 @@ void BasicMovement::update_movement(float delta) {
 	if (i->is_action_pressed("ui_right")) {
 		motion += right * movement_speed;
 	}
-	if (i->is_action_pressed("ui_select") && is_on_floor()) {
+
+	if (state == GROUNDED && i->is_action_pressed("ui_select")) {
 		motion.y = 16.0;
+		state = JUMP;
 	}
-	if (i->is_action_pressed("glide") && !is_on_floor()) {
-		// How to make this a state change?
-		falling_speed_max = -3.0;
-		motion.y = 0;
+	if (state == JUMP && (!i->is_action_pressed("ui_select") || motion.y <= 0)) {
+		state = FALL;
 	}
 
-	//translate(motion);
+	// motion clamping
+	if (motion.y < falling_speed_max) {
+		motion.y = falling_speed_max;
+	}
 }

@@ -15,17 +15,19 @@ class BasicMovement : public KinematicBody {
     GODOT_CLASS(BasicMovement, KinematicBody)
 
 private:
+    // physics
+    float falling_speed_max = -100.0;
+
     // movement
     Vector3 motion;
+    Vector3 acceleration;
     PlayerState state = GROUNDED;
-
 
     Vector3 forward;
     Vector3 right;
     float movement_speed = 8;
     float gravity = -40.0;
-    float falling_speed;
-    float falling_speed_max;
+    
 
     // camera properties
     Vector2 mouse_delta;
