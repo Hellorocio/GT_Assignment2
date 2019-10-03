@@ -10,7 +10,7 @@ namespace godot {
 		GODOT_CLASS(Trap, RigidBody)
 
 	private:
-		
+		bool hitPlayer = false;
 
 	public:
 		static void _register_methods();
@@ -23,6 +23,7 @@ namespace godot {
 		void _process(float delta);
 
 		void _on_body_entered(Node * body);
+		void _on_body_exited(Node * body);
 	};
 }
 

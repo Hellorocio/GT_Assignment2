@@ -8,6 +8,7 @@ void Trap::_register_methods()
 	register_method("_ready", &Trap::_ready);
 	register_method("_process", &Trap::_process);
 	register_method("_on_body_entered", &Trap::_on_body_entered);
+	register_method("_on_body_exited", &Trap::_on_body_exited);
 }
 
 Trap::Trap()
@@ -25,17 +26,28 @@ void Trap::_init()
 void Trap::_ready()
 {
 	this->connect("body_entered", this, "_on_body_entered");
+	this->connect("body_exited", this, "_on_body_exited");
 }
 
 void Trap::_on_body_entered(Node * body)
 {
-	if (body->get_name() == "Player")
+	if (!hitPlayer && body->get_name() == "Player")
 	{
 		//decrement player's acorn count
 		GameState * state = (GameState *)get_node("/root/Spatial/GameState");
 		state->remove_acorns();
+
+		hitPlayer = true;
 	}
-	
+}
+
+//Resets hitPlayer when the player exits
+void Trap::_on_body_exited (Node * body)
+{
+	if (hitPlayer && body->get_name() == "Player")
+	{
+		hitPlayer = false;
+	}
 }
 
 void Trap::_process(float delta)
