@@ -3,6 +3,7 @@
 
 #include <Godot.hpp>
 #include <RigidBody.hpp>
+#include <AudioStreamPlayer3D.hpp>
 
 namespace godot {
 
