@@ -9,7 +9,7 @@
 
 namespace godot {
 
-enum PlayerState { GROUNDED, JUMP, SLIDE, FALL, GLIDING };
+enum PlayerState { GROUNDED, JUMP, SLIDE, FALL, GLIDING, SPRINT };
 
 class BasicMovement : public KinematicBody {
     GODOT_CLASS(BasicMovement, KinematicBody)
