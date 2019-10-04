@@ -133,12 +133,12 @@ void BasicMovement::update_movement(float delta) {
 		state = FALL;
 	}
 
-	if (state == GROUNDED && i->is_action_pressed("sprint")) {
+	if (!sprinting && i->is_action_pressed("sprint")) {
 		movement_speed = 32.0;
-		state = SPRINT;
-	} else if (state == SPRINT && !i->is_action_pressed("glide")) {
+		sprinting = true;
+	} else if (sprinting && !i->is_action_pressed("sprint")) {
 		movement_speed = 8.0;
-		state = GROUNDED;
+		sprinting = false;
 	}
 
 	// motion update

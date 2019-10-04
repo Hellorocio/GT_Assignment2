@@ -29,6 +29,7 @@ private:
     float gravity = -40.0;
     
     bool adRotate = false; //if true, a and d keys rotate the player. Otherwise a and d strafe
+    bool sprinting = false;
     
 
     // camera properties
