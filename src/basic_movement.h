@@ -31,6 +31,9 @@ private:
     bool adRotate = false; //if true, a and d keys rotate the player. Otherwise a and d strafe
     bool sprinting = false;
 
+    float ledge_stop_test_distance = 0.65f;
+    Vector3 last_ledge_stop_horiz_movement;
+
     float ledge_grab_distance = 2.0f;
     bool can_ledge_hang = true;
     float ledge_grab_cooldown = 1.0f;

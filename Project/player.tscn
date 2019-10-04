@@ -34,6 +34,14 @@ spring_length = 9.0
 [node name="Camera" type="Camera" parent="CameraOrientation/SpringArm"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
 
+[node name="LedgeStopTest" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.693 )
+
+[node name="GroundTest" type="RayCast" parent="LedgeStopTest"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+enabled = true
+cast_to = Vector3( 0, -1.5, 0 )
+
 [node name="MeshParent" type="Spatial" parent="."]
 
 [node name="MeshInstance" type="MeshInstance" parent="MeshParent"]
@@ -48,12 +56,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.226, 0 )
 enabled = true
 cast_to = Vector3( 0, 0, 2 )
 
-[node name="AirTest" type="RayCast" parent="MeshParent/LedgeHangTest"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.604, 0 )
-enabled = true
-cast_to = Vector3( 0, 0, 2 )
-
 [node name="GroundTest" type="RayCast" parent="MeshParent/LedgeHangTest"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
 enabled = true
 cast_to = Vector3( 0, -1.5, 0 )
+
+[node name="AirTest" type="RayCast" parent="MeshParent/LedgeHangTest"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.604, 0 )
+enabled = true
+cast_to = Vector3( 0, 0, 2 )
