@@ -20,6 +20,7 @@ GameState::~GameState()
 
 void GameState::_init()
 {
+	numCollected = 0;
 }
 
 void GameState::_ready()
@@ -29,8 +30,12 @@ void GameState::_ready()
 void GameState::collect_acorns()
 {
 	numCollected++;
+
 	Godot::print("collect acorn: ");
-	Godot::print(std::to_string(numCollected).c_str());
+	//Godot::print(std::to_string(numCollected).c_str());
+	std::string s1 = std::to_string(numCollected);
+	String s2 = s1.c_str();
+	Godot::print("" + s2);
 }
 
 void GameState::remove_acorns()

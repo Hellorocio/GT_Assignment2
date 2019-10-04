@@ -20,6 +20,7 @@ void BasicMovement::_register_methods() {
 
     // movement
     register_property<BasicMovement, float>("movement_speed", &BasicMovement::movement_speed, 8.0f);
+    register_property<BasicMovement, bool>("adRotate", &BasicMovement::adRotate, false);
 }
 
 BasicMovement::BasicMovement() {
@@ -135,10 +136,23 @@ void BasicMovement::update_movement(float delta) {
 		motion -= forward * movement_speed;
 	}
 	if (i->is_action_pressed("ui_left")) {
-		motion -= right * movement_speed;
+		if (!adRotate) {
+			motion -= right * movement_speed;
+		} else {
+			//TODO: rotate player left ()
+			//Basis rotation = transform.basis.rotated(Vector3(1, 0, 0), PI);
+			//rotate(Vector3(0, -0.1, 0), Math_PI);
+		}
+		
 	}
 	if (i->is_action_pressed("ui_right")) {
-		motion += right * movement_speed;
+		if (!adRotate) {
+			motion += right * movement_speed;
+		} else {
+			//TODO: rotate player right
+			//Godot::print("Trying to rotate right");
+			//this->rotate(Vector3(0, 0.1, 0), Math_PI);
+		}
 	}
 
 	if (state == GROUNDED && i->is_action_pressed("ui_select")) {

@@ -28,6 +28,8 @@ private:
     float movement_speed = 8;
     float gravity = -40.0;
     
+    bool adRotate = false; //if true, a and d keys rotate the player. Otherwise a and d strafe
+    
 
     // camera properties
     Vector2 mouse_delta;

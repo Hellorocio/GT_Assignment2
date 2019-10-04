@@ -24,6 +24,7 @@ transform = Transform( 9.65926, 0.0258819, 0, -2.58819, 0.0965926, 0, 0, 0, 10, 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 movement_speed = 12.0
+adRotate = true
 
 [node name="Collectables" type="Node" parent="."]
 
