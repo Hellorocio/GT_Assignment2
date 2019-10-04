@@ -1,5 +1,6 @@
 #include "basic_movement.h"
 #include <InputEventMouseMotion.hpp>
+#include <RayCast.hpp>
 
 using namespace godot;
 
@@ -21,6 +22,9 @@ void BasicMovement::_register_methods() {
     // movement
     register_property<BasicMovement, float>("movement_speed", &BasicMovement::movement_speed, 8.0f);
     register_property<BasicMovement, bool>("adRotate", &BasicMovement::adRotate, false);
+
+    register_property<BasicMovement, float>("ledge_grab_distance", &BasicMovement::ledge_grab_distance, 2.0f);
+    register_property<BasicMovement, bool>("can_ledge_hang", &BasicMovement::can_ledge_hang, true);
 }
 
 BasicMovement::BasicMovement() {
@@ -39,6 +43,8 @@ void BasicMovement::_init() {
 	right = Vector3{-1, 0, 0};
 
 	mouse_delta = Vector2{0, 0};
+
+	ledge_grab_cooldown = 1.0f;
 }
 
 void BasicMovement::_input(InputEvent *event) {
@@ -54,6 +60,9 @@ void BasicMovement::_input(InputEvent *event) {
 void BasicMovement::_process(float delta) {
 	update_camera(delta);
 	rotate_player();
+
+	if (ledge_grab_cooldown > 0)
+		ledge_grab_cooldown -= delta;
 }
 
 void BasicMovement::_physics_process(float delta) {
@@ -82,8 +91,10 @@ void BasicMovement::update_camera(float delta) {
 	else if (pitch > PI / 2.0f)
 		pitch = PI / 2.0f;
 
-	forward = Vector3{(float) sin((double) yaw), 0, (float) cos((double) yaw)};
-	right = Vector3{(float) -cos((double) yaw), 0, (float) sin((double) yaw)};
+	if (state != LEDGE_HANGING) {
+		forward = Vector3{(float) sin((double) yaw), 0, (float) cos((double) yaw)};
+		right = Vector3{(float) -cos((double) yaw), 0, (float) sin((double) yaw)};
+	}
 
 	
 	Node *node = get_node("CameraOrientation");
@@ -110,18 +121,33 @@ void BasicMovement::rotate_player() {
 void BasicMovement::update_movement(float delta) {
 	Input* i = Input::get_singleton();
 
+	auto ledge_hang_solid_test = Object::cast_to<RayCast>(get_node("MeshParent/LedgeHangTest/SolidTest"));
+	auto ledge_hang_air_test = Object::cast_to<RayCast>(get_node("MeshParent/LedgeHangTest/AirTest"));
+	auto ledge_hang_ground_test = Object::cast_to<RayCast>(get_node("MeshParent/LedgeHangTest/GroundTest"));
+
 	// state update
 	if (is_on_floor()) {
-		if (state == JUMP || state == FALL || state == GLIDING) {
+		ledge_hang_solid_test->set_enabled(false);
+		ledge_hang_air_test->set_enabled(false);
+		ledge_hang_ground_test->set_enabled(false);
+		
+		if (state == JUMP || state == FALL || state == GLIDING || state == LEDGE_HANGING) {
 			falling_speed_max = -100.0;
 			state = GROUNDED;
+			ledge_grab_cooldown = 0;
 		}
 	} else {
+		ledge_hang_solid_test->set_enabled(true);
+		ledge_hang_air_test->set_enabled(true);
+		ledge_hang_ground_test->set_enabled(true);
+
 		if (state == GROUNDED) {
 			state = FALL;
 		}
 		
-		acceleration.y += gravity;
+		if (state != LEDGE_HANGING) {
+			acceleration.y += gravity;
+		}
 	}
 	
 	if (state == FALL && i->is_action_pressed("glide")) {
@@ -148,38 +174,65 @@ void BasicMovement::update_movement(float delta) {
 	motion += acceleration * delta;
 	
 	// input
-	if (i->is_action_pressed("ui_up")) {
-		motion += forward * movement_speed;
-	}
-	if (i->is_action_pressed("ui_down")) {
-		motion -= forward * movement_speed;
-	}
-	if (i->is_action_pressed("ui_left")) {
-		if (!adRotate) {
-			motion -= right * movement_speed;
-		} else {
-			//TODO: rotate player left ()
-			//Basis rotation = transform.basis.rotated(Vector3(1, 0, 0), PI);
-			//rotate(Vector3(0, -0.1, 0), Math_PI);
+	if (state == LEDGE_HANGING) {
+		if (i->is_action_just_pressed("ui_up") || i->is_action_just_pressed("ui_select")) {
+			state = JUMP;
+			motion.y = 16.0;
+			ledge_grab_cooldown = 1;
+		} else if (i->is_action_just_pressed("ui_down")) {
+			state = FALL;
+			ledge_grab_cooldown = 1;
 		}
-		
-	}
-	if (i->is_action_pressed("ui_right")) {
-		if (!adRotate) {
-			motion += right * movement_speed;
-		} else {
-			//TODO: rotate player right
-			//Godot::print("Trying to rotate right");
-			//this->rotate(Vector3(0, 0.1, 0), Math_PI);
+	} else {
+		if (i->is_action_pressed("ui_up")) {
+			motion += forward * movement_speed;
+		}
+		if (i->is_action_pressed("ui_down")) {
+			motion -= forward * movement_speed;
+		}
+		if (i->is_action_pressed("ui_left")) {
+			if (!adRotate) {
+				motion -= right * movement_speed;
+			} else {
+				//TODO: rotate player left ()
+				// forward = Vector3{(float) sin((double) yaw), 0, (float) cos((double) yaw)};
+				// right = Vector3{(float) -cos((double) yaw), 0, (float) sin((double) yaw)};
+			}
+			
+		}
+		if (i->is_action_pressed("ui_right")) {
+			if (!adRotate) {
+				motion += right * movement_speed;
+			} else {
+				//TODO: rotate player right
+				//Godot::print("Trying to rotate right");
+				// forward = Vector3{(float) sin((double) yaw), 0, (float) cos((double) yaw)};
+				// right = Vector3{(float) -cos((double) yaw), 0, (float) sin((double) yaw)};
+			}
 		}
 	}
 
 	if (state == GROUNDED && i->is_action_pressed("ui_select")) {
 		motion.y = 16.0;
 		state = JUMP;
+		if (ledge_grab_cooldown < 0.3f)
+			ledge_grab_cooldown = 0.3f;
 	}
 	if (state == JUMP && (!i->is_action_pressed("ui_select") || motion.y <= 0)) {
 		state = FALL;
+	}
+
+	// ledge hanging
+	if (!is_on_floor() && (state == FALL || state == JUMP || state == GLIDING) && ledge_grab_cooldown <= 0) {
+		if (ledge_hang_solid_test->is_colliding() && !ledge_hang_air_test->is_colliding() && !ledge_hang_air_test->is_colliding()) {
+			state = LEDGE_HANGING;
+			motion = Vector3 {0, 0, 0};
+		}
+	} else if (state == LEDGE_HANGING) {
+		if (!ledge_hang_solid_test->is_colliding() || ledge_hang_air_test->is_colliding() || ledge_hang_air_test->is_colliding()) {
+			state = FALL;
+			ledge_grab_cooldown = 1;
+		}
 	}
 
 	// motion clamping

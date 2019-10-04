@@ -37,6 +37,23 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0
 [node name="MeshParent" type="Spatial" parent="."]
 
 [node name="MeshInstance" type="MeshInstance" parent="MeshParent"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
+transform = Transform( -1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.74228e-08, 1, 4.37114e-08, 0, 0, 0 )
 mesh = SubResource( 4 )
 material/0 = null
+
+[node name="LedgeHangTest" type="Spatial" parent="MeshParent"]
+
+[node name="SolidTest" type="RayCast" parent="MeshParent/LedgeHangTest"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.226, 0 )
+enabled = true
+cast_to = Vector3( 0, 0, 2 )
+
+[node name="AirTest" type="RayCast" parent="MeshParent/LedgeHangTest"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.604, 0 )
+enabled = true
+cast_to = Vector3( 0, 0, 2 )
+
+[node name="GroundTest" type="RayCast" parent="MeshParent/LedgeHangTest"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+enabled = true
+cast_to = Vector3( 0, -1.5, 0 )

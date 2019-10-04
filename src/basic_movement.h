@@ -9,7 +9,7 @@
 
 namespace godot {
 
-enum PlayerState { GROUNDED, JUMP, SLIDE, FALL, GLIDING, SPRINT };
+enum PlayerState { GROUNDED, JUMP, SLIDE, FALL, GLIDING, LEDGE_HANGING };
 
 class BasicMovement : public KinematicBody {
     GODOT_CLASS(BasicMovement, KinematicBody)
@@ -30,7 +30,10 @@ private:
     
     bool adRotate = false; //if true, a and d keys rotate the player. Otherwise a and d strafe
     bool sprinting = false;
-    
+
+    float ledge_grab_distance = 2.0f;
+    bool can_ledge_hang = true;
+    float ledge_grab_cooldown = 1.0f;
 
     // camera properties
     Vector2 mouse_delta;
