@@ -57,6 +57,8 @@ public:
 
     void update_camera(float delta);
 
+    void rotate_player();
+
     void update_movement(float delta);
 };
 

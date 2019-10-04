@@ -53,6 +53,7 @@ void BasicMovement::_input(InputEvent *event) {
 
 void BasicMovement::_process(float delta) {
 	update_camera(delta);
+	rotate_player();
 }
 
 void BasicMovement::_physics_process(float delta) {
@@ -84,7 +85,7 @@ void BasicMovement::update_camera(float delta) {
 	forward = Vector3{(float) sin((double) yaw), 0, (float) cos((double) yaw)};
 	right = Vector3{(float) -cos((double) yaw), 0, (float) sin((double) yaw)};
 
-
+	
 	Node *node = get_node("CameraOrientation");
 	if (node != nullptr) {
 		auto orientation_node = Object::cast_to<Spatial>(node);
@@ -92,8 +93,18 @@ void BasicMovement::update_camera(float delta) {
 			orientation_node->set_transform(Transform(Basis(Vector3{pitch, yaw, 0}), orientation_node->get_translation()));
 		}
 	}
-
+	
 	mouse_delta = Vector2{0, 0};
+}
+
+void BasicMovement::rotate_player() {
+	Node *node = get_node("MeshParent");
+	if (node != nullptr) {
+		auto orientation_node = Object::cast_to<Spatial>(node);
+		if (orientation_node != nullptr) {
+			orientation_node->set_transform(Transform(Basis(right, Vector3{0, 1, 0}, forward), orientation_node->get_translation()));
+		}
+	}
 }
 
 void BasicMovement::update_movement(float delta) {
