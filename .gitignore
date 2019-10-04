@@ -9,7 +9,7 @@ export_presets.cfg
 .mono/
 
 # nativescript
-*.obj
+/src/*.obj
 *.os
 */bin/win64/*
 */bin/x11/*
