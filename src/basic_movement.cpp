@@ -22,8 +22,9 @@ void BasicMovement::_register_methods() {
 
     // movement
     register_property<BasicMovement, float>("movement_speed", &BasicMovement::movement_speed, 8.0f);
-    register_property<BasicMovement, bool>("adRotate", &BasicMovement::adRotate, false);
-
+    register_property<BasicMovement, bool>("ad_rotate", &BasicMovement::ad_rotate, false);
+	register_property<BasicMovement, float>("ad_rotate_speed", &BasicMovement::ad_rotate_speed, 3.14f);
+    
     register_property<BasicMovement, float>("ledge_stop_test_distance", &BasicMovement::ledge_stop_test_distance, 0.65f);
     register_property<BasicMovement, float>("ledge_grab_distance", &BasicMovement::ledge_grab_distance, 2.0f);
     register_property<BasicMovement, bool>("can_ledge_hang", &BasicMovement::can_ledge_hang, true);
@@ -93,7 +94,7 @@ void BasicMovement::update_camera(float delta) {
 	else if (pitch > PI / 2.0f)
 		pitch = PI / 2.0f;
 
-	if (state != LEDGE_HANGING) {
+	if (!ad_rotate && state != LEDGE_HANGING) {
 		forward = Vector3{(float) sin((double) yaw), 0, (float) cos((double) yaw)};
 		right = Vector3{(float) -cos((double) yaw), 0, (float) sin((double) yaw)};
 	}
@@ -198,23 +199,19 @@ void BasicMovement::update_movement(float delta) {
 			input_z--;
 		}
 		if (i->is_action_pressed("ui_left")) {
-			if (!adRotate) {
-				input_x--;
-			} else {
-				//TODO: rotate player left ()
-				// forward = Vector3{(float) sin((double) yaw), 0, (float) cos((double) yaw)};
-				// right = Vector3{(float) -cos((double) yaw), 0, (float) sin((double) yaw)};
-			}
+			input_x--;
 		}
 		if (i->is_action_pressed("ui_right")) {
-			if (!adRotate) {
-				input_x++;
-			} else {
-				//TODO: rotate player right
-				//Godot::print("Trying to rotate right");
-				// forward = Vector3{(float) sin((double) yaw), 0, (float) cos((double) yaw)};
-				// right = Vector3{(float) -cos((double) yaw), 0, (float) sin((double) yaw)};
-			}
+			input_x++;
+		}
+
+		if (ad_rotate && input_x != 0) {
+			float theta = atan2(forward.x, forward.z);
+			theta -= input_x * ad_rotate_speed * delta;
+			forward = Vector3{(float) sin((double) theta), 0, (float) cos((double) theta)};
+			right = Vector3{(float) -cos((double) theta), 0, (float) sin((double) theta)};
+
+			input_x = 0;
 		}
 
 		if (input_z != 0) {
@@ -259,7 +256,7 @@ void BasicMovement::update_movement(float delta) {
 				
 				// ledge hang
 				Godot::print("ledge hang");
-				
+
 				float ledge_distance = (2.0f - ledge_stop_test_distance) + CMP_EPSILON;
 				constexpr float vert_distance = -2.7f;
 

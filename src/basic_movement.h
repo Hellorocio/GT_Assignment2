@@ -28,7 +28,9 @@ private:
     float movement_speed = 8;
     float gravity = -40.0;
     
-    bool adRotate = false; //if true, a and d keys rotate the player. Otherwise a and d strafe
+    bool ad_rotate = false; //if true, a and d keys rotate the player. Otherwise a and d strafe
+    float ad_rotate_speed = 3.14f;
+
     bool sprinting = false;
 
     float ledge_stop_test_distance = 0.65f;
