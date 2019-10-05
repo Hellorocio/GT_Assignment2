@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Tree2Mesh.tscn" type="PackedScene" id=1]
+
+[sub_resource type="CylinderShape" id=1]
+
+[sub_resource type="CylinderMesh" id=2]
+
+[node name="Tree2" type="StaticBody"]
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1.29303, 0, 0, 0, 6.145, 0, 0, 0, 1.25105, 0, 5.03365, -0.283395 )
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="CollisionShape"]
+visible = false
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Tree2" type="MeshInstance" parent="CollisionShape"]
+transform = Transform( 0.0479493, 0, 0, 0, -4.41026e-10, 0.0100895, 0, -0.0495584, -2.16627e-09, 0, -1.00988, 0.0259782 )
+
+[node name="Tree2Mesh" parent="CollisionShape/Tree2" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, -3.55271e-15, 1, 0, 0, 0 )
