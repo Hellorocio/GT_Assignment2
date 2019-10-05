@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/BigTree2.obj-bbc090d2b0a3f20d2d628b2f1b55053e.mesh"
+
+[deps]
+
+files=[ "res://.import/BigTree2.obj-bbc090d2b0a3f20d2d628b2f1b55053e.mesh" ]
+
+source_file="res://BigTree2.obj"
+dest_files=[ "res://.import/BigTree2.obj-bbc090d2b0a3f20d2d628b2f1b55053e.mesh", "res://.import/BigTree2.obj-bbc090d2b0a3f20d2d628b2f1b55053e.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

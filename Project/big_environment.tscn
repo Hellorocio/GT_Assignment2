@@ -1,0 +1,240 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://environment.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Tree1.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://Tree2.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://BigTree1.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://BigTree2.obj" type="ArrayMesh" id=5]
+
+[sub_resource type="BoxShape" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.866667, 0.537255, 0.356863, 1 )
+
+[sub_resource type="CubeMesh" id=3]
+material = SubResource( 2 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.780392, 0.513726, 0.0941176, 1 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.298039, 0.831373, 0.219608, 1 )
+
+[node name="BigEnvironment" type="Spatial"]
+
+[node name="Ground" parent="." instance=ExtResource( 1 )]
+editor/display_folded = true
+transform = Transform( 41.2684, 0, 0, 0, 0.1, 0, 0, 0, 44.2415, 0, 0, 0 )
+
+[node name="Ground3" parent="." instance=ExtResource( 1 )]
+transform = Transform( 16.9269, 0, 0, 0, 0.113214, 0, 0, 0, -34.4732, -51.1542, -0.0824833, -3.88202 )
+
+[node name="Ground2" parent="." instance=ExtResource( 1 )]
+transform = Transform( -20, 8.74228e-09, 0, 1.27577e-05, 0.729654, 0, 0, 0, 17, 32.6658, 24.8715, -28.2954 )
+
+[node name="Ground7" parent="." instance=ExtResource( 1 )]
+transform = Transform( -22.3675, -0.295979, 0, -9.00598, 0.668416, 0, 0, 0, 17, 4.52658, 7.95085, 37.9381 )
+
+[node name="Ground9" parent="." instance=ExtResource( 1 )]
+transform = Transform( -20, 8.74228e-09, 0, 1.22587e-05, 0.701113, -4.70812, 3.53321e-06, 0.202076, 16.335, 54.3887, 20.2109, 4.2824 )
+
+[node name="Ground8" parent="." instance=ExtResource( 1 )]
+transform = Transform( -9.78825, -0.636297, 0, -17.441, 0.357102, 0, 0, 0, 17, -8.63306, -4.74245, -39.0404 )
+
+[node name="Ground6" parent="." instance=ExtResource( 1 )]
+transform = Transform( -20, 8.74228e-09, 0, 1.27577e-05, 0.729654, 0, 0, 0, 17, -46.8537, 12.9535, 34.6657 )
+
+[node name="Ground4" parent="." instance=ExtResource( 1 )]
+transform = Transform( -27.6259, 1.20757e-08, 0, 1.27577e-05, 0.729654, 0, 0, 0, 51.052, 27.9532, 12.4062, -29.9687 )
+
+[node name="Ground5" parent="." instance=ExtResource( 1 )]
+transform = Transform( -27.6259, 1.20757e-08, 0, 1.27577e-05, 0.729654, 0, 0, 0, 86.7845, 54.3386, 16.8625, -29.8937 )
+
+[node name="Walls" type="Spatial" parent="."]
+
+[node name="StaticBody" type="StaticBody" parent="Walls"]
+transform = Transform( 1.24019, 0, 0, 0, 38.0702, 0, 0, 0, 46.1484, -41.0224, 14.7333, -71.1162 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody/CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody12" type="StaticBody" parent="Walls"]
+editor/display_folded = true
+transform = Transform( 1.24019, 0, 0, 0, 38.0702, 0, 0, 0, 46.1484, -66.7662, 14.7333, -3.85601 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody12"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody12/CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody9" type="StaticBody" parent="Walls"]
+editor/display_folded = true
+transform = Transform( 1.24019, 0, 0, 0, 38.0702, 0, 0, 0, 46.1484, -41.0224, 14.7333, 64.6516 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody9"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody9/CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody2" type="StaticBody" parent="Walls"]
+editor/display_folded = true
+transform = Transform( 1.24019, 0, 0, 0, 38.0702, 0, 0, 0, 46.1484, 40.7697, 14.7333, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody2"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody2/CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody3" type="StaticBody" parent="Walls"]
+editor/display_folded = true
+transform = Transform( -5.42104e-08, 0, 46.1484, 0, 38.0702, 0, -1.24019, 0, -2.01721e-06, -0.60709, 14.7333, 42.6341 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody3"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody3/CollisionShape"]
+transform = Transform( 1, 0, 0, 0, 1, 0, -1.11022e-16, 0, 1, 0, 0, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody10" type="StaticBody" parent="Walls"]
+editor/display_folded = true
+transform = Transform( -3.2338e-08, 0, 27.5288, 0, 38.0702, 0, -1.24019, 0, -2.01721e-06, -67.5649, 14.7333, 18.7053 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody10"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody10/CollisionShape"]
+transform = Transform( 1, 0, 0, 0, 1, 0, -2.22045e-16, 0, 1, 0, 0, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody11" type="StaticBody" parent="Walls"]
+transform = Transform( -3.2338e-08, 0, 27.5288, 0, 38.0702, 0, -1.24019, 0, -2.01721e-06, -67.2706, 14.7333, -25.9659 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody11"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody11/CollisionShape"]
+transform = Transform( 1, 0, 0, 0, 1, 0, -2.22045e-16, 0, 1, 0, 0, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody4" type="StaticBody" parent="Walls"]
+editor/display_folded = true
+transform = Transform( -5.42104e-08, 0, 46.1484, 0, 38.0702, 0, -1.24019, 0, -2.01721e-06, -0.60709, 14.7333, -42.6599 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody4"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody4/CollisionShape"]
+transform = Transform( 1, 0, 0, 0, 1, 0, -1.11022e-16, 0, 1, 0, 0, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody5" type="StaticBody" parent="Walls"]
+editor/display_folded = true
+transform = Transform( 2.22821e-08, 0, -18.9684, 0, 8.01409, 0, -41.684, 0, -6.78006e-05, 19.7886, 4.60701, -20.8427 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody5"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody5/CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody7" type="StaticBody" parent="Walls"]
+editor/display_folded = true
+transform = Transform( 1.68433e-08, 0, -14.3385, 0, 8.01409, 0, 14.3851, 0, 2.33979e-05, 27.2554, 16.8026, -25.8153 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody7"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody7/CollisionShape"]
+transform = Transform( 1.25626, 0, 4.16811e-07, 0, 1, 0, 3.01022e-10, 0, 1, -0.242491, 0, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody8" type="StaticBody" parent="Walls"]
+transform = Transform( 9.03658e-09, 0, -7.6927, 0, 8.01409, 0, 14.3851, 0, 2.33979e-05, -35.0531, 5.26688, 32.2486 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody8"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody8/CollisionShape"]
+transform = Transform( 1, 0, 2.27374e-13, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody6" type="StaticBody" parent="Walls"]
+editor/display_folded = true
+transform = Transform( 2.22821e-08, 0, -18.9684, 0, 8.01409, 0, -41.684, 0, -6.78006e-05, 46.7223, 9.1065, 21.8502 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody6"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Walls/StaticBody6/CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="Tree1" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, -4.37114e-09, 0.1, 0, -0.1, -4.37114e-09, -9.50381, -1.16273, -10.7362 )
+mesh = ExtResource( 2 )
+material/0 = null
+material/1 = null
+
+[node name="Tree2" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, -4.37114e-09, 0.1, 0, -0.1, -4.37114e-09, 13.5157, 11.9782, 13.9846 )
+visible = false
+mesh = ExtResource( 2 )
+material/0 = null
+material/1 = null
+
+[node name="Tree3" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, -4.37114e-09, 0.1, 0, -0.1, -4.37114e-09, 16.8257, 25.1612, -20.4977 )
+mesh = ExtResource( 3 )
+material/0 = SubResource( 4 )
+material/1 = SubResource( 5 )
+
+[node name="Tree4" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, -4.37114e-09, 0.1, 0, -0.1, -4.37114e-09, 31.3123, 25.1612, -35.144 )
+mesh = ExtResource( 3 )
+material/0 = SubResource( 4 )
+material/1 = SubResource( 5 )
+
+[node name="Tree5" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, -4.37114e-09, 0.1, 0, -0.1, -4.37114e-09, -31.706, 12.9561, 32.6577 )
+mesh = ExtResource( 3 )
+material/0 = SubResource( 4 )
+material/1 = SubResource( 5 )
+
+[node name="BigTree1" type="MeshInstance" parent="."]
+transform = Transform( 0.08, 0, 0, 0, -3.49691e-09, 0.08, 0, -0.08, -3.49691e-09, -33.9387, -0.304631, -30.8803 )
+mesh = ExtResource( 4 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+material/6 = null
+material/7 = null
+material/8 = null
+
+[node name="BigTree2" type="MeshInstance" parent="."]
+transform = Transform( -1.09278e-08, -0.25, -1.09278e-08, 0, -1.09278e-08, 0.25, -0.25, 1.09278e-08, 4.77671e-16, -59.8492, -0.895867, -3.68916 )
+mesh = ExtResource( 5 )
+material/0 = null
+material/1 = null
+
+[editable path="Ground"]
