@@ -58,6 +58,8 @@ public:
 
     void _init();
 
+    void _ready();
+
     void _input(InputEvent *event);
 
     void _process(float delta);
@@ -67,6 +69,8 @@ public:
     void update_camera(float delta);
 
     void rotate_player();
+
+    void update_camera_target();
 
     void update_movement(float delta);
 };
