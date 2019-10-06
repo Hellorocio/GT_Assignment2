@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/AcornModel_Particle.obj-8800ccc9eef139f9cf54ff4e1411afdb.mesh"
+
+[deps]
+
+files=[ "res://.import/AcornModel_Particle.obj-8800ccc9eef139f9cf54ff4e1411afdb.mesh" ]
+
+source_file="res://AcornModel_Particle.obj"
+dest_files=[ "res://.import/AcornModel_Particle.obj-8800ccc9eef139f9cf54ff4e1411afdb.mesh", "res://.import/AcornModel_Particle.obj-8800ccc9eef139f9cf54ff4e1411afdb.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true
