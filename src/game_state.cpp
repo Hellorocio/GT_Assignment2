@@ -48,6 +48,15 @@ void GameState::collect_acorns()
 	if (label) {
 		label->set_text(s2);
 	}
+
+	if (numCollected >= 5) {
+		Godot::print("you won");
+		PopupMenu* menu = (PopupMenu*) get_parent()->get_node("WinMenu");
+		if (menu) {
+			menu->show();
+			get_tree()->set_pause(true);
+		}
+	}
 }
 
 void GameState::remove_acorns()

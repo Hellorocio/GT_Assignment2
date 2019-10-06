@@ -8,6 +8,8 @@ void Gui::_register_methods() {
 	register_method("_on_SFX_pressed", &Gui::_on_SFX_pressed);
 	register_method("_on_BackgroundSound_pressed", &Gui::_on_BackgroundSound_pressed);
 	register_method("_on_RotateStrafe_pressed", &Gui::_on_RotateStrafe_pressed);
+	register_method("_on_PlayAgain_pressed", &Gui::_on_PlayAgain_pressed);
+	register_method("_on_QuitButton_pressed", &Gui::_on_QuitButton_pressed);
     register_method("_ready", &Gui::_ready);
 }
 
@@ -46,6 +48,16 @@ void Gui::_ready() {
 	if (RotateToggle) {
 		RotateToggle->connect("pressed", this, "_on_RotateStrafe_pressed");
 	}
+
+	Node* play_again_button = get_parent()->get_node("WinMenu/PlayAgain");
+	if (play_again_button) {
+		play_again_button->connect("pressed", this, "_on_PlayAgain_pressed");
+	}
+
+	Node* quit_button = get_parent()->get_node("WinMenu/QuitButton");
+	if (quit_button) {
+		quit_button->connect("pressed", this, "_on_QuitButton_pressed");
+	}
 }
 
 void Gui::_on_MenuButton_pressed() {
@@ -53,7 +65,8 @@ void Gui::_on_MenuButton_pressed() {
 	PopupMenu* menu = (PopupMenu*) get_parent()->get_node("PopupMenu");
 	if (menu) {
 		Godot::print("menu != null");
-		((PopupMenu*) menu)->show();
+		menu->show();
+		get_tree()->set_pause(true);
 	}
 	else
 		Godot::print("menu == null");
@@ -62,8 +75,8 @@ void Gui::_on_MenuButton_pressed() {
 void Gui::_on_ExitButton_pressed() {
 	PopupMenu* menu = (PopupMenu*) get_parent()->get_node("PopupMenu");
 	if (menu) {
-		Godot::print("menu != null");
-		((PopupMenu*) menu)->hide();
+		menu->hide();
+		get_tree()->set_pause(false);
 	}
 }
 
@@ -94,4 +107,18 @@ void Gui::_on_RotateStrafe_pressed() {
 	if (player) {
 		player->toggle_AD_rotate();
 	}
+}
+
+void Gui::_on_PlayAgain_pressed() {
+	get_tree()->reload_current_scene();
+
+	PopupMenu* menu = (PopupMenu*) get_parent()->get_node("WinMenu");
+	if (menu) {
+		menu->hide();
+		get_tree()->set_pause(false);
+	}
+}
+
+void Gui::_on_QuitButton_pressed() {
+
 }

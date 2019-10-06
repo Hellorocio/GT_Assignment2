@@ -6,6 +6,7 @@
 #include <PopupMenu.hpp>
 #include <stdlib.h>
 #include <AudioStreamPlayer3D.hpp>
+#include <SceneTree.hpp>
 #include <basic_movement.h>
 
 namespace godot {
@@ -39,6 +40,10 @@ public:
     void _on_BackgroundSound_pressed();
 
     void _on_RotateStrafe_pressed();
+
+    void _on_PlayAgain_pressed();
+
+    void _on_QuitButton_pressed();
 };
 
 }

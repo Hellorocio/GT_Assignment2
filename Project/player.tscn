@@ -1,18 +1,22 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://bin/basic_movement.gdns" type="Script" id=1]
 [ext_resource path="res://squirrelface.jpg" type="Texture" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
 
-[sub_resource type="RayShape" id=2]
-length = 9.0
-
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=2]
 albedo_texture = ExtResource( 2 )
 
+[sub_resource type="CapsuleMesh" id=3]
+material = SubResource( 2 )
+
 [sub_resource type="CapsuleMesh" id=4]
-material = SubResource( 3 )
+radius = 0.65
+mid_height = 2.0
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.694118, 0.513726, 0.34902, 1 )
 
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -26,13 +30,23 @@ shape = SubResource( 1 )
 [node name="CameraOrientation" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 
-[node name="SpringArm" type="SpringArm" parent="CameraOrientation"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10 )
-shape = SubResource( 2 )
-spring_length = 9.0
+[node name="RayCast" type="RayCast" parent="CameraOrientation"]
+enabled = true
+exclude_parent = false
+cast_to = Vector3( 0, 0, -10 )
 
-[node name="Camera" type="Camera" parent="CameraOrientation/SpringArm"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+[node name="Camera" type="InterpolatedCamera" parent="CameraOrientation/RayCast"]
+transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -10 )
+far = 250.0
+target = NodePath("../CameraOrientation/RayCast/RegularTarget")
+speed = 16.0
+enabled = true
+
+[node name="RegularTarget" type="Position3D" parent="CameraOrientation/RayCast"]
+transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -9.5 )
+
+[node name="CollisionTarget" type="Position3D" parent="CameraOrientation/RayCast"]
+transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -10 )
 
 [node name="LedgeStopTest" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.693 )
@@ -44,10 +58,17 @@ cast_to = Vector3( 0, -1.5, 0 )
 
 [node name="MeshParent" type="Spatial" parent="."]
 
-[node name="MeshInstance" type="MeshInstance" parent="MeshParent"]
+[node name="Meshses" type="Spatial" parent="MeshParent"]
+
+[node name="MeshInstance" type="MeshInstance" parent="MeshParent/Meshses"]
 transform = Transform( -1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.74228e-08, 1, 4.37114e-08, 0, 0, 0 )
-mesh = SubResource( 4 )
+mesh = SubResource( 3 )
 material/0 = null
+
+[node name="MeshInstance2" type="MeshInstance" parent="MeshParent/Meshses"]
+transform = Transform( 1, 0, 0, 0, 0.552907, -0.833243, 0, 0.833243, 0.552907, 0, 0.0563474, -1.14449 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
 
 [node name="LedgeHangTest" type="Spatial" parent="MeshParent"]
 
