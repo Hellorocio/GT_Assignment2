@@ -50,11 +50,10 @@ void GameState::collect_acorns()
 	}
 
 	if (numCollected >= 5) {
-		Godot::print("you won");
-		PopupMenu* menu = (PopupMenu*) get_parent()->get_node("WinMenu");
-		if (menu) {
-			menu->show();
-			get_tree()->set_pause(true);
+		//Godot::print("you won");
+		Gui* gui = (Gui*) get_parent()->get_node("GUI");
+		if (gui) {
+			gui->_WinMenu_show();
 		}
 	}
 }

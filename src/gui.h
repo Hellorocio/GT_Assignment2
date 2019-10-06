@@ -46,6 +46,8 @@ public:
     void _on_QuitButton_pressed();
 
     void _on_PlayMain_pressed();
+
+    void _WinMenu_show();
 };
 
 }

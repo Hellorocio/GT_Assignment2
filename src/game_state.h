@@ -8,6 +8,7 @@
 #include <SceneTree.hpp>
 #include <string>
 #include <Particles.hpp>
+#include <gui.h>
 
 namespace godot {
 

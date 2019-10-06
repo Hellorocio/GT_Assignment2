@@ -12,6 +12,7 @@ void Gui::_register_methods() {
 	register_method("_on_QuitButton_pressed", &Gui::_on_QuitButton_pressed);
 	register_method("_on_PlayMain_pressed", &Gui::_on_PlayMain_pressed);
     register_method("_ready", &Gui::_ready);
+    register_method("_WinMenu_show", &Gui::_WinMenu_show);
 }
 
 Gui::Gui() {
@@ -84,8 +85,6 @@ void Gui::_on_MenuButton_pressed() {
 		menu->show();
 		get_tree()->set_pause(true);
 	}
-	else
-		Godot::print("menu == null");
 }
 
 void Gui::_on_ExitButton_pressed() {
@@ -145,4 +144,13 @@ void Gui::_on_PlayMain_pressed() {
     	main_menu2->hide();
 		get_tree()->set_pause(false);
     }
+}
+
+void Gui::_WinMenu_show() {
+	Godot::print("win menu show");
+	PopupMenu* win_menu = (PopupMenu*) get_parent()->get_node("WinMenu");
+	if (win_menu) {
+		win_menu->show();
+		//get_tree()->set_pause(true);
+	}
 }
