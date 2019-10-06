@@ -22,10 +22,12 @@ movement_speed = 12.0
 [node name="AcornSound" type="AudioStreamPlayer3D" parent="Player"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0766945, 0 )
 stream = ExtResource( 2 )
+unit_db = 10.0
 
 [node name="TrapSound" type="AudioStreamPlayer3D" parent="Player"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0 )
 stream = ExtResource( 3 )
+unit_db = 10.0
 
 [node name="BackgroundMusic" type="AudioStreamPlayer3D" parent="Player"]
 pause_mode = 2
@@ -136,7 +138,6 @@ script = ExtResource( 10 )
 
 [node name="PopupMenu" parent="." instance=ExtResource( 11 )]
 pause_mode = 2
-visible = false
 margin_left = 731.935
 margin_top = 336.476
 margin_right = 931.935

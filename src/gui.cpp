@@ -10,6 +10,7 @@ void Gui::_register_methods() {
 	register_method("_on_RotateStrafe_pressed", &Gui::_on_RotateStrafe_pressed);
 	register_method("_on_PlayAgain_pressed", &Gui::_on_PlayAgain_pressed);
 	register_method("_on_QuitButton_pressed", &Gui::_on_QuitButton_pressed);
+	register_method("_on_VolumeSlider_changed", &Gui::_on_VolumeSlider_changed);
     register_method("_ready", &Gui::_ready);
 }
 
@@ -58,6 +59,11 @@ void Gui::_ready() {
 	if (quit_button) {
 		quit_button->connect("pressed", this, "_on_QuitButton_pressed");
 	}
+
+	Node* volume_slider = get_parent()->get_node("PopupMenu/HSlider");
+	if (volume_slider) {
+		volume_slider->connect("value_changed", this, "_on_VolumeSlider_changed");
+	}
 }
 
 void Gui::_on_MenuButton_pressed() {
@@ -84,12 +90,12 @@ void Gui::_on_SFX_pressed() {
 	AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/AcornSound");
 	AudioStreamPlayer3D *a2 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/TrapSound");
 	if (soundEffect) {
-		a1->set_pitch_scale(0.01);
-		a2->set_pitch_scale(0.01);
+		a1->set_unit_db(-80);
+		a2->set_unit_db(-80);
 		soundEffect = false;
 	} else {
-		a1->set_pitch_scale(1);
-		a2->set_pitch_scale(1);
+		a1->set_unit_db(10);
+		a2->set_unit_db(10);
 		soundEffect = true;
 	}
 }
@@ -121,4 +127,9 @@ void Gui::_on_PlayAgain_pressed() {
 
 void Gui::_on_QuitButton_pressed() {
 
+}
+
+void Gui::_on_VolumeSlider_changed(float value) {
+	AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/BackgroundMusic");
+	a1->set_unit_db(value);
 }
