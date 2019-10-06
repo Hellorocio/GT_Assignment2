@@ -132,7 +132,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8932, -0.044909, 0 )
 [node name="GUI" parent="." instance=ExtResource( 9 )]
 script = ExtResource( 10 )
 
-[node name="PopupMenu" parent="." instance=ExtResource( 10 )]
+[node name="PopupMenu" parent="." instance=ExtResource( 11 )]
 margin_left = 731.935
 margin_top = 336.476
 margin_right = 931.935
