@@ -48,11 +48,9 @@ BasicMovement::BasicMovement() {
 }
 
 BasicMovement::~BasicMovement() {
-    // add your cleanup here
 }
 
 void BasicMovement::_init() {
-    // initialize any variables here
 	falling_speed = max_falling_speed;
 	acceleration = Vector3{0, 0, 0};
 	
@@ -329,11 +327,6 @@ void BasicMovement::update_movement(float delta) {
 			state = LEDGE_HANGING;
 			motion = Vector3 {0, 0, 0};
 		}
-	} else if (state == LEDGE_HANGING) {
-		// if (!ledge_hang_solid_test->is_colliding() || ledge_hang_air_test->is_colliding() || ledge_hang_air_test->is_colliding()) {
-		// 	state = FALL;
-		// 	ledge_grab_cooldown = 1;
-		// }
 	}
 
 	// motion clamping
@@ -352,6 +345,4 @@ void BasicMovement::toggle_AD_rotate () {
 		ad_rotate = false;
 	else
 		ad_rotate = true;
-	//Godot::print("toggle AD rotate");
-	//Godot::print(std::to_string(ad_rotate).c_str());
 }
