@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://bin/basic_movement.gdns" type="Script" id=1]
 [ext_resource path="res://squirrelface.jpg" type="Texture" id=2]
@@ -10,6 +10,13 @@ albedo_texture = ExtResource( 2 )
 
 [sub_resource type="CapsuleMesh" id=3]
 material = SubResource( 2 )
+
+[sub_resource type="CapsuleMesh" id=4]
+radius = 0.65
+mid_height = 2.0
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.694118, 0.513726, 0.34902, 1 )
 
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -51,10 +58,17 @@ cast_to = Vector3( 0, -1.5, 0 )
 
 [node name="MeshParent" type="Spatial" parent="."]
 
-[node name="MeshInstance" type="MeshInstance" parent="MeshParent"]
+[node name="Meshses" type="Spatial" parent="MeshParent"]
+
+[node name="MeshInstance" type="MeshInstance" parent="MeshParent/Meshses"]
 transform = Transform( -1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.74228e-08, 1, 4.37114e-08, 0, 0, 0 )
 mesh = SubResource( 3 )
 material/0 = null
+
+[node name="MeshInstance2" type="MeshInstance" parent="MeshParent/Meshses"]
+transform = Transform( 1, 0, 0, 0, 0.552907, -0.833243, 0, 0.833243, 0.552907, 0, 0.0563474, -1.14449 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
 
 [node name="LedgeHangTest" type="Spatial" parent="MeshParent"]
 
