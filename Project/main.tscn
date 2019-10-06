@@ -126,3 +126,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8932, -0.044909, 0 )
 script = ExtResource( 9 )
 
 [node name="PopupMenu" parent="." instance=ExtResource( 10 )]
+margin_left = 731.935
+margin_top = 336.476
+margin_right = 931.935
+margin_bottom = 506.476
+rect_scale = Vector2( 2, 2 )
