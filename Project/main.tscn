@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://hewing-carrot.wav" type="AudioStream" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://bin/gui.gdns" type="Script" id=10]
 [ext_resource path="res://PopupMenu.tscn" type="PackedScene" id=11]
 [ext_resource path="res://WinMenu.tscn" type="PackedScene" id=12]
+[ext_resource path="res://MainMenu.tscn" type="PackedScene" id=13]
 
 [node name="Spatial" type="Spatial"]
 
@@ -132,11 +133,11 @@ visible = false
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8932, -0.044909, 0 )
 
 [node name="GUI" parent="." instance=ExtResource( 9 )]
+pause_mode = 2
 script = ExtResource( 10 )
 
 [node name="PopupMenu" parent="." instance=ExtResource( 11 )]
 pause_mode = 2
-visible = false
 margin_left = 731.935
 margin_top = 336.476
 margin_right = 931.935
@@ -149,3 +150,6 @@ margin_left = 790.0
 margin_top = 380.0
 margin_right = 1070.0
 margin_bottom = 630.0
+
+[node name="MainMenu" parent="." instance=ExtResource( 13 )]
+pause_mode = 2

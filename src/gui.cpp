@@ -10,6 +10,7 @@ void Gui::_register_methods() {
 	register_method("_on_RotateStrafe_pressed", &Gui::_on_RotateStrafe_pressed);
 	register_method("_on_PlayAgain_pressed", &Gui::_on_PlayAgain_pressed);
 	register_method("_on_QuitButton_pressed", &Gui::_on_QuitButton_pressed);
+	register_method("_on_PlayMain_pressed", &Gui::_on_PlayMain_pressed);
     register_method("_ready", &Gui::_ready);
 }
 
@@ -26,7 +27,12 @@ void Gui::_init() {
 }
 
 void Gui::_ready() {
-    //Node* button = get_node("/root/GUI/HSplitContainer/MenuButton");
+    PopupMenu* main_menu = (PopupMenu*) get_parent()->get_node("MainMenu");
+    if (main_menu) {
+    	main_menu->show();
+		get_tree()->set_pause(true);
+    }
+
     Node* button = get_node("HSplitContainer/MenuButton");
 	if (button) {
 		//Godot::print("connecting2");
@@ -57,6 +63,16 @@ void Gui::_ready() {
 	Node* quit_button = get_parent()->get_node("WinMenu/QuitButton");
 	if (quit_button) {
 		quit_button->connect("pressed", this, "_on_QuitButton_pressed");
+	}
+
+	Node* play_main = get_parent()->get_node("MainMenu/PlayMain");
+	if (play_main) {
+		play_main->connect("pressed", this, "_on_PlayMain_pressed");
+	}
+
+	Node* quit_main = get_parent()->get_node("MainMenu/QuitMain");
+	if (quit_main) {
+		quit_main->connect("pressed", this, "_on_QuitButton_pressed");
 	}
 }
 
@@ -120,5 +136,13 @@ void Gui::_on_PlayAgain_pressed() {
 }
 
 void Gui::_on_QuitButton_pressed() {
+	get_tree()->quit();
+}
 
+void Gui::_on_PlayMain_pressed() {
+	PopupMenu* main_menu2 = (PopupMenu*) get_parent()->get_node("MainMenu");
+    if (main_menu2) {
+    	main_menu2->hide();
+		get_tree()->set_pause(false);
+    }
 }

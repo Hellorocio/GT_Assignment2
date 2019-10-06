@@ -44,6 +44,8 @@ public:
     void _on_PlayAgain_pressed();
 
     void _on_QuitButton_pressed();
+
+    void _on_PlayMain_pressed();
 };
 
 }
