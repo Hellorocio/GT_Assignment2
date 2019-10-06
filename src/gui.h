@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <AudioStreamPlayer3D.hpp>
 #include <SceneTree.hpp>
+#include <Range.hpp>
 #include <basic_movement.h>
 
 namespace godot {
@@ -48,6 +49,8 @@ public:
     void _on_PlayMain_pressed();
 
     void _WinMenu_show();
+
+    void _on_VolumeSlider_changed(float value);
 };
 
 }
