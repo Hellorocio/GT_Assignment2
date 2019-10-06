@@ -49,7 +49,7 @@ void GameState::collect_acorns()
 		label->set_text(s2);
 	}
 
-	if (numCollected >= 5) {
+	if (numCollected >= 20) {
 		//Godot::print("you won");
 		Gui* gui = (Gui*) get_parent()->get_node("GUI");
 		if (gui) {
