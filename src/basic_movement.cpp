@@ -1,6 +1,5 @@
 #include "basic_movement.h"
 #include <InputEventMouseMotion.hpp>
-#include <InterpolatedCamera.hpp>
 #include <KinematicCollision.hpp>
 #include <RayCast.hpp>
 
@@ -8,7 +7,6 @@ using namespace godot;
 
 void BasicMovement::_register_methods() {
     register_method("_input", &BasicMovement::_input);
-    register_method("_ready", &BasicMovement::_ready);
     register_method("_process", &BasicMovement::_process);
     register_method("_physics_process", &BasicMovement::_physics_process);
     register_method("update_movement", &BasicMovement::update_movement);
@@ -39,6 +37,8 @@ void BasicMovement::_register_methods() {
     register_property<BasicMovement, float>("glide_speed", &BasicMovement::glide_speed, 16.0);
     register_property<BasicMovement, float>("walkable_angle", &BasicMovement::walkable_angle, 0.685398);
 
+	register_property<BasicMovement, float>("jump_height", &BasicMovement::jump_height, 16.0);
+
 }
 
 BasicMovement::BasicMovement() {
@@ -61,10 +61,6 @@ void BasicMovement::_init() {
 	ledge_grab_cooldown = 1.0f;
 }
 
-void BasicMovement::_ready() {
-	Object::cast_to<RayCast>(get_node("CameraOrientation/RayCast"))->add_exception(get_node("CollisionShape"));
-}
-
 void BasicMovement::_input(InputEvent *event) {
 	auto mouse_event = Object::cast_to<InputEventMouseMotion>(event);
 	if (mouse_event == nullptr)
@@ -84,7 +80,6 @@ void BasicMovement::_process(float delta) {
 }
 
 void BasicMovement::_physics_process(float delta) {
-	update_camera_target();
 	update_movement(delta);
 	move_and_slide(motion, Vector3(0, 1, 0), true, 4, walkable_angle);
 	acceleration = Vector3{0, 0, 0};
@@ -137,24 +132,6 @@ void BasicMovement::rotate_player() {
 	}
 }
 
-void BasicMovement::update_camera_target() {
-	auto camera = Object::cast_to<InterpolatedCamera>(get_node("CameraOrientation/RayCast/Camera"));
-
-	auto camera_collision_test = Object::cast_to<RayCast>(get_node("CameraOrientation/RayCast"));
-
-	if (camera_collision_test->is_colliding()) {
-		auto target = Object::cast_to<Spatial>(get_node("CameraOrientation/RayCast/CollisionTarget"));
-
-		auto global_target_pos = camera_collision_test->get_collision_point();
-		global_target_pos += camera_collision_test->get_collision_normal() * 0.5f;
-
-		target->set_translation(target->get_parent_spatial()->to_local(global_target_pos));
-		camera->set_target(target);
-	} else {
-		camera->set_target(get_node("CameraOrientation/RayCast/RegularTarget"));
-	}
-}
-
 void BasicMovement::update_movement(float delta) {
 	Input* i = Input::get_singleton();
 
@@ -196,11 +173,6 @@ void BasicMovement::update_movement(float delta) {
 		motion.y = 0;
 		state = GLIDING;
 	} else if (state == GLIDING && !i->is_action_pressed("glide")) {
-		falling_speed = max_falling_speed;
-		movement_speed = walk_speed;
-		state = FALL;
-	}
-	if (state == GLIDING && ledge_hang_ground_test->is_colliding()) {
 		falling_speed = max_falling_speed;
 		movement_speed = walk_speed;
 		state = FALL;
@@ -266,7 +238,7 @@ void BasicMovement::update_movement(float delta) {
 
 	// jumping
 	if (state == GROUNDED && i->is_action_pressed("ui_select")) {
-		motion.y = 16.0;
+		motion.y = jump_height;
 		state = JUMP;
 		if (ledge_grab_cooldown < 0.3f)
 			ledge_grab_cooldown = 0.3f;
