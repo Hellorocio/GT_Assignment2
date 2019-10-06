@@ -247,7 +247,6 @@ void BasicMovement::update_movement(float delta) {
 		}
 
 		if (ad_rotate && input_x != 0) {
-			//Godot::print("ad rotating");
 			float theta = atan2(forward.x, forward.z);
 			theta -= input_x * ad_rotate_speed * delta;
 			forward = Vector3{(float) sin((double) theta), 0, (float) cos((double) theta)};
@@ -334,13 +333,21 @@ void BasicMovement::update_movement(float delta) {
 		AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/GreatSound");
 		a1->play();
 	}
+
+	if (i->is_action_just_pressed("ui_rotate")){
+		if(ad_rotate)
+			ad_rotate = false;
+		else 
+			ad_rotate = true;
+	}
 }
 
+// ad_rotate variable is not changed actually
 void BasicMovement::toggle_AD_rotate () {
-	if (ad_rotate)
+
+	if(ad_rotate)
 		ad_rotate = false;
-	else
+	else 
 		ad_rotate = true;
-	//Godot::print("toggle AD rotate");
-	//Godot::print(std::to_string(ad_rotate).c_str());
+
 }
