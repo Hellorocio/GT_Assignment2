@@ -7,6 +7,7 @@ void Gui::_register_methods() {
 	register_method("_on_ExitButton_pressed", &Gui::_on_ExitButton_pressed);
 	register_method("_on_SFX_pressed", &Gui::_on_SFX_pressed);
 	register_method("_on_BackgroundSound_pressed", &Gui::_on_BackgroundSound_pressed);
+	register_method("_on_RotateStrafe_pressed", &Gui::_on_RotateStrafe_pressed);
     register_method("_ready", &Gui::_ready);
 }
 
@@ -40,6 +41,10 @@ void Gui::_ready() {
 	Node* BackgroundButton = get_parent()->get_node("PopupMenu/HBoxContainer2/BackgroundSound");
 	if (BackgroundButton) {
 		BackgroundButton->connect("pressed", this, "_on_BackgroundSound_pressed");
+	}
+	Node* RotateToggle = get_parent()->get_node("PopupMenu/HBoxContainer3/RotateStrafe");
+	if (RotateToggle) {
+		RotateToggle->connect("pressed", this, "_on_RotateStrafe_pressed");
 	}
 }
 
@@ -82,4 +87,11 @@ void Gui::_on_BackgroundSound_pressed() {
 		a1->stop();
 	else 
 		a1->play();
+}
+
+void Gui::_on_RotateStrafe_pressed() {
+	BasicMovement* player = (BasicMovement*) get_parent()->get_node("Player");
+	if (player) {
+		player->toggle_AD_rotate();
+	}
 }

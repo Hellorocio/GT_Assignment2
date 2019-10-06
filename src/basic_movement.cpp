@@ -10,8 +10,11 @@ void BasicMovement::_register_methods() {
     register_method("_process", &BasicMovement::_process);
     register_method("_physics_process", &BasicMovement::_physics_process);
     register_method("update_movement", &BasicMovement::update_movement);
+    register_method("toggle_AD_rotate", &BasicMovement::toggle_AD_rotate);
 
     // physics
+    register_property<BasicMovement, float>("max_falling_speed", &BasicMovement::max_falling_speed, -100.0f);
+    register_property<BasicMovement, float>("max_glide_fall_speed", &BasicMovement::max_glide_fall_speed, -3.0f);
     register_property<BasicMovement, float>("gravity", &BasicMovement::gravity, -10.0f);
 
     // camera properties
@@ -28,6 +31,12 @@ void BasicMovement::_register_methods() {
     register_property<BasicMovement, float>("ledge_stop_test_distance", &BasicMovement::ledge_stop_test_distance, 0.65f);
     register_property<BasicMovement, float>("ledge_grab_distance", &BasicMovement::ledge_grab_distance, 2.0f);
     register_property<BasicMovement, bool>("can_ledge_hang", &BasicMovement::can_ledge_hang, true);
+
+    register_property<BasicMovement, float>("walk_speed", &BasicMovement::walk_speed, 8.0);
+    register_property<BasicMovement, float>("sprint_speed", &BasicMovement::sprint_speed, 32.0);
+    register_property<BasicMovement, float>("glide_speed", &BasicMovement::glide_speed, 16.0);
+    register_property<BasicMovement, float>("walkable_angle", &BasicMovement::walkable_angle, 0.685398);
+
 }
 
 BasicMovement::BasicMovement() {
@@ -39,7 +48,7 @@ BasicMovement::~BasicMovement() {
 
 void BasicMovement::_init() {
     // initialize any variables here
-	falling_speed_max = -100.0;
+	falling_speed = max_falling_speed;
 	acceleration = Vector3{0, 0, 0};
 	
 	forward = Vector3{0, 0, 1};
@@ -70,7 +79,7 @@ void BasicMovement::_process(float delta) {
 
 void BasicMovement::_physics_process(float delta) {
 	update_movement(delta);
-	move_and_slide(motion, Vector3(0, 1, 0), true, 4, 0.685398);
+	move_and_slide(motion, Vector3(0, 1, 0), true, 4, walkable_angle);
 	acceleration = Vector3{0, 0, 0};
 } 
 
@@ -137,7 +146,7 @@ void BasicMovement::update_movement(float delta) {
 		ledge_hang_ground_test->set_enabled(false);
 		
 		if (state == JUMP || state == FALL || state == GLIDING || state == LEDGE_HANGING) {
-			falling_speed_max = -100.0;
+			falling_speed = max_falling_speed;
 			state = GROUNDED;
 			ledge_grab_cooldown = 0;
 		}
@@ -156,20 +165,22 @@ void BasicMovement::update_movement(float delta) {
 		}
 	}
 	
-	if (state == FALL && i->is_action_pressed("glide")) {
-		falling_speed_max = -3.0;
+	if (state == FALL && i->is_action_pressed("glide") && !sprinting) {
+		falling_speed = max_glide_fall_speed;
+		movement_speed = glide_speed;
 		motion.y = 0;
 		state = GLIDING;
 	} else if (state == GLIDING && !i->is_action_pressed("glide")) {
-		falling_speed_max = -100.0;
+		falling_speed = max_falling_speed;
+		movement_speed = walk_speed;
 		state = FALL;
 	}
 
-	if (!sprinting && i->is_action_pressed("sprint")) {
-		movement_speed = 32.0;
+	if (!sprinting && i->is_action_pressed("sprint") && state != GLIDING) {
+		movement_speed = sprint_speed;
 		sprinting = true;
 	} else if (sprinting && !i->is_action_pressed("sprint")) {
-		movement_speed = 8.0;
+		movement_speed = walk_speed;
 		sprinting = false;
 	}
 
@@ -206,6 +217,7 @@ void BasicMovement::update_movement(float delta) {
 		}
 
 		if (ad_rotate && input_x != 0) {
+			//Godot::print("ad rotating");
 			float theta = atan2(forward.x, forward.z);
 			theta -= input_x * ad_rotate_speed * delta;
 			forward = Vector3{(float) sin((double) theta), 0, (float) cos((double) theta)};
@@ -284,7 +296,16 @@ void BasicMovement::update_movement(float delta) {
 	}
 
 	// motion clamping
-	if (motion.y < falling_speed_max) {
-		motion.y = falling_speed_max;
+	if (motion.y < falling_speed) {
+		motion.y = falling_speed;
 	}
+}
+
+void BasicMovement::toggle_AD_rotate () {
+	if (ad_rotate)
+		ad_rotate = false;
+	else
+		ad_rotate = true;
+	//Godot::print("toggle AD rotate");
+	//Godot::print(std::to_string(ad_rotate).c_str());
 }

@@ -16,7 +16,10 @@ class BasicMovement : public KinematicBody {
 
 private:
     // physics
-    float falling_speed_max = -100.0;
+    float falling_speed = -100.0; //This is what we are using to handle air resistence, the higher the number the faster the player falls
+    float max_falling_speed = -100.0;
+    float max_glide_fall_speed = -3.0;
+    float walkable_angle = 0.685398; 
 
     // movement
     Vector3 motion;
@@ -27,8 +30,12 @@ private:
     Vector3 right;
     float movement_speed = 8;
     float gravity = -40.0;
+
+    float walk_speed = 8.0;
+    float sprint_speed = 32.0;
+    float glide_speed = 16.0;
     
-    bool ad_rotate = false; //if true, a and d keys rotate the player. Otherwise a and d strafe
+    bool ad_rotate = true; //if true, a and d keys rotate the player. Otherwise a and d strafe
     float ad_rotate_speed = 3.14f;
 
     bool sprinting = false;
@@ -69,6 +76,8 @@ public:
     void rotate_player();
 
     void update_movement(float delta);
+
+    void toggle_AD_rotate ();
 };
 
 }
