@@ -32,6 +32,8 @@ public:
 
     void _ready();
 
+    void _process();
+
     void _on_MenuButton_pressed();
 
     void _on_ExitButton_pressed();

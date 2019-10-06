@@ -13,6 +13,7 @@ void Gui::_register_methods() {
 	register_method("_on_VolumeSlider_changed", &Gui::_on_VolumeSlider_changed);
 	register_method("_on_PlayMain_pressed", &Gui::_on_PlayMain_pressed);
     register_method("_ready", &Gui::_ready);
+    register_method("_process", &Gui::_process);
     register_method("_WinMenu_show", &Gui::_WinMenu_show);
 }
 
@@ -77,9 +78,27 @@ void Gui::_ready() {
 		quit_main->connect("pressed", this, "_on_QuitButton_pressed");
 	}
 
+	Node* quit_pause = get_parent()->get_node("PopupMenu/PauseQuit");
+	if (quit_pause) {
+		quit_pause->connect("pressed", this, "_on_QuitButton_pressed");
+	}
+
 	Node* volume_slider = get_parent()->get_node("PopupMenu/HSlider");
 	if (volume_slider) {
 		volume_slider->connect("value_changed", this, "_on_VolumeSlider_changed");
+	}
+}
+
+void Gui::_process() {
+	Input* i = Input::get_singleton();
+	if (i->is_action_pressed("ui_cancel")) {
+		PopupMenu* menu = (PopupMenu*) get_parent()->get_node("PopupMenu");
+		if (menu) {
+			if (menu->is_visible_in_tree()) 
+				_on_ExitButton_pressed();
+			else
+				_on_MenuButton_pressed();
+		}
 	}
 }
 
