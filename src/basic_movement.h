@@ -35,7 +35,7 @@ private:
     float sprint_speed = 32.0;
     float glide_speed = 16.0;
     
-    bool ad_rotate = true; //if true, a and d keys rotate the player. Otherwise a and d strafe
+    bool ad_rotate = false; //if true, a and d keys rotate the player. Otherwise a and d strafe
     float ad_rotate_speed = 3.14f;
 
     bool sprinting = false;
