@@ -329,6 +329,11 @@ void BasicMovement::update_movement(float delta) {
 	if (motion.y < falling_speed) {
 		motion.y = falling_speed;
 	}
+
+	if (i->is_action_just_pressed("ui_squirrel")){
+		AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/GreatSound");
+		a1->play();
+	}
 }
 
 void BasicMovement::toggle_AD_rotate () {

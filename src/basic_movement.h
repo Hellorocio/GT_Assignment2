@@ -6,6 +6,7 @@
 #include <Input.hpp>
 #include <string>
 #include <InputEvent.hpp>
+#include <AudioStreamPlayer3D.hpp>
 
 namespace godot {
 
