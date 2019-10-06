@@ -244,6 +244,7 @@ void BasicMovement::update_movement(float delta) {
 	Object::cast_to<Spatial>(get_node("LedgeStopTest"))->set_translation(horiz_movement * ledge_stop_test_distance);
 	
 	if (state == GROUNDED && !sprinting && !(horiz_movement.x == 0 && horiz_movement.z == 0)) {
+		ledge_stop_test->force_raycast_update();
 		if (!ledge_stop_test->is_colliding()) {
 			motion.x = 0;
 			motion.z = 0;
