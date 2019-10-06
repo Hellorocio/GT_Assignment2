@@ -7,6 +7,7 @@
 #include <PopupMenu.hpp>
 #include <SceneTree.hpp>
 #include <string>
+#include <Particles.hpp>
 
 namespace godot {
 

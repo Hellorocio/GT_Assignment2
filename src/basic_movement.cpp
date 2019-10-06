@@ -200,6 +200,11 @@ void BasicMovement::update_movement(float delta) {
 		movement_speed = walk_speed;
 		state = FALL;
 	}
+	if (state == GLIDING && ledge_hang_ground_test->is_colliding()) {
+		falling_speed = max_falling_speed;
+		movement_speed = walk_speed;
+		state = FALL;
+	}
 
 	if (!sprinting && i->is_action_pressed("sprint") && state != GLIDING) {
 		movement_speed = sprint_speed;
