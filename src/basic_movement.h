@@ -35,6 +35,8 @@ private:
     float walk_speed = 8.0;
     float sprint_speed = 32.0;
     float glide_speed = 16.0;
+
+	float jump_height = 16.0;
     
     bool ad_rotate = false; //if true, a and d keys rotate the player. Otherwise a and d strafe
     float ad_rotate_speed = 3.14f;
