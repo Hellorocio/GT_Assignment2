@@ -3,6 +3,7 @@
 
 #include <Godot.hpp>
 #include <Node.hpp>
+#include <Label.hpp>
 #include <string>
 
 namespace godot {
