@@ -59,9 +59,17 @@ void GameState::remove_acorns()
 	Godot::print("lose acorn: ");
 	Godot::print(std::to_string(numCollected).c_str());
 
+	//update UI
 	Label* label = (Label*) get_parent()->get_node("GUI/HSplitContainer/NinePatchRect/Label");
 	if (label) {
 		label->set_text(std::to_string(numCollected).c_str());
+	}
+
+	//play particle effect
+	Particles * acornParticles = (Particles *)get_node("/root/Spatial/Player/Particles");
+	if (acornParticles)
+	{
+		acornParticles->set_emitting(true);
 	}
 }
 

@@ -5,6 +5,7 @@
 #include <Node.hpp>
 #include <Label.hpp>
 #include <string>
+#include <Particles.hpp>
 
 namespace godot {
 
