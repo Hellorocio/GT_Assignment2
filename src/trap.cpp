@@ -37,7 +37,7 @@ void Trap::_on_body_entered(Node * body)
 		GameState * state = (GameState *)get_node("/root/Spatial/GameState");
 		state->remove_acorns();
 
-		AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/TrapSound");
+		AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/TrapSound");
 		a1->play();
 
 		hitPlayer = true;

@@ -5,6 +5,7 @@
 #include <Control.hpp>
 #include <PopupMenu.hpp>
 #include <stdlib.h>
+#include <AudioStreamPlayer3D.hpp>
 
 namespace godot {
 
@@ -15,6 +16,8 @@ private:
     //float time_passed;
     Vector3 velocity;
     Vector3 oldPos;
+    bool soundEffect;
+    bool backgroundSound;
 
 public:
     static void _register_methods();

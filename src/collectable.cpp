@@ -35,7 +35,7 @@ void Collectable::_on_body_entered(Node * body)
 		GameState * state = (GameState *)get_node("/root/Spatial/GameState");
 		state->collect_acorns();
 
-		AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/AcornSound");
+		AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/AcornSound");
 		a1->play();
 
 		//remove this node

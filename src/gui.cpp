@@ -18,7 +18,8 @@ Gui::~Gui() {
 }
 
 void Gui::_init() {
-    
+    bool soundEffect = true;
+    bool backgroundSound = true;
 }
 
 void Gui::_ready() {
@@ -36,7 +37,7 @@ void Gui::_ready() {
 	if (SFXButton) {
 		SFXButton->connect("pressed", this, "_on_SFX_pressed");
 	}
-	Node* BackgroundButton = get_parent()->get_node("PopupMenu/HBoxContainer/BackgroundSound");
+	Node* BackgroundButton = get_parent()->get_node("PopupMenu/HBoxContainer2/BackgroundSound");
 	if (BackgroundButton) {
 		BackgroundButton->connect("pressed", this, "_on_BackgroundSound_pressed");
 	}
@@ -62,9 +63,23 @@ void Gui::_on_ExitButton_pressed() {
 }
 
 void Gui::_on_SFX_pressed() {
-
+	AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/AcornSound");
+	AudioStreamPlayer3D *a2 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/TrapSound");
+	if (soundEffect) {
+		a1->set_pitch_scale(0.01);
+		a2->set_pitch_scale(0.01);
+		soundEffect = false;
+	} else {
+		a1->set_pitch_scale(1);
+		a2->set_pitch_scale(1);
+		soundEffect = true;
+	}
 }
 
 void Gui::_on_BackgroundSound_pressed() {
-	
+	AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/BackgroundMusic");
+	if(a1->is_playing())
+		a1->stop();
+	else 
+		a1->play();
 }
