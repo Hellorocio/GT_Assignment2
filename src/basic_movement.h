@@ -38,6 +38,9 @@ private:
     
     float ad_rotate_speed = 3.14f;
 
+    float jump_velocity = 16.0f;
+    float air_control = 1.0f;
+
     bool ad_rotate = false; //if true, a and d keys rotate the player. Otherwise a and d strafe
     bool sprinting = false;
 

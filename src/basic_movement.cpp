@@ -30,6 +30,9 @@ void BasicMovement::_register_methods() {
     register_property<BasicMovement, bool>("ad_rotate", &BasicMovement::ad_rotate, false);
 	register_property<BasicMovement, float>("ad_rotate_speed", &BasicMovement::ad_rotate_speed, 3.14f);
     
+	register_property<BasicMovement, float>("jump_velocity", &BasicMovement::jump_velocity, 16.0f);
+    register_property<BasicMovement, float>("air_control", &BasicMovement::air_control, 1.0f);
+    
     register_property<BasicMovement, float>("ledge_stop_test_distance", &BasicMovement::ledge_stop_test_distance, 0.65f);
     register_property<BasicMovement, float>("ledge_grab_distance", &BasicMovement::ledge_grab_distance, 2.0f);
     register_property<BasicMovement, bool>("can_ledge_hang", &BasicMovement::can_ledge_hang, true);
@@ -45,11 +48,9 @@ BasicMovement::BasicMovement() {
 }
 
 BasicMovement::~BasicMovement() {
-    // add your cleanup here
 }
 
 void BasicMovement::_init() {
-    // initialize any variables here
 	falling_speed = max_falling_speed;
 	acceleration = Vector3{0, 0, 0};
 	
@@ -215,15 +216,14 @@ void BasicMovement::update_movement(float delta) {
 	}
 
 	// motion update
-	motion.x = 0.0;
-	motion.z = 0.0;
-
 	motion += acceleration * delta;
 	
 	// input
 	int input_x = 0;
 	int input_z = 0;
 	if (state == LEDGE_HANGING) {
+		motion.x = 0.0;
+		motion.z = 0.0;
 		if (i->is_action_just_pressed("ui_up") || i->is_action_just_pressed("ui_select")) {
 			state = JUMP;
 			motion.y = 16.0;
@@ -255,17 +255,26 @@ void BasicMovement::update_movement(float delta) {
 			input_x = 0;
 		}
 
+		Vector3 perfect_motion = motion;
+		perfect_motion.x = 0;
+		perfect_motion.z = 0;
 		if (input_z != 0) {
-			motion += input_z * movement_speed * forward;
+			perfect_motion += input_z * movement_speed * forward;
 		}
 		if (input_x != 0) {
-			motion += input_x * movement_speed * right;
+			perfect_motion += input_x * movement_speed * right;
+		}
+
+		if (state == GROUNDED) {
+			motion = perfect_motion;
+		} else {
+			motion = motion.linear_interpolate(perfect_motion, air_control);
 		}
 	}
 
 	// jumping
 	if (state == GROUNDED && i->is_action_pressed("ui_select")) {
-		motion.y = 16.0;
+		motion.y = jump_velocity;
 		state = JUMP;
 		if (ledge_grab_cooldown < 0.3f)
 			ledge_grab_cooldown = 0.3f;
@@ -317,11 +326,6 @@ void BasicMovement::update_movement(float delta) {
 			state = LEDGE_HANGING;
 			motion = Vector3 {0, 0, 0};
 		}
-	} else if (state == LEDGE_HANGING) {
-		// if (!ledge_hang_solid_test->is_colliding() || ledge_hang_air_test->is_colliding() || ledge_hang_air_test->is_colliding()) {
-		// 	state = FALL;
-		// 	ledge_grab_cooldown = 1;
-		// }
 	}
 
 	// motion clamping
@@ -349,5 +353,4 @@ void BasicMovement::toggle_AD_rotate () {
 		ad_rotate = false;
 	else 
 		ad_rotate = true;
-
 }
