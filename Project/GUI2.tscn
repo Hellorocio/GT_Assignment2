@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://AcornIcon.png" type="Texture" id=1]
+[ext_resource path="res://RobotoFont/Roboto-Black.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://AcornIcon_35x35.png" type="Texture" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 28
+font_data = ExtResource( 2 )
+
+[node name="GUI" type="MarginContainer"]
+margin_right = 1024.0
+margin_bottom = 40.0
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 41.0
+split_offset = 970
+dragger_visibility = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="HSplitContainer"]
+editor/display_folded = true
+margin_right = 965.0
+margin_bottom = 41.0
+region_rect = Rect2( 40, 120, 0, 0 )
+
+[node name="TextureRect" type="TextureRect" parent="HSplitContainer/NinePatchRect"]
+margin_top = 5.0
+margin_right = 44.0
+margin_bottom = 46.0
+texture = ExtResource( 1 )
+expand = true
+
+[node name="Label" type="Label" parent="HSplitContainer/NinePatchRect"]
+margin_left = 50.0
+margin_top = 5.0
+margin_right = 1074.0
+margin_bottom = 38.0
+custom_fonts/font = SubResource( 1 )
+text = "test"
+
+[node name="MenuButton" type="MenuButton" parent="HSplitContainer"]
+margin_left = 977.0
+margin_right = 1024.0
+margin_bottom = 41.0
+icon = ExtResource( 3 )

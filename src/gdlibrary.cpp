@@ -2,6 +2,7 @@
 #include "collectable.h"
 #include "trap.h"
 #include "game_state.h"
+#include "gui.h"
 
 extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *o) {
     godot::Godot::gdnative_init(o);
@@ -18,4 +19,5 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_class<godot::Collectable>();
 	godot::register_class<godot::Trap>();
 	godot::register_class<godot::GameState>();
+    godot::register_class<godot::Gui>();
 }
