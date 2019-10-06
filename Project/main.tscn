@@ -173,7 +173,6 @@ transform = Transform( 0.0466612, 0, 0.998911, 0, 1, 0, -0.998911, 0, 0.0466612,
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.728014, 0.685562, 0, -0.685562, 0.728014, 0, 35.1351, 12.1551 )
-visible = false
 
 [node name="NewEnvironment" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8932, -0.044909, 0 )
