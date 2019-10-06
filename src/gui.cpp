@@ -78,6 +78,11 @@ void Gui::_ready() {
 		quit_main->connect("pressed", this, "_on_QuitButton_pressed");
 	}
 
+	Node* quit_pause = get_parent()->get_node("PopupMenu/PauseQuit");
+	if (quit_pause) {
+		quit_pause->connect("pressed", this, "_on_QuitButton_pressed");
+	}
+
 	Node* volume_slider = get_parent()->get_node("PopupMenu/HSlider");
 	if (volume_slider) {
 		volume_slider->connect("value_changed", this, "_on_VolumeSlider_changed");
