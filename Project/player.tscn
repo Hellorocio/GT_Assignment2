@@ -30,6 +30,7 @@ cast_to = Vector3( 0, 0, -10 )
 
 [node name="Camera" type="InterpolatedCamera" parent="CameraOrientation/RayCast"]
 transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -10 )
+far = 250.0
 target = NodePath("../CameraOrientation/RayCast/RegularTarget")
 speed = 16.0
 enabled = true
