@@ -35,8 +35,6 @@ void Trap::_on_body_entered(Node * body) {
 
 		hitPlayer = true;
 	}
-	
-	get_node("this should crash");
 }
 
 //Resets hitPlayer when the player exits
