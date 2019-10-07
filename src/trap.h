@@ -2,13 +2,13 @@
 #define TRAP_H
 
 #include <Godot.hpp>
-#include <RigidBody.hpp>
+#include <Area.hpp>
 #include <AudioStreamPlayer3D.hpp>
 
 namespace godot {
 
-	class Trap : public RigidBody {
-		GODOT_CLASS(Trap, RigidBody)
+	class Trap : public Area {
+		GODOT_CLASS(Trap, Area)
 
 	private:
 		bool hitPlayer = false;

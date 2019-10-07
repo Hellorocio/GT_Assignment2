@@ -27,14 +27,16 @@ void Trap::_ready() {
 void Trap::_on_body_entered(Node * body) {
 	if (!hitPlayer && body->get_name() == "Player")	{
 		//decrement player's acorn count
-		GameState * state = (GameState *)get_node("/root/Spatial/GameState");
+		GameState * state = Object::cast_to<GameState>(get_node("/root/Spatial/GameState"));
 		state->remove_acorns();
 
-		AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/TrapSound");
+		AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Spatial/Player/TrapSound"));
 		a1->play();
 
 		hitPlayer = true;
 	}
+	
+	get_node("this should crash");
 }
 
 //Resets hitPlayer when the player exits

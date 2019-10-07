@@ -11,7 +11,7 @@ namespace godot {
 		GODOT_CLASS(Collectable, RigidBody)
 
 	private:
-		
+		bool is_killed = false;
 
 	public:
 		static void _register_methods();

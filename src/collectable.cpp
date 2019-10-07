@@ -29,19 +29,19 @@ void Collectable::_ready()
 
 void Collectable::_on_body_entered(Node * body)
 {
-	if (body->get_name() == "Player")
+	if (!is_killed && body->get_name() == "Player")
 	{
 		//increment player's acorn count
-		GameState * state = (GameState *)get_node("/root/Spatial/GameState");
+		GameState * state = Object::cast_to<GameState>(get_node("/root/Spatial/GameState"));
 		state->collect_acorns();
 
-		AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/AcornSound");
+		AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Spatial/Player/AcornSound"));
 		a1->play();
 
 		//remove this node
 		queue_free();
+		is_killed = true;
 	}
-	
 }
 
 void Collectable::_process(float delta)
