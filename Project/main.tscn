@@ -13,9 +13,9 @@
 [ext_resource path="res://big_environment.tscn" type="PackedScene" id=11]
 [ext_resource path="res://GUI2.tscn" type="PackedScene" id=12]
 [ext_resource path="res://bin/gui.gdns" type="Script" id=13]
-[ext_resource path="res://PopupMenu.tscn" type="PackedScene" id=14]
-[ext_resource path="res://WinMenu.tscn" type="PackedScene" id=15]
-[ext_resource path="res://MainMenu.tscn" type="PackedScene" id=16]
+[ext_resource path="res://PopupMenu2.tscn" type="PackedScene" id=14]
+[ext_resource path="res://WinMenu2.tscn" type="PackedScene" id=15]
+[ext_resource path="res://MainMenu2.tscn" type="PackedScene" id=16]
 
 [sub_resource type="ArrayMesh" id=1]
 surfaces/0 = {
@@ -181,19 +181,17 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8932, -0.044909, 0 )
 script = ExtResource( 13 )
 
 [node name="PopupMenu" parent="." instance=ExtResource( 14 )]
-pause_mode = 2
-margin_left = 731.935
-margin_top = 336.476
-margin_right = 931.935
-margin_bottom = 506.476
-rect_scale = Vector2( 2, 2 )
+visible = false
+margin_left = 695.072
+margin_top = 318.213
+margin_right = 1144.07
+margin_bottom = 705.213
 
 [node name="WinMenu" parent="." instance=ExtResource( 15 )]
 pause_mode = 2
-margin_left = 790.0
-margin_top = 380.0
-margin_right = 1070.0
-margin_bottom = 630.0
+visible = false
+margin_right = 279.0
+margin_bottom = 247.0
 
 [node name="MainMenu" parent="." instance=ExtResource( 16 )]
 pause_mode = 2

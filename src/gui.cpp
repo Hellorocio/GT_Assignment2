@@ -30,7 +30,7 @@ void Gui::_init() {
 }
 
 void Gui::_ready() {
-    PopupMenu* main_menu = (PopupMenu*) get_parent()->get_node("MainMenu");
+	Control* main_menu = (Control*) get_parent()->get_node("MainMenu");
     if (main_menu) {
     	main_menu->show();
 		get_tree()->set_pause(true);
@@ -92,7 +92,7 @@ void Gui::_ready() {
 void Gui::_process() {
 	Input* i = Input::get_singleton();
 	if (i->is_action_pressed("ui_cancel")) {
-		PopupMenu* menu = (PopupMenu*) get_parent()->get_node("PopupMenu");
+		Control* menu = (Control*) get_parent()->get_node("PopupMenu");
 		if (menu) {
 			if (menu->is_visible_in_tree()) 
 				_on_ExitButton_pressed();
@@ -104,7 +104,7 @@ void Gui::_process() {
 
 void Gui::_on_MenuButton_pressed() {
     Godot::print("in on button pressed");
-	PopupMenu* menu = (PopupMenu*) get_parent()->get_node("PopupMenu");
+	Control* menu = (Control*) get_parent()->get_node("PopupMenu");
 	if (menu) {
 		Godot::print("menu != null");
 		menu->show();
@@ -113,7 +113,7 @@ void Gui::_on_MenuButton_pressed() {
 }
 
 void Gui::_on_ExitButton_pressed() {
-	PopupMenu* menu = (PopupMenu*) get_parent()->get_node("PopupMenu");
+	Control* menu = (Control*) get_parent()->get_node("PopupMenu");
 	if (menu) {
 		menu->hide();
 		get_tree()->set_pause(false);
@@ -152,7 +152,7 @@ void Gui::_on_RotateStrafe_pressed() {
 void Gui::_on_PlayAgain_pressed() {
 	get_tree()->reload_current_scene();
 
-	PopupMenu* menu = (PopupMenu*) get_parent()->get_node("WinMenu");
+	Control* menu = (Control*) get_parent()->get_node("WinMenu");
 	if (menu) {
 		menu->hide();
 		get_tree()->set_pause(false);
@@ -164,7 +164,7 @@ void Gui::_on_QuitButton_pressed() {
 }
 
 void Gui::_on_PlayMain_pressed() {
-	PopupMenu* main_menu2 = (PopupMenu*) get_parent()->get_node("MainMenu");
+	Control* main_menu2 = (Control*) get_parent()->get_node("MainMenu");
     if (main_menu2) {
     	main_menu2->hide();
 		get_tree()->set_pause(false);
@@ -173,7 +173,7 @@ void Gui::_on_PlayMain_pressed() {
 
 void Gui::_WinMenu_show() {
 	Godot::print("win menu show");
-	PopupMenu* win_menu = (PopupMenu*) get_parent()->get_node("WinMenu");
+	Control* win_menu = (Control*) get_parent()->get_node("WinMenu");
 	if (win_menu) {
 		win_menu->show();
 		//get_tree()->set_pause(true);
