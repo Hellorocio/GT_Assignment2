@@ -143,7 +143,7 @@ void Gui::_on_BackgroundSound_pressed() {
 }
 
 void Gui::_on_RotateStrafe_pressed() {
-	BasicMovement* player = (BasicMovement*) get_parent()->get_node("Player");
+	BasicMovement* player = Object::cast_to<BasicMovement>(get_parent()->get_node("Player"));
 	if (player) {
 		player->toggle_AD_rotate();
 	}

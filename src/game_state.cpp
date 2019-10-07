@@ -6,6 +6,7 @@ void GameState::_register_methods() {
 	register_method("_ready", &GameState::_ready);
 	register_method("collect_acorns", &GameState::collect_acorns);
 	register_method("remove_acorns", &GameState::remove_acorns);
+	register_method("_process", &GameState::_process);
 }
 
 GameState::GameState() {
@@ -15,6 +16,9 @@ GameState::~GameState() {
 }
 
 void GameState::_init() {
+}
+
+void GameState::_process(float delta) {
 }
 
 void GameState::_ready() {
