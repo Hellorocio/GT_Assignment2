@@ -38,7 +38,6 @@ void Gui::_ready() {
 
     Node* button = get_node("HSplitContainer/MenuButton");
 	if (button) {
-		//Godot::print("connecting2");
 		button->connect("pressed", this, "_on_MenuButton_pressed");
 	}
 	Node* exitButton = get_parent()->get_node("PopupMenu/ExitButton");
@@ -103,10 +102,8 @@ void Gui::_process() {
 }
 
 void Gui::_on_MenuButton_pressed() {
-    Godot::print("in on button pressed");
 	Control* menu = (Control*) get_parent()->get_node("PopupMenu");
 	if (menu) {
-		Godot::print("menu != null");
 		menu->show();
 		get_tree()->set_pause(true);
 	}
@@ -172,7 +169,6 @@ void Gui::_on_PlayMain_pressed() {
 }
 
 void Gui::_WinMenu_show() {
-	Godot::print("win menu show");
 	Control* win_menu = (Control*) get_parent()->get_node("WinMenu");
 	if (win_menu) {
 		win_menu->show();

@@ -23,17 +23,14 @@ void GameState::_process(float delta) {
 
 void GameState::_ready() {
 	numCollected = 0;
-	Godot::print("ready acorn: ");
 	Godot::print(String::num_int64(numCollected));
 }
 
 void GameState::collect_acorns() {
-	Godot::print("collect acorn 1: ");
 	String gs1 = String::num_int64(numCollected);
 	Godot::print(gs1);
 	numCollected++;
 
-	Godot::print("collect acorn 2: ");
 	String gs2 = String::num_int64(numCollected);
 	Godot::print(gs2);
 
@@ -43,7 +40,6 @@ void GameState::collect_acorns() {
 	}
 
 	if (numCollected >= 20) {
-		//Godot::print("you won");
 		Gui* gui = (Gui*) get_parent()->get_node("GUI");
 		if (gui) {
 			gui->_WinMenu_show();
@@ -56,7 +52,6 @@ void GameState::remove_acorns() {
 		numCollected--;
 	}
 
-	Godot::print("lose acorn: ");
 	String gs1 = String::num_int64(numCollected);
 	Godot::print(gs1);
 
