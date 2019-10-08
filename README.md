@@ -5,17 +5,7 @@ Yijin Zhao
 Amber Smith
 Clinton Bell
 
-Instructions:
 
-WASD to move
-Space to jump
-Hold right click to rotate camera with mouse
-
-Functionality:
-Movement
-Jump
-Falling
-Walkable Angle
-Basic camera controls
-Basic Collectables
-Grass texture
+How to Build and Run:
+build with command scons p=<platform>
+run in godot editor
