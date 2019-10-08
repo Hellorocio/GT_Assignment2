@@ -139,7 +139,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40.2527, 27.6851, -20.4028 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.77717, 14.279, 31.0771 )
 
 [node name="Acorn26" parent="Collectables" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9712, 11.1752, 25.3374 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.13071, 11.1752, 25.3374 )
 
 [node name="Acorn21" parent="Collectables" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.181, 14.279, 19.4942 )
