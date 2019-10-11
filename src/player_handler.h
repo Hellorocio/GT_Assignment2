@@ -3,6 +3,8 @@
 
 #include <Godot.hpp>
 #include <Node.hpp>
+#include <Ref.hpp>
+#include <PackedScene.hpp>
 
 namespace godot {
 
@@ -10,6 +12,7 @@ namespace godot {
 		GODOT_CLASS(PlayerHandler, Node)
 
 	private:
+		Ref<PackedScene> PlayerScene;
 
 	public:
 		static void _register_methods();
