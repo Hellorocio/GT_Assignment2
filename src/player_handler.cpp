@@ -27,7 +27,7 @@ void PlayerHandler::_ready() {
     player->set_network_master(get_tree()->get_network_unique_id());
 	add_child(player);
 
-	Dictionary self_data = Dictionary(get_node("/root/setwork")->get("self_data"));
+	Dictionary self_data = Dictionary(get_node("/root/network")->get("self_data"));
     player->init(self_data["name"], self_data["position"], false);
 }
 
