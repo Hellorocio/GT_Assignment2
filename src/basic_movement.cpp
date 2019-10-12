@@ -89,14 +89,15 @@ void BasicMovement::_process(float delta) {
 	if (is_network_master()) {
 		update_camera(delta);
 		rset_unreliable("slave_forward", forward);
+			
+		if (ledge_grab_cooldown > 0)
+			ledge_grab_cooldown -= delta;
 	} else {
 		forward = slave_forward;
 		right = forward.cross(Vector3{0, 1, 0});
 	}
 	rotate_player();
 
-	if (ledge_grab_cooldown > 0)
-		ledge_grab_cooldown -= delta;
 }
 
 void BasicMovement::_physics_process(float delta) {

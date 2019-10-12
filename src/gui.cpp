@@ -220,7 +220,7 @@ void Gui::_on_JoinMain_pressed () {
 
 void Gui::_on_JoinIPMain_pressed () {
 	LineEdit* ip_field = Object::cast_to<LineEdit>(get_node("../MainMenu/IPField"));
-	get_node("/root/network")->call("connect_to_server", "player", ip_field->get_text());
+	get_node("/root/network")->call("connect_to_server", "player2", ip_field->get_text());
 
 	Control* main_menu2 = Object::cast_to<Control>(get_parent()->get_node("MainMenu"));
     if (main_menu2) {

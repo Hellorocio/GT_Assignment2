@@ -23,16 +23,13 @@ void GameState::_process(float delta) {
 
 void GameState::_ready() {
 	numCollected = 0;
-	Godot::print(String::num_int64(numCollected));
 }
 
 void GameState::collect_acorns() {
 	String gs1 = String::num_int64(numCollected);
-	Godot::print(gs1);
 	numCollected++;
 
 	String gs2 = String::num_int64(numCollected);
-	Godot::print(gs2);
 
 	Label* label = (Label*) get_parent()->get_node("GUI/HSplitContainer/NinePatchRect/Label");
 	if (label) {
@@ -53,7 +50,6 @@ void GameState::remove_acorns() {
 	}
 
 	String gs1 = String::num_int64(numCollected);
-	Godot::print(gs1);
 
 	//update UI
 	Label* label = (Label*) get_parent()->get_node("GUI/HSplitContainer/NinePatchRect/Label");

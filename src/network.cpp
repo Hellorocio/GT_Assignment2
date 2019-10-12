@@ -105,10 +105,10 @@ void Network::_send_player_info(int64_t id, Dictionary info) {
     ResourceLoader *resourceLoader = ResourceLoader::get_singleton();
     player_scene = resourceLoader->load("res://player.tscn");
     BasicMovement *player = Object::cast_to<BasicMovement>(player_scene->instance());
-    player->set_name(String(id));
+    player->set_name(String::num_int64(id));
     player->set_network_master(id);
     get_node("/root/Game")->add_child(player);
-    Godot::print(players.size());
+    Godot::print(String::num_int64(players.size()));
     player->init(info["name"], info["position"], true);
 }
 
