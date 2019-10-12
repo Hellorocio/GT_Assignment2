@@ -23,7 +23,12 @@ void PlayerHandler::_init() {
 
 void PlayerHandler::_ready() {
 	godot::BasicMovement* player = static_cast<godot::BasicMovement*>(PlayerScene->instance());
+	player->set_name(String::num_int64(get_tree()->get_network_unique_id()));
+    player->set_network_master(get_tree()->get_network_unique_id());
 	add_child(player);
+
+	Dictionary self_data = Dictionary(get_node("/root/setwork")->get("self_data"));
+    player->init(self_data["name"], self_data["position"], false);
 }
 
 void PlayerHandler::_process(float delta) {

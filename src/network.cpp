@@ -42,6 +42,7 @@ void Network::_ready() {
     init_positions[3] = Vector3(-42,1,-21);
 }
 
+// called by 1
 void Network::create_server(String playerNickname) {
     self_data["name"] = playerNickname;
     self_data["position"] = init_positions[0];
@@ -53,6 +54,7 @@ void Network::create_server(String playerNickname) {
     get_tree()->set_network_peer(peer);
 }
 
+// called by each client
 void Network::connect_to_server(String playerNickname, String server_ip) {
     self_data["name"] = playerNickname;
     self_data["position"] = init_positions[1];
@@ -65,6 +67,7 @@ void Network::connect_to_server(String playerNickname, String server_ip) {
     get_tree()->set_network_peer(peer);
 }
 
+// 
 void Network::_connected_to_server() {
     int64_t localPlayerId = get_tree()->get_network_unique_id();
     players[localPlayerId] = self_data;
@@ -100,6 +103,9 @@ void Network::_request_players(int64_t requestFromId) {
 }
 
 void Network::_send_player_info(int64_t id, Dictionary info) {
+    int64_t localPlayerId = get_tree()->get_network_unique_id();
+    Godot::print("Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(id));
+
     players[id] = info;
 
     ResourceLoader *resourceLoader = ResourceLoader::get_singleton();
