@@ -74,6 +74,7 @@ void BasicMovement::_ready() {
 void BasicMovement::init(String nickname, Vector3 start_position, bool is_slave) {
 	//Object::cast_to<Label>(get_node("GUI/Nickname"))->set_text(nickname);
 	set_translation(start_position);
+    Godot::print((String) start_position);
 }
 
 void BasicMovement::_input(InputEvent *event) {
