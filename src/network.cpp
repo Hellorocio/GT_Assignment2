@@ -35,6 +35,11 @@ void Network::_init() {
 void Network::_ready() {
     get_tree()->connect("network_peer_disconnected", this, "_on_player_disconnected");
     get_tree()->connect("network_peer_connected", this, "_on_player_connected");
+    init_positions.resize(4);
+    init_positions[0] = Vector3(0,2,0);
+    init_positions[1] = Vector3(47,28,-31);
+    init_positions[2] = Vector3(-18,14,39);
+    init_position[3] = Vector3();
 }
 
 void Network::create_server(String playerNickname) {

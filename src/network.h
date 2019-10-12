@@ -7,6 +7,7 @@
 #include <SceneTree.hpp>
 #include <NetworkedMultiplayerENet.hpp>
 #include <ResourceLoader.hpp>
+#include <vector>
 #include "basic_movement.h"
 
 
@@ -43,6 +44,7 @@ private:
     const int64_t MAX_PLAYERS = 2;
     Dictionary self_data;
     Dictionary players;
+    std::vector<Vector3> init_positions;
 };
 
 }

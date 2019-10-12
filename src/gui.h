@@ -49,6 +49,12 @@ public:
 
     void _on_PlayMain_pressed();
 
+    void _on_CreateMain_pressed ();
+    
+    void _on_JoinMain_pressed ();
+
+    void _on_JoinIPMain_pressed();
+
     void _WinMenu_show();
 
     void _on_VolumeSlider_changed(float value);

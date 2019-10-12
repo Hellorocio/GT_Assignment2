@@ -42,6 +42,10 @@ void BasicMovement::_register_methods() {
     register_property<BasicMovement, float>("glide_speed", &BasicMovement::glide_speed, 16.0);
     register_property<BasicMovement, float>("walkable_angle", &BasicMovement::walkable_angle, 0.685398);
 
+	// network
+	register_property<BasicMovement, Vector3>("slave_position", &BasicMovement::slave_position, Vector3(), GODOT_METHOD_RPC_MODE_PUPPET);
+	register_property<BasicMovement, Vector3>("slave_motion", &BasicMovement::slave_motion, Vector3(), GODOT_METHOD_RPC_MODE_PUPPET);
+    register_property<BasicMovement, Vector3>("slave_forward", &BasicMovement::slave_forward, Vector3(0, 0, 1), GODOT_METHOD_RPC_MODE_PUPPET);
 }
 
 BasicMovement::BasicMovement() {
@@ -82,7 +86,13 @@ void BasicMovement::_input(InputEvent *event) {
 }
 
 void BasicMovement::_process(float delta) {
-	update_camera(delta);
+	if (is_network_master()) {
+		update_camera(delta);
+		rset_unreliable("slave_forward", forward);
+	} else {
+		forward = slave_forward;
+		right = forward.cross(Vector3{0, 1, 0});
+	}
 	rotate_player();
 
 	if (ledge_grab_cooldown > 0)
@@ -90,10 +100,19 @@ void BasicMovement::_process(float delta) {
 }
 
 void BasicMovement::_physics_process(float delta) {
-	update_camera_target();
-	update_movement(delta);
-	move_and_slide(motion, Vector3(0, 1, 0), true, 4, walkable_angle);
-	acceleration = Vector3{0, 0, 0};
+	if (is_network_master()) {
+		update_camera_target();
+		update_movement(delta);
+		move_and_slide(motion, Vector3(0, 1, 0), true, 4, walkable_angle);
+		acceleration = Vector3{0, 0, 0};
+
+		rset_unreliable("slave_position", get_translation());
+		rset_unreliable("slave_motion", motion);
+	} else {
+		motion = slave_motion;
+		move_and_slide(motion, Vector3(0, 1, 0), true, 4, walkable_angle);
+		set_translation(slave_position);
+	}
 } 
 
 void BasicMovement::update_camera(float delta) {

@@ -61,6 +61,11 @@ private:
     bool invert_x_axis = false;
     bool invert_y_axis = false;
 
+    // network
+    Vector3 slave_position;
+    Vector3 slave_motion;
+    Vector3 slave_forward;
+
 public:
     static void _register_methods();
 
