@@ -62,7 +62,7 @@ void GameState::remove_acorns() {
 	}
 
 	//play particle effect
-	Particles * acornParticles = (Particles *)get_node("/root/Spatial/Player/Particles");
+	Particles * acornParticles = (Particles *)get_node("/root/Game/Player/Particles");
 	if (acornParticles) {
 		acornParticles->set_emitting(true);
 	}

@@ -71,7 +71,7 @@ void BasicMovement::_ready() {
 }
 
 void BasicMovement::init(String nickname, Vector3 start_position, bool is_slave) {
-	Object::cast_to<Label>(get_node("GUI/Nickname"))->set_text(nickname);
+	//Object::cast_to<Label>(get_node("GUI/Nickname"))->set_text(nickname);
 	set_translation(start_position);
 }
 
@@ -358,7 +358,7 @@ void BasicMovement::update_movement(float delta) {
 	}
 
 	if (i->is_action_just_pressed("ui_squirrel")){
-		AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Spatial/Player/GreatSound");
+		AudioStreamPlayer3D *a1 = (AudioStreamPlayer3D *) get_node("/root/Game/Player/GreatSound");
 		a1->play();
 	}
 
