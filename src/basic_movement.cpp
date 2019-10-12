@@ -4,6 +4,7 @@
 #include <KinematicCollision.hpp>
 #include <RayCast.hpp>
 #include <Label.hpp>
+#include <SceneTree.hpp>
 
 using namespace godot;
 
@@ -114,6 +115,10 @@ void BasicMovement::_physics_process(float delta) {
 		move_and_slide(motion, Vector3(0, 1, 0), true, 4, walkable_angle);
 		set_translation(slave_position);
 	}
+
+	if(get_tree()->is_network_server()) {
+        get_node("/root/network")->call("update_position", get_name().to_int(), get_translation());
+    }
 } 
 
 void BasicMovement::update_camera(float delta) {
