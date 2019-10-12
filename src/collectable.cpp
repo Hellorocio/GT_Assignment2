@@ -29,13 +29,14 @@ void Collectable::_ready()
 
 void Collectable::_on_body_entered(Node * body)
 {
-	if (!is_killed && body->get_name() == "Player")
+	BasicMovement * player = Object::cast_to<BasicMovement>(body);
+	if (!is_killed && player != nullptr)
 	{
 		//increment player's acorn count
 		GameState * state = Object::cast_to<GameState>(get_node("/root/Game/GameState"));
 		state->collect_acorns();
 
-		AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Game/Player/AcornSound"));
+		AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(body->get_node("AcornSound"));
 		a1->play();
 
 		//remove this node

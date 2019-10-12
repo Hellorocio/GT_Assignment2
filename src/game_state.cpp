@@ -56,11 +56,5 @@ void GameState::remove_acorns() {
 	if (label) {
 		label->set_text(gs1);
 	}
-
-	//play particle effect
-	Particles * acornParticles = (Particles *)get_node("/root/Game/Player/Particles");
-	if (acornParticles) {
-		acornParticles->set_emitting(true);
-	}
 }
 

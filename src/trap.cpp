@@ -25,13 +25,20 @@ void Trap::_ready() {
 }
 
 void Trap::_on_body_entered(Node * body) {
-	if (!hitPlayer && body->get_name() == "Player")	{
+	BasicMovement * player = Object::cast_to<BasicMovement>(body);
+	if (!hitPlayer && player != nullptr)	{
 		//decrement player's acorn count
 		GameState * state = Object::cast_to<GameState>(get_node("/root/Game/GameState"));
 		state->remove_acorns();
 
-		AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Game/Player/TrapSound"));
+		AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(body->get_node("TrapSound"));
 		a1->play();
+
+		//play particle effect
+		Particles * acornParticles = (Particles *)body->get_node("Particles");
+		if (acornParticles) {
+			acornParticles->set_emitting(true);
+		}
 
 		hitPlayer = true;
 	}
@@ -39,7 +46,8 @@ void Trap::_on_body_entered(Node * body) {
 
 //Resets hitPlayer when the player exits
 void Trap::_on_body_exited (Node * body) {
-	if (hitPlayer && body->get_name() == "Player") {
+	BasicMovement * player = Object::cast_to<BasicMovement>(body);
+	if (hitPlayer && player != nullptr) {
 		hitPlayer = false;
 	}
 }
