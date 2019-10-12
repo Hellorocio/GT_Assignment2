@@ -45,6 +45,7 @@ private:
     Dictionary self_data;
     Dictionary players;
     std::vector<Vector3> init_positions;
+    int init_pos_index = 1;
 };
 
 }

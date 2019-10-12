@@ -39,11 +39,13 @@ void Network::_ready() {
     init_positions[0] = Vector3(0,2,0);
     init_positions[1] = Vector3(47,28,-31);
     init_positions[2] = Vector3(-18,14,39);
-    init_position[3] = Vector3();
+    init_positions[3] = Vector3(-42,1,-21);
 }
 
 void Network::create_server(String playerNickname) {
     self_data["name"] = playerNickname;
+    self_data["position"] = init_positions[0];
+    init_pos_index = 1;
     players[1] = self_data;
     NetworkedMultiplayerENet* peer = NetworkedMultiplayerENet::_new();
     peer->set_bind_ip("*");
@@ -53,6 +55,10 @@ void Network::create_server(String playerNickname) {
 
 void Network::connect_to_server(String playerNickname) {
     self_data["name"] = playerNickname;
+    self_data["position"] = init_positions[init_pos_index];
+    init_pos_index++;
+    if (init_pos_index = 4)
+        init_pos_index = 0;
     get_tree()->connect("connected_to_server", this, "_connected_to_server");
     NetworkedMultiplayerENet* peer = NetworkedMultiplayerENet::_new();
     peer->create_client(SERVER_IP, SERVER_PORT);
