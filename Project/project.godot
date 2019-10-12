@@ -19,6 +19,10 @@ config/name="Assignment2"
 run/main_scene="res://main.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+network="*res://bin/network.gdns"
+
 [display]
 
 window/size/width=1920
