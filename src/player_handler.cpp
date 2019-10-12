@@ -6,7 +6,7 @@
 using namespace godot;
 
 void PlayerHandler::_register_methods() {
-	register_method("_ready", &PlayerHandler::_ready);
+	register_method("_create_player", &PlayerHandler::_create_player);
 	register_method("_process", &PlayerHandler::_process);
 }
 
@@ -21,10 +21,11 @@ void PlayerHandler::_init() {
     PlayerScene = resourceLoader->load("res://player.tscn");
 }
 
-void PlayerHandler::_ready() {
+void PlayerHandler::_create_player() {
 	godot::BasicMovement* player = static_cast<godot::BasicMovement*>(PlayerScene->instance());
-	player->set_name(String::num_int64(get_tree()->get_network_unique_id()));
-    player->set_network_master(get_tree()->get_network_unique_id());
+	auto id = get_tree()->get_network_unique_id();
+	player->set_name(String::num_int64(id));
+    player->set_network_master(id);
 	add_child(player);
 
 	Dictionary self_data = Dictionary(get_node("/root/network")->get("self_data"));

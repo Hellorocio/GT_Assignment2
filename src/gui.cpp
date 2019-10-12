@@ -186,6 +186,8 @@ void Gui::_on_PlayMain_pressed() {
     	main_menu2->hide();
 		get_tree()->set_pause(false);
     }
+
+	get_node("/root/Game")->call("_create_player");	
 }
 
 void Gui::_on_CreateMain_pressed () {
@@ -197,6 +199,8 @@ void Gui::_on_CreateMain_pressed () {
     	main_menu2->hide();
 		get_tree()->set_pause(false);
     }
+
+	get_node("/root/Game")->call("_create_player");	
 }
     
 	
@@ -227,6 +231,9 @@ void Gui::_on_JoinIPMain_pressed () {
     	main_menu2->hide();
 		get_tree()->set_pause(false);
     }
+
+	get_node("/root/Game")->call("_create_player");	
+
 }
 
 void Gui::_WinMenu_show() {

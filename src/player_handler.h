@@ -21,7 +21,7 @@ namespace godot {
 		~PlayerHandler();
 
 		void _init();
-		void _ready();
+		void _create_player();
 		void _process(float delta);
 	};
 }
