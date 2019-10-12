@@ -69,6 +69,9 @@ void BasicMovement::_init() {
 
 void BasicMovement::_ready() {
 	Object::cast_to<RayCast>(get_node("CameraOrientation/RayCast"))->add_exception(get_node("CollisionShape"));
+	if (is_network_master()) {
+		Object::cast_to<Camera>(get_node("CameraOrientation/RayCast/Camera"))->make_current();
+	}
 }
 
 void BasicMovement::init(String nickname, Vector3 start_position, bool is_slave) {
@@ -91,7 +94,7 @@ void BasicMovement::_process(float delta) {
 	if (is_network_master()) {
 		update_camera(delta);
 		rset_unreliable("slave_forward", forward);
-			
+		
 		if (ledge_grab_cooldown > 0)
 			ledge_grab_cooldown -= delta;
 	} else {
