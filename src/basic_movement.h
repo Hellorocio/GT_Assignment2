@@ -71,6 +71,8 @@ public:
 
     void _ready();
 
+    void init(String nickname, Vector3 start_position, bool is_slave);
+
     void _input(InputEvent *event);
 
     void _process(float delta);

@@ -3,16 +3,16 @@
 #include <InterpolatedCamera.hpp>
 #include <KinematicCollision.hpp>
 #include <RayCast.hpp>
+#include <Label.hpp>
 
 using namespace godot;
 
 void BasicMovement::_register_methods() {
-    register_method("_input", &BasicMovement::_input);
-    register_method("_ready", &BasicMovement::_ready);
-    register_method("_process", &BasicMovement::_process);
-    register_method("_physics_process", &BasicMovement::_physics_process);
-    register_method("update_movement", &BasicMovement::update_movement);
-    register_method("toggle_AD_rotate", &BasicMovement::toggle_AD_rotate);
+    register_method("_input", &BasicMovement::_input, GODOT_METHOD_RPC_MODE_DISABLED);
+    register_method("_ready", &BasicMovement::_ready, GODOT_METHOD_RPC_MODE_DISABLED);
+	register_method("init", &BasicMovement::init, GODOT_METHOD_RPC_MODE_DISABLED);
+    register_method("_process", &BasicMovement::_process, GODOT_METHOD_RPC_MODE_DISABLED);
+    register_method("_physics_process", &BasicMovement::_physics_process, GODOT_METHOD_RPC_MODE_DISABLED);
 
     // physics
     register_property<BasicMovement, float>("max_falling_speed", &BasicMovement::max_falling_speed, -100.0f);
@@ -64,6 +64,11 @@ void BasicMovement::_init() {
 
 void BasicMovement::_ready() {
 	Object::cast_to<RayCast>(get_node("CameraOrientation/RayCast"))->add_exception(get_node("CollisionShape"));
+}
+
+void BasicMovement::init(String nickname, Vector3 start_position, bool is_slave) {
+	Object::cast_to<Label>(get_node("GUI/Nickname"))->set_text(nickname);
+	set_translation(start_position);
 }
 
 void BasicMovement::_input(InputEvent *event) {
