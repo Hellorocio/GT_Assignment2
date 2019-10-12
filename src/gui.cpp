@@ -191,6 +191,12 @@ void Gui::_on_PlayMain_pressed() {
 void Gui::_on_CreateMain_pressed () {
 	 get_node("/root/network")->call("create_server", "player");
     //_load_game();
+
+	Control* main_menu2 = Object::cast_to<Control>(get_parent()->get_node("MainMenu"));
+    if (main_menu2) {
+    	main_menu2->hide();
+		get_tree()->set_pause(false);
+    }
 }
     
 	
@@ -215,6 +221,12 @@ void Gui::_on_JoinMain_pressed () {
 void Gui::_on_JoinIPMain_pressed () {
 	LineEdit* ip_field = Object::cast_to<LineEdit>(get_node("../MainMenu/IPField"));
 	get_node("/root/network")->call("connect_to_server", "player", ip_field->get_text());
+
+	Control* main_menu2 = Object::cast_to<Control>(get_parent()->get_node("MainMenu"));
+    if (main_menu2) {
+    	main_menu2->hide();
+		get_tree()->set_pause(false);
+    }
 }
 
 void Gui::_WinMenu_show() {

@@ -108,6 +108,7 @@ void Network::_send_player_info(int64_t id, Dictionary info) {
     player->set_name(String(id));
     player->set_network_master(id);
     get_node("/root/Game")->add_child(player);
+    Godot::print(players.size());
     player->init(info["name"], info["position"], true);
 }
 
