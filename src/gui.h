@@ -8,6 +8,7 @@
 #include <SceneTree.hpp>
 #include <Range.hpp>
 #include <basic_movement.h>
+#include <LineEdit.hpp>
 
 namespace godot {
 

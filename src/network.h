@@ -28,7 +28,7 @@ public:
     void _ready();
 
     void create_server(String playerNickname);
-    void connect_to_server(String playerNickname);
+    void connect_to_server(String playerNickname, String server_ip);
     void _connected_to_server();
     void _on_player_disconnected(int64_t id);
     void _on_player_connected(int64_t connectedPlayerId);
@@ -39,7 +39,7 @@ public:
 
 private:
     Ref<PackedScene> player_scene;
-    const String SERVER_IP = "127.0.0.1";
+    String SERVER_IP = "127.0.0.1";
     const int64_t SERVER_PORT = 31400;
     const int64_t MAX_PLAYERS = 2;
     Dictionary self_data;

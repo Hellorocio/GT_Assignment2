@@ -213,7 +213,8 @@ void Gui::_on_JoinMain_pressed () {
 }
 
 void Gui::_on_JoinIPMain_pressed () {
-	get_node("/root/network")->call("connect_to_server", "player");
+	LineEdit* ip_field = Object::cast_to<LineEdit>(get_node("../MainMenu/IPField"));
+	get_node("/root/network")->call("connect_to_server", "player", ip_field->get_text());
 }
 
 void Gui::_WinMenu_show() {

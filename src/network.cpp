@@ -53,7 +53,7 @@ void Network::create_server(String playerNickname) {
     get_tree()->set_network_peer(peer);
 }
 
-void Network::connect_to_server(String playerNickname) {
+void Network::connect_to_server(String playerNickname, String server_ip) {
     self_data["name"] = playerNickname;
     self_data["position"] = init_positions[init_pos_index];
     init_pos_index++;
@@ -61,7 +61,7 @@ void Network::connect_to_server(String playerNickname) {
         init_pos_index = 0;
     get_tree()->connect("connected_to_server", this, "_connected_to_server");
     NetworkedMultiplayerENet* peer = NetworkedMultiplayerENet::_new();
-    peer->create_client(SERVER_IP, SERVER_PORT);
+    peer->create_client(server_ip, SERVER_PORT);
     get_tree()->set_network_peer(peer);
 }
 
