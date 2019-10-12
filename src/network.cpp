@@ -36,7 +36,7 @@ void Network::_ready() {
     get_tree()->connect("network_peer_disconnected", this, "_on_player_disconnected");
     get_tree()->connect("network_peer_connected", this, "_on_player_connected");
     init_positions.resize(4);
-    init_positions[0] = Vector3(0,2,0);
+    init_positions[0] = Vector3(10,100,10);
     init_positions[1] = Vector3(47,28,-31);
     init_positions[2] = Vector3(-18,14,39);
     init_positions[3] = Vector3(-42,1,-21);
@@ -55,7 +55,7 @@ void Network::create_server(String playerNickname) {
 
 void Network::connect_to_server(String playerNickname, String server_ip) {
     self_data["name"] = playerNickname;
-    self_data["position"] = init_positions[init_pos_index];
+    self_data["position"] = init_positions[1];
     init_pos_index++;
     if (init_pos_index = 4)
         init_pos_index = 0;
@@ -76,8 +76,8 @@ void Network::_on_player_disconnected(int64_t id) {
 }
 
 void Network::_on_player_connected(int64_t connectedPlayerId) {
-    Godot::print("Player connected to server");
     int64_t localPlayerId = get_tree()->get_network_unique_id();
+    Godot::print("Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(connectedPlayerId));
     if(!get_tree()->is_network_server()) {
         rpc_id(1, "_request_player_info", localPlayerId, connectedPlayerId);
     }
