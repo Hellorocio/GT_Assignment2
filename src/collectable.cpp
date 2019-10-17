@@ -5,6 +5,7 @@ using namespace godot;
 
 void Collectable::_register_methods()
 {
+	register_method("init", &Collectable::init);
 	register_method("_ready", &Collectable::_ready);
 	register_method("_process", &Collectable::_process);
 	register_method("_on_body_entered", &Collectable::_on_body_entered);
@@ -20,6 +21,11 @@ Collectable::~Collectable()
 
 void Collectable::_init()
 {
+}
+
+void Collectable::init(Vector3 position)
+{
+	set_translation(position);
 }
 
 void Collectable::_ready()

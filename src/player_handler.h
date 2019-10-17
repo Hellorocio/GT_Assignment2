@@ -5,6 +5,8 @@
 #include <Node.hpp>
 #include <Ref.hpp>
 #include <PackedScene.hpp>
+#include "collectable.h"
+#include <vector>
 
 namespace godot {
 
@@ -13,6 +15,9 @@ namespace godot {
 
 	private:
 		Ref<PackedScene> PlayerScene;
+		Ref<PackedScene> AcornScene;
+
+		std::vector<Vector3> acorn_positions;
 
 	public:
 		static void _register_methods();
@@ -21,7 +26,9 @@ namespace godot {
 		~PlayerHandler();
 
 		void _init();
+		void _ready();
 		void _create_player();
+		void _create_acorns();
 		void _process(float delta);
 	};
 }

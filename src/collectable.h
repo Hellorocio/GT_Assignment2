@@ -22,7 +22,7 @@ namespace godot {
 		void _init();
 		void _ready();
 		void _process(float delta);
-
+		void init(Vector3 start_position);
 		void _on_body_entered(Node * body);
 	};
 }

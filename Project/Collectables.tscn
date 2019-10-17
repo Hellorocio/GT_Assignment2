@@ -1,0 +1,162 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://acorn_collectable.tscn" type="PackedScene" id=1]
+[ext_resource path="res://bin/collectable.gdns" type="Script" id=2]
+
+[node name="Collectables" type="Spatial"]
+
+[node name="Acorn" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.9058, 1.55585, -3.99227 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn2" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17.1173, 0.877748, -18.7304 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn3" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.99423, 0.877748, -18.7304 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn4" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.4446, 0.877748, 4.66861 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn5" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.4446, 0.877748, -19.8224 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn6" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.1699, 0.877748, -22.3564 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn9" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.7814, 17.5354, -32.8961 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn10" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35.303, 17.5354, -6.94221 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn11" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.2061, 17.5354, 2.17434 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn12" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0011, 17.5354, 4.70761 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn13" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37.1218, 17.5354, 14.1721 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn14" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 53.3027, 19.3258, 29.7233 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn15" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 54.9202, 19.3258, 33.0648 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn16" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 54.9202, 26.2745, -28.4285 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn17" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50.7923, 27.6851, -28.4285 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn19" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40.2527, 27.6851, -20.4028 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn20" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.77717, 14.279, 31.0771 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn26" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.13071, 11.1752, 25.3374 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn21" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.181, 14.279, 19.4942 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn22" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -28.8341, 2.13796, 9.91465 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn23" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -34.7448, 2.13796, -13.6651 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn24" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -38.1153, 2.13796, -13.6651 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn25" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -39.04, 2.13796, -10.9197 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn18" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 57.0312, 25.9889, -39.7545 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn7" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.92227, 2.98732, -32.2275 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="Acorn8" type="RigidBody" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.8253, 8.6056, -34.1543 )
+contacts_reported = 5
+contact_monitor = true
+script = ExtResource( 2 )
