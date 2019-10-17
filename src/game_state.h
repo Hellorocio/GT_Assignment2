@@ -17,6 +17,9 @@ namespace godot {
 	private:
 
 	public:
+		int num_acorns = 25;
+		Vector2 max_acorn_bounds = Vector2{10, 10};
+		Vector2 min_acorn_bounds = Vector2{-10, 10};
 		int numCollected = 0;
 
 		static void _register_methods();

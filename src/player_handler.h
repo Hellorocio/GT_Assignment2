@@ -7,6 +7,7 @@
 #include <PackedScene.hpp>
 #include "collectable.h"
 #include <vector>
+#include <random>
 
 namespace godot {
 

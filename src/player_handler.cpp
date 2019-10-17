@@ -50,12 +50,34 @@ void PlayerHandler::_create_player() {
 }
 
 void PlayerHandler::_create_acorns() {
+	int num_acorns = (int)get_node("/root/Game/GameState")->get("num_acorns");
+	Vector2 max_acorn_bounds = (Vector2)get_node("/root/Game/GameState")->get("max_acorn_bounds");
+	Vector2 min_acorn_bounds = (Vector2)get_node("/root/Game/GameState")->get("min_acorn_bounds");
+
+	for (int i = 0; i < num_acorns; i++) {
+		godot::Collectable* acorn = static_cast<godot::Collectable*>(AcornScene->instance());
+		add_child(acorn);
+
+		//get a random num for x and z position
+		std::random_device r;
+		std::seed_seq seed{ r(), r(), r(), r(), r(), r(), r(), r() };
+		std::mt19937 eng{ seed };
+
+		std::uniform_real_distribution<> x_dist(min_acorn_bounds.x, max_acorn_bounds.x);
+		std::uniform_real_distribution<> z_dist(min_acorn_bounds.y, max_acorn_bounds.y);
+
+		Vector3 new_position = Vector3(x_dist(eng), 40, z_dist(eng));
+		acorn->init(new_position);
+	}
+
+	/*
 	for (int i = 0; i < acorn_positions.size(); i++) {
 		godot::Collectable* acorn = static_cast<godot::Collectable*>(AcornScene->instance());
 		add_child(acorn);
 
 		acorn->init(acorn_positions[i]);
 	}
+	*/
 }
 
 void PlayerHandler::_process(float delta) {
