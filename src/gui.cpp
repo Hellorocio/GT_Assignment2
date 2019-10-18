@@ -221,11 +221,15 @@ void Gui::_on_JoinMain_pressed () {
 	Control* ip_main = Object::cast_to<Control>(get_parent()->get_node("MainMenu/IPField"));
 	ip_main->show();
 
+	Control* name_main = Object::cast_to<Control>(get_parent()->get_node("MainMenu/NameField"));
+	name_main->show();
+
 }
 
 void Gui::_on_JoinIPMain_pressed () {
 	LineEdit* ip_field = Object::cast_to<LineEdit>(get_node("../MainMenu/IPField"));
-	get_node("/root/network")->call("connect_to_server", "player2", ip_field->get_text());
+	LineEdit* name_field = Object::cast_to<LineEdit>(get_node("../MainMenu/NameField"));
+	get_node("/root/network")->call("connect_to_server", name_field->get_text(), ip_field->get_text());
 
 	Control* main_menu2 = Object::cast_to<Control>(get_parent()->get_node("MainMenu"));
     if (main_menu2) {
