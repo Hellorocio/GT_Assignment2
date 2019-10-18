@@ -3,16 +3,15 @@
 importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/SquirrelFace2.png-a3480a5979c83fbf85edcd1385b15ca5.s3tc.stex"
-path.etc2="res://.import/SquirrelFace2.png-a3480a5979c83fbf85edcd1385b15ca5.etc2.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://SquirrelFace2.png"
-dest_files=[ "res://.import/SquirrelFace2.png-a3480a5979c83fbf85edcd1385b15ca5.s3tc.stex", "res://.import/SquirrelFace2.png-a3480a5979c83fbf85edcd1385b15ca5.etc2.stex" ]
+dest_files=[ "res://.import/SquirrelFace2.png-a3480a5979c83fbf85edcd1385b15ca5.s3tc.stex" ]
 
 [params]
 

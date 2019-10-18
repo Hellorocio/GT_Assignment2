@@ -35,10 +35,10 @@ script = ExtResource( 6 )
 
 [node name="PopupMenu" parent="." instance=ExtResource( 7 )]
 visible = false
-margin_left = 695.072
-margin_top = 318.213
-margin_right = 1144.07
-margin_bottom = 705.213
+margin_left = 395.0
+margin_top = 175.0
+margin_right = 885.0
+margin_bottom = 562.0
 
 [node name="WinMenu" parent="." instance=ExtResource( 8 )]
 pause_mode = 2
@@ -48,3 +48,4 @@ margin_bottom = 247.0
 
 [node name="MainMenu" parent="." instance=ExtResource( 9 )]
 pause_mode = 2
+visible = false
