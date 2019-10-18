@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://bin/player_handler.gdns" type="Script" id=1]
 [ext_resource path="res://bin/game_state.gdns" type="Script" id=2]
@@ -9,16 +9,19 @@
 [ext_resource path="res://PopupMenu2.tscn" type="PackedScene" id=7]
 [ext_resource path="res://WinMenu2.tscn" type="PackedScene" id=8]
 [ext_resource path="res://MainMenu2.tscn" type="PackedScene" id=9]
+[ext_resource path="res://LobbyMenu.tscn" type="PackedScene" id=10]
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 1 )
 
 [node name="GameState" type="Node" parent="."]
 script = ExtResource( 2 )
+num_acorns = 100
 max_acorn_bounds = Vector2( 40, 58 )
 min_acorn_bounds = Vector2( -40, -18 )
 
 [node name="Traps" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="Trap" parent="Traps" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.55126, 0.108094, -32.6889 )
@@ -51,3 +54,9 @@ margin_bottom = 247.0
 [node name="MainMenu" parent="." instance=ExtResource( 9 )]
 pause_mode = 2
 visible = false
+
+[node name="LobbyMenu" parent="." instance=ExtResource( 10 )]
+pause_mode = 2
+visible = false
+
+[editable path="LobbyMenu"]

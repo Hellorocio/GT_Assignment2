@@ -111,6 +111,11 @@ void Network::_send_player_info(int64_t id, Dictionary info) {
 
     players[id] = info;
 
+    //update lobby if we're in the lobby
+    Label* label = (Label*) get_node("/root/Game/LobbyMenu/PlayerList");
+    label->set_text(label->get_text()+info["name"]+"\n");
+
+    //add player to the scene
     ResourceLoader *resourceLoader = ResourceLoader::get_singleton();
     player_scene = resourceLoader->load("res://player.tscn");
     BasicMovement *player = Object::cast_to<BasicMovement>(player_scene->instance());

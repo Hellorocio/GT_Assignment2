@@ -12,7 +12,7 @@ size = 72
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=3]
-size = 40
+size = 45
 font_data = ExtResource( 2 )
 
 [node name="LobbyMenu" type="Control"]
@@ -57,9 +57,16 @@ text = "Play"
 align = 1
 valign = 1
 
-[node name="PlayerList" type="TextEdit" parent="."]
-margin_left = 170.0
-margin_top = 200.0
-margin_right = 560.0
-margin_bottom = 675.0
+[node name="Panel" type="Panel" parent="."]
+margin_left = 171.898
+margin_top = 202.0
+margin_right = 561.898
+margin_bottom = 677.0
+
+[node name="PlayerList" type="Label" parent="."]
+margin_left = 178.93
+margin_top = 210.907
+margin_right = 554.901
+margin_bottom = 668.917
 custom_fonts/font = SubResource( 3 )
+align = 1

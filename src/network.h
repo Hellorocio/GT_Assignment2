@@ -7,6 +7,7 @@
 #include <SceneTree.hpp>
 #include <NetworkedMultiplayerENet.hpp>
 #include <ResourceLoader.hpp>
+#include <Label.hpp>
 #include <vector>
 #include "basic_movement.h"
 

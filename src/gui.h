@@ -10,6 +10,7 @@
 #include <basic_movement.h>
 #include <LineEdit.hpp>
 #include <Label.hpp>
+#include <list>
 
 namespace godot {
 
@@ -55,6 +56,8 @@ public:
     
     void _on_JoinMain_pressed ();
 
+    void _on_LobbyPlay_pressed();
+
     void _on_JoinIPMain_pressed();
 
     void _WinMenu_show();
@@ -62,6 +65,8 @@ public:
     void _on_VolumeSlider_changed(float value);
 
     void _update_acorn_count (String count);
+
+    void start_game ();
 };
 
 }

@@ -17,10 +17,14 @@ void Gui::_register_methods() {
 	register_method("_on_CreateMain_pressed", &Gui::_on_CreateMain_pressed);
 	register_method("_on_JoinMain_pressed", &Gui::_on_JoinMain_pressed);
 	register_method("_on_JoinIPMain_pressed", &Gui::_on_JoinIPMain_pressed);
+	register_method("_on_LobbyPlay_pressed", &Gui::_on_LobbyPlay_pressed);
 
     register_method("_ready", &Gui::_ready);
     register_method("_process", &Gui::_process);
     register_method("_WinMenu_show", &Gui::_WinMenu_show);
+
+	register_method("start_game", &Gui::start_game, GODOT_METHOD_RPC_MODE_REMOTE);
+	
 }
 
 Gui::Gui() {
@@ -86,6 +90,11 @@ void Gui::_ready() {
 	Node* join_main = get_parent()->get_node("MainMenu/JoinServerMain");
 	if (join_main) {
 		join_main->connect("pressed", this, "_on_JoinMain_pressed");
+	}
+
+	Node* lobby_play = get_parent()->get_node("LobbyMenu/PlayLobby");
+	if (lobby_play) {
+		lobby_play->connect("pressed", this, "_on_LobbyPlay_pressed");
 	}
 
 	Node* join_ip_main = get_parent()->get_node("MainMenu/JoinMain");
@@ -196,12 +205,14 @@ void Gui::_on_CreateMain_pressed () {
     //_load_game();
 
 	Control* main_menu2 = Object::cast_to<Control>(get_parent()->get_node("MainMenu"));
-    if (main_menu2) {
+	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu"));
+    if (main_menu2 && lobby_menu) {
+		lobby_menu->show();
     	main_menu2->hide();
-		get_tree()->set_pause(false);
+		//get_tree()->set_pause(false);
+		Label* label = (Label*) get_parent()->get_node("LobbyMenu/PlayerList");
+		label->set_text("Player\n");
     }
-
-	get_node("/root/Game")->call("_create_player");	
 }
     
 	
@@ -226,16 +237,47 @@ void Gui::_on_JoinMain_pressed () {
 
 }
 
+void Gui::_on_LobbyPlay_pressed () {
+	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu"));
+    if (lobby_menu) {
+		lobby_menu->hide();
+		get_tree()->set_pause(false);
+    }
+
+	get_node("/root/Game")->call("_create_player");	
+	rpc("start_game");
+}
+
 void Gui::_on_JoinIPMain_pressed () {
 	LineEdit* ip_field = Object::cast_to<LineEdit>(get_node("../MainMenu/IPField"));
 	LineEdit* name_field = Object::cast_to<LineEdit>(get_node("../MainMenu/NameField"));
 	get_node("/root/network")->call("connect_to_server", name_field->get_text(), ip_field->get_text());
 
-	Control* main_menu2 = Object::cast_to<Control>(get_parent()->get_node("MainMenu"));
-    if (main_menu2) {
-    	main_menu2->hide();
-		get_tree()->set_pause(false);
+	Control* main_menu = Object::cast_to<Control>(get_parent()->get_node("MainMenu"));
+	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu"));
+    if (main_menu && lobby_menu) {
+		//update lobby names- loop through dictionary 
+		Label* label = (Label*) get_parent()->get_node("LobbyMenu/PlayerList");
+		Dictionary players = Dictionary(get_node("/root/network")->get("players"));
+		String player_names = "";
+
+		Array keys = players.keys();
+		for (int i = 0; i < keys.size(); ++i)
+		{
+			player_names += players[keys[i]]["name"] + "\n";
+		}
+		player_names += name_field->get_text() + "\n";
+		label->set_text(player_names);
+
+		lobby_menu->show();
+    	main_menu->hide();
+		//get_tree()->set_pause(false);
     }
+
+	//hide the play button for clients
+	Control* play_button = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu/PlayLobby"));
+	if (play_button)
+		play_button->hide();
 
 	get_node("/root/Game")->call("_create_player");	
 
@@ -260,5 +302,13 @@ void Gui::_update_acorn_count (String count) {
 	if (label) {
 		label->set_text(count);
 	}
+}
+
+void Gui::start_game () {
+	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu"));
+    if (lobby_menu) {
+		lobby_menu->hide();
+		get_tree()->set_pause(false);
+    }
 }
 

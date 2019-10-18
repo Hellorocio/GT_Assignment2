@@ -31,29 +31,28 @@ void GameState::_ready() {
 
 void GameState::collect_acorns() {
 	String gs1 = String::num_int64(numCollected);
-	numCollected++;
+	++numCollected;
+	Dictionary self_data = Dictionary(get_node("/root/network")->get("self_data"));
+	self_data["acorns_collected"] = numCollected;
 
-	String gs2 = String::num_int64(numCollected);
+	String gs2 = String::num_int64(self_data["acorns_collected"]);
 
 	Gui* gui = (Gui*) get_parent()->get_node("GUI");
 	gui->_update_acorn_count(gs2);
 
 	if (numCollected >= 20) {
-		Gui* gui = (Gui*) get_parent()->get_node("GUI");
-		if (gui) {
-			gui->_WinMenu_show();
-		}
+		gui->_WinMenu_show();
 	}
 }
 
 void GameState::remove_acorns() {
+	Dictionary self_data = Dictionary(get_node("/root/network")->get("self_data"));
 	if (numCollected > 0) {
-		numCollected--;
+		--numCollected;
 	}
-
+	self_data["acorns_collected"] = numCollected;
 	String gs1 = String::num_int64(numCollected);
 
 	Gui* gui = (Gui*) get_parent()->get_node("GUI");
 	gui->_update_acorn_count(gs1);
 }
-
