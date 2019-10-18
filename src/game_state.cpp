@@ -35,10 +35,8 @@ void GameState::collect_acorns() {
 
 	String gs2 = String::num_int64(numCollected);
 
-	Label* label = (Label*) get_parent()->get_node("GUI/HSplitContainer/NinePatchRect/Label");
-	if (label) {
-		label->set_text(gs2);
-	}
+	Gui* gui = (Gui*) get_parent()->get_node("GUI");
+	gui->_update_acorn_count(gs2);
 
 	if (numCollected >= 20) {
 		Gui* gui = (Gui*) get_parent()->get_node("GUI");
@@ -55,10 +53,7 @@ void GameState::remove_acorns() {
 
 	String gs1 = String::num_int64(numCollected);
 
-	//update UI
-	Label* label = (Label*) get_parent()->get_node("GUI/HSplitContainer/NinePatchRect/Label");
-	if (label) {
-		label->set_text(gs1);
-	}
+	Gui* gui = (Gui*) get_parent()->get_node("GUI");
+	gui->_update_acorn_count(gs1);
 }
 

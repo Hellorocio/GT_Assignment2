@@ -9,6 +9,7 @@
 #include <Range.hpp>
 #include <basic_movement.h>
 #include <LineEdit.hpp>
+#include <Label.hpp>
 
 namespace godot {
 
@@ -59,6 +60,8 @@ public:
     void _WinMenu_show();
 
     void _on_VolumeSlider_changed(float value);
+
+    void _update_acorn_count (String count);
 };
 
 }

@@ -69,7 +69,7 @@ void BasicMovement::_init() {
 
 void BasicMovement::_ready() {
 	Object::cast_to<RayCast>(get_node("CameraOrientation/RayCast"))->add_exception(get_node("CollisionShape"));
-	if (is_network_master()) {
+	if (!get_tree()->has_network_peer() || is_network_master()) {
 		Object::cast_to<Camera>(get_node("CameraOrientation/RayCast/Camera"))->make_current();
 	}
 }
@@ -91,9 +91,11 @@ void BasicMovement::_input(InputEvent *event) {
 }
 
 void BasicMovement::_process(float delta) {
-	if (is_network_master()) {
+	if (!get_tree()->has_network_peer() || is_network_master()) {
 		update_camera(delta);
-		rset_unreliable("slave_forward", forward);
+		
+		if (get_tree()->has_network_peer())
+			rset_unreliable("slave_forward", forward);
 		
 		if (ledge_grab_cooldown > 0)
 			ledge_grab_cooldown -= delta;
@@ -106,21 +108,24 @@ void BasicMovement::_process(float delta) {
 }
 
 void BasicMovement::_physics_process(float delta) {
-	if (is_network_master()) {
+	if (!get_tree()->has_network_peer() || is_network_master()) {
 		update_camera_target();
 		update_movement(delta);
 		move_and_slide(motion, Vector3(0, 1, 0), true, 4, walkable_angle);
 		acceleration = Vector3{0, 0, 0};
 
-		rset_unreliable("slave_position", get_translation());
-		rset_unreliable("slave_motion", motion);
+		if (get_tree()->has_network_peer())
+		{
+			rset_unreliable("slave_position", get_translation());
+			rset_unreliable("slave_motion", motion);
+		}
 	} else {
 		motion = slave_motion;
 		move_and_slide(motion, Vector3(0, 1, 0), true, 4, walkable_angle);
 		set_translation(slave_position);
 	}
 
-	if(get_tree()->is_network_server()) {
+	if(get_tree()->has_network_peer() && get_tree()->is_network_server()) {
         get_node("/root/network")->call("update_position", get_name().to_int(), get_translation());
     }
 } 

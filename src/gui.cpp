@@ -11,6 +11,7 @@ void Gui::_register_methods() {
 	register_method("_on_PlayAgain_pressed", &Gui::_on_PlayAgain_pressed);
 	register_method("_on_QuitButton_pressed", &Gui::_on_QuitButton_pressed);
 	register_method("_on_VolumeSlider_changed", &Gui::_on_VolumeSlider_changed);
+	register_method("_update_acorn_count", &Gui::_update_acorn_count);
 
 	register_method("_on_PlayMain_pressed", &Gui::_on_PlayMain_pressed);
 	register_method("_on_CreateMain_pressed", &Gui::_on_CreateMain_pressed);
@@ -247,5 +248,13 @@ void Gui::_WinMenu_show() {
 void Gui::_on_VolumeSlider_changed(float value) {
 	AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Spatial/Player/BackgroundMusic"));
 	a1->set_unit_db(value);
+}
+
+// Called when acorn count is incremented or decremented
+void Gui::_update_acorn_count (String count) {
+	Label* label = (Label*) get_parent()->get_node("GUI/HSplitContainer/NinePatchRect/AcornCounter/NumAcorns");
+	if (label) {
+		label->set_text(count);
+	}
 }
 

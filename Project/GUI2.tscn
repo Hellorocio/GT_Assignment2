@@ -24,20 +24,28 @@ margin_right = 1221.0
 margin_bottom = 41.0
 region_rect = Rect2( 40, 120, 0, 0 )
 
-[node name="TextureRect" type="TextureRect" parent="HSplitContainer/NinePatchRect"]
+[node name="AcornCounter" type="TextureRect" parent="HSplitContainer/NinePatchRect"]
 margin_top = 5.0
 margin_right = 44.0
 margin_bottom = 46.0
 texture = ExtResource( 1 )
 expand = true
 
-[node name="Label" type="Label" parent="HSplitContainer/NinePatchRect"]
+[node name="NumAcorns" type="Label" parent="HSplitContainer/NinePatchRect/AcornCounter"]
 margin_left = 50.0
-margin_top = 5.0
-margin_right = 1074.0
-margin_bottom = 38.0
+margin_right = 70.0
+margin_bottom = 33.0
 custom_fonts/font = SubResource( 1 )
 text = "0"
+
+[node name="PlayerNum" type="Label" parent="HSplitContainer/NinePatchRect/AcornCounter"]
+margin_left = 13.4349
+margin_top = 5.0
+margin_right = 33.4349
+margin_bottom = 38.0
+rect_scale = Vector2( 0.744008, 0.72657 )
+custom_fonts/font = SubResource( 1 )
+text = "1"
 
 [node name="MenuButton" type="MenuButton" parent="HSplitContainer"]
 margin_left = 1233.0

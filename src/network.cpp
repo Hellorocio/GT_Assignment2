@@ -46,6 +46,7 @@ void Network::_ready() {
 void Network::create_server(String playerNickname) {
     self_data["name"] = playerNickname;
     self_data["position"] = init_positions[0];
+    self_data["acorns_collected"] = 0;
     init_pos_index = 1;
     players[1] = self_data;
     NetworkedMultiplayerENet* peer = NetworkedMultiplayerENet::_new();
@@ -54,10 +55,11 @@ void Network::create_server(String playerNickname) {
     get_tree()->set_network_peer(peer);
 }
 
-// called by each client
+// called by each client 
 void Network::connect_to_server(String playerNickname, String server_ip) {
     self_data["name"] = playerNickname;
     self_data["position"] = init_positions[init_pos_index];
+    self_data["acorns_collected"] = 0;
     init_pos_index++;
     if (init_pos_index = 4)
         init_pos_index = 0;
@@ -67,7 +69,7 @@ void Network::connect_to_server(String playerNickname, String server_ip) {
     get_tree()->set_network_peer(peer);
 }
 
-// 
+// Called by new clients when they connect to the server
 void Network::_connected_to_server() {
     int64_t localPlayerId = get_tree()->get_network_unique_id();
     players[localPlayerId] = self_data;
@@ -102,6 +104,7 @@ void Network::_request_players(int64_t requestFromId) {
     }
 }
 
+// This is sent as an RPC to all clients and servers when a client joins
 void Network::_send_player_info(int64_t id, Dictionary info) {
     int64_t localPlayerId = get_tree()->get_network_unique_id();
     Godot::print("Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(id));

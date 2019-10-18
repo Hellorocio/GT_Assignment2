@@ -42,9 +42,18 @@ void PlayerHandler::_init() {
 
 void PlayerHandler::_create_player() {
 	godot::BasicMovement* player = static_cast<godot::BasicMovement*>(PlayerScene->instance());
-	auto id = get_tree()->get_network_unique_id();
-	player->set_name(String::num_int64(id));
-    player->set_network_master(id);
+	player->set_name("1");
+
+	if (!get_tree()->has_network_peer())
+	{
+		//not in a network
+	}
+	else if (get_tree()->has_network_peer() || get_tree()->is_network_server())
+	{
+		auto id = get_tree()->get_network_unique_id();
+		player->set_name(String::num_int64(id));
+		player->set_network_master(id);
+	}
 	add_child(player);
 
 	Dictionary self_data = Dictionary(get_node("/root/network")->get("self_data"));
@@ -58,7 +67,7 @@ void PlayerHandler::_create_acorns() {
 	Vector2 max_acorn_bounds = (Vector2)get_node("/root/Game/GameState")->get("max_acorn_bounds");
 	Vector2 min_acorn_bounds = (Vector2)get_node("/root/Game/GameState")->get("min_acorn_bounds");
 
-	for (int i = 0; i < num_acorns; i++) {
+	for (int i = 0; i < num_acorns; ++i) {
 		godot::Collectable* acorn = static_cast<godot::Collectable*>(AcornScene->instance());
 		add_child(acorn);
 

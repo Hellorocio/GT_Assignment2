@@ -27,7 +27,7 @@ network="*res://bin/network.gdns"
 
 window/size/width=1280
 window/size/height=720
-window/stretch/mode="viewport"
+window/stretch/mode="2d"
 
 [input]
 
