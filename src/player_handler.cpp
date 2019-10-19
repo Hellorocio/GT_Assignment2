@@ -22,8 +22,8 @@ PlayerHandler::~PlayerHandler() {
 
 void PlayerHandler::_ready()
 {
-	OS* os = OS::get_singleton();
-	os->set_window_size(os->get_screen_size());
+	//OS* os = OS::get_singleton();
+	//os->set_window_size(os->get_screen_size());
 
 	acorn_positions.resize(5);
 	acorn_positions[0] = Vector3(11.9, 1.56, -4);
@@ -41,12 +41,12 @@ void PlayerHandler::_init() {
 }
 
 void PlayerHandler::_create_player() {
-	godot::BasicMovement* player = static_cast<godot::BasicMovement*>(PlayerScene->instance());
+	BasicMovement* player = Object::cast_to<BasicMovement>(PlayerScene->instance());
 	player->set_name("1");
 
 	if (!get_tree()->has_network_peer())
 	{
-		//not in a network
+		//not in a network (used only for single player mode)
 	}
 	else if (get_tree()->has_network_peer() || get_tree()->is_network_server())
 	{
@@ -67,15 +67,15 @@ void PlayerHandler::_create_acorns() {
 	Vector2 max_acorn_bounds = (Vector2)get_node("/root/Game/GameState")->get("max_acorn_bounds");
 	Vector2 min_acorn_bounds = (Vector2)get_node("/root/Game/GameState")->get("min_acorn_bounds");
 
+	std::random_device r;
+	std::seed_seq seed{ r(), r(), r(), r(), r(), r(), r(), r() };
+	std::mt19937 eng{ seed };
+
 	for (int i = 0; i < num_acorns; ++i) {
-		godot::Collectable* acorn = static_cast<godot::Collectable*>(AcornScene->instance());
+		godot::Collectable* acorn = Object::cast_to<Collectable>(AcornScene->instance());
 		add_child(acorn);
 
 		//get a random num for x and z position
-		std::random_device r;
-		std::seed_seq seed{ r(), r(), r(), r(), r(), r(), r(), r() };
-		std::mt19937 eng{ seed };
-
 		std::uniform_real_distribution<> x_dist(min_acorn_bounds.x, max_acorn_bounds.x);
 		std::uniform_real_distribution<> z_dist(min_acorn_bounds.y, max_acorn_bounds.y);
 
@@ -85,7 +85,7 @@ void PlayerHandler::_create_acorns() {
 
 	/*
 	for (int i = 0; i < acorn_positions.size(); i++) {
-		godot::Collectable* acorn = static_cast<godot::Collectable*>(AcornScene->instance());
+		godot::Collectable* acorn = Object::cast_to<Collectable>(AcornScene->instance());
 		add_child(acorn);
 
 		acorn->init(acorn_positions[i]);

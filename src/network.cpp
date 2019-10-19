@@ -2,6 +2,7 @@
 
 using namespace godot;
 
+// This code was referenced from https://github.com/devonh/Godot-engine-tutorial-demos/tree/master/2018/07-30-2018-multiplayer-high-level-api
 void Network::_register_methods() {
     register_method("_init", &Network::_init, GODOT_METHOD_RPC_MODE_DISABLED);
     register_method("_ready", &Network::_ready, GODOT_METHOD_RPC_MODE_DISABLED);
@@ -14,6 +15,10 @@ void Network::_register_methods() {
     register_method("_request_players", &Network::_request_players, GODOT_METHOD_RPC_MODE_REMOTE);
     register_method("_send_player_info", &Network::_send_player_info, GODOT_METHOD_RPC_MODE_REMOTE);
     register_method("update_position", &Network::update_position, GODOT_METHOD_RPC_MODE_DISABLED);
+    register_method("set_play_pressed", &Network::set_play_pressed, GODOT_METHOD_RPC_MODE_DISABLED);
+    register_method("update_play_pressed", &Network::update_play_pressed, GODOT_METHOD_RPC_MODE_REMOTE);
+    register_method("start_game", &Network::start_game, GODOT_METHOD_RPC_MODE_REMOTESYNC);
+
 
     register_property<Network, Dictionary>("self_data", &Network::self_data, Dictionary(), GODOT_METHOD_RPC_MODE_DISABLED);
     register_property<Network, Dictionary>("players", &Network::players, Dictionary(), GODOT_METHOD_RPC_MODE_DISABLED);
@@ -42,11 +47,15 @@ void Network::_ready() {
     init_positions[3] = Vector3(-42,1,-21);
 }
 
-// called by 1
+// called by 1, the server
 void Network::create_server(String playerNickname) {
+    //set up self_data dictionary with important player info that will be shared across server and clients
     self_data["name"] = playerNickname;
     self_data["position"] = init_positions[0];
     self_data["acorns_collected"] = 0;
+    self_data["play_pressed"] = false;
+    
+    //init server
     init_pos_index = 1;
     players[1] = self_data;
     NetworkedMultiplayerENet* peer = NetworkedMultiplayerENet::_new();
@@ -57,9 +66,13 @@ void Network::create_server(String playerNickname) {
 
 // called by each client 
 void Network::connect_to_server(String playerNickname, String server_ip) {
+    //set up self_data dictionary with important player info that will be shared across server and clients
     self_data["name"] = playerNickname;
     self_data["position"] = init_positions[init_pos_index];
     self_data["acorns_collected"] = 0;
+    self_data["play_pressed"] = false;
+
+    //init client
     init_pos_index++;
     if (init_pos_index = 4)
         init_pos_index = 0;
@@ -82,7 +95,7 @@ void Network::_on_player_disconnected(int64_t id) {
 
 void Network::_on_player_connected(int64_t connectedPlayerId) {
     int64_t localPlayerId = get_tree()->get_network_unique_id();
-    Godot::print("Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(connectedPlayerId));
+    Godot::print("_on_player_connected: Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(connectedPlayerId));
     if(!get_tree()->is_network_server()) {
         rpc_id(1, "_request_player_info", localPlayerId, connectedPlayerId);
     }
@@ -107,7 +120,7 @@ void Network::_request_players(int64_t requestFromId) {
 // This is sent as an RPC to all clients and servers when a client joins
 void Network::_send_player_info(int64_t id, Dictionary info) {
     int64_t localPlayerId = get_tree()->get_network_unique_id();
-    Godot::print("Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(id));
+    Godot::print("send_player_info: Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(id));
 
     players[id] = info;
 
@@ -123,10 +136,58 @@ void Network::_send_player_info(int64_t id, Dictionary info) {
     player->set_network_master(id);
     get_node("/root/Game")->add_child(player);
     Godot::print(String::num_int64(players.size()));
-    player->init(info["name"], info["position"], true);
+    player->init(info["name"], info["position"], true);    
 }
 
 void Network::update_position(int64_t id, Vector3 position) {
     Dictionary player_info = players[id];
     player_info["position"] = position;
 }
+
+// This is called by the client when they press play in the lobby
+void Network::set_play_pressed() {
+    self_data["play_pressed"] = true;
+    if (!get_tree()->is_network_server())
+        rpc_id(1, "update_play_pressed", get_tree()->get_network_unique_id());    
+    else
+        update_play_pressed(1);      
+}
+
+// This is sent as an RPC to the server to update the play_pressed key in the player dictionary with the given id
+// The server then checks if all players have pressed play, and starts the game if they have
+void Network::update_play_pressed(int64_t id) {
+    String id_string = String::num_int64(id);
+    Godot::print(id_string);
+    Dictionary player_info = players[id];    
+    player_info["play_pressed"] = true;
+    
+
+    //check if all players and the have pressed the play button
+    Array keys = players.keys();
+    bool start_game = true;
+    for (int i = 0; i < keys.size(); ++i) {
+        Godot::print("update_play_pressed: checking player dict for play_pressed val");
+        Dictionary player_data = players[keys[i]];
+
+        if (!static_cast<bool>(player_data["play_pressed"])) {
+            Godot::print("player play_pressed is false, don't start game");
+            start_game = false;
+            break;
+        }
+    }
+
+    if (start_game) {
+        rpc("start_game");
+    }
+}
+
+void Network::start_game () {
+	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("/root/Game/LobbyMenu"));
+    if (lobby_menu) {
+		lobby_menu->hide();
+		get_tree()->set_pause(false);
+    }
+
+    get_node("/root/Game")->call("_create_player");	
+}
+

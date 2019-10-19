@@ -29,7 +29,7 @@ void GameState::_ready() {
 	numCollected = 0;
 }
 
-void GameState::collect_acorns() {
+void GameState::collect_acorns(int64_t id) {
 	String gs1 = String::num_int64(numCollected);
 	++numCollected;
 	Dictionary self_data = Dictionary(get_node("/root/network")->get("self_data"));

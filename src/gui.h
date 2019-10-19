@@ -7,7 +7,8 @@
 #include <AudioStreamPlayer3D.hpp>
 #include <SceneTree.hpp>
 #include <Range.hpp>
-#include <basic_movement.h>
+#include "basic_movement.h"
+#include "network.h"
 #include <LineEdit.hpp>
 #include <Label.hpp>
 #include <list>
@@ -65,8 +66,6 @@ public:
     void _on_VolumeSlider_changed(float value);
 
     void _update_acorn_count (String count);
-
-    void start_game ();
 };
 
 }

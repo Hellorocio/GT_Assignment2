@@ -31,7 +31,7 @@ namespace godot {
 		void _ready();
 		void _process(float delta);
 
-		void collect_acorns();
+		void collect_acorns(int64_t id);
 		void remove_acorns();
 	};
 }

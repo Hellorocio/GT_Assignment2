@@ -1,4 +1,5 @@
 #include "gui.h"
+#include <AudioServer.hpp>
 
 using namespace godot;
 
@@ -21,10 +22,7 @@ void Gui::_register_methods() {
 
     register_method("_ready", &Gui::_ready);
     register_method("_process", &Gui::_process);
-    register_method("_WinMenu_show", &Gui::_WinMenu_show);
-
-	register_method("start_game", &Gui::start_game, GODOT_METHOD_RPC_MODE_REMOTE);
-	
+    register_method("_WinMenu_show", &Gui::_WinMenu_show);	
 }
 
 Gui::Gui() {
@@ -148,15 +146,13 @@ void Gui::_on_ExitButton_pressed() {
 }
 
 void Gui::_on_SFX_pressed() {
-	AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Spatial/Player/AcornSound"));
-	AudioStreamPlayer3D *a2 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Spatial/Player/TrapSound"));
+	AudioServer *audio = AudioServer::get_singleton();
+	auto bus = audio->get_bus_index("Sfx");
 	if (soundEffect) {
-		a1->set_unit_db(-80);
-		a2->set_unit_db(-80);
+		audio->set_bus_mute(bus, true);
 		soundEffect = false;
 	} else {
-		a1->set_unit_db(10);
-		a2->set_unit_db(10);
+		audio->set_bus_mute(bus, false);
 		soundEffect = true;
 	}
 }
@@ -240,12 +236,12 @@ void Gui::_on_JoinMain_pressed () {
 void Gui::_on_LobbyPlay_pressed () {
 	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu"));
     if (lobby_menu) {
-		lobby_menu->hide();
-		get_tree()->set_pause(false);
-    }
+		Network* netw = Object::cast_to<Network>(get_node("/root/network"));
+		netw->set_play_pressed();
 
-	get_node("/root/Game")->call("_create_player");	
-	rpc("start_game");
+		//lobby_menu->hide();
+		//get_tree()->set_pause(false);
+    }	
 }
 
 void Gui::_on_JoinIPMain_pressed () {
@@ -275,11 +271,9 @@ void Gui::_on_JoinIPMain_pressed () {
     }
 
 	//hide the play button for clients
-	Control* play_button = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu/PlayLobby"));
+	/*Control* play_button = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu/PlayLobby"));
 	if (play_button)
-		play_button->hide();
-
-	get_node("/root/Game")->call("_create_player");	
+		play_button->hide();*/
 
 }
 
@@ -292,8 +286,9 @@ void Gui::_WinMenu_show() {
 }
 
 void Gui::_on_VolumeSlider_changed(float value) {
-	AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Spatial/Player/BackgroundMusic"));
-	a1->set_unit_db(value);
+	AudioServer *audio = AudioServer::get_singleton();
+	auto bus = audio->get_bus_index("Music");
+	audio->set_bus_volume_db(bus, value);
 }
 
 // Called when acorn count is incremented or decremented
@@ -304,11 +299,5 @@ void Gui::_update_acorn_count (String count) {
 	}
 }
 
-void Gui::start_game () {
-	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu"));
-    if (lobby_menu) {
-		lobby_menu->hide();
-		get_tree()->set_pause(false);
-    }
-}
+
 
