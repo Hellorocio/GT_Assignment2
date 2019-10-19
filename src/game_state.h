@@ -20,7 +20,7 @@ namespace godot {
 		int num_acorns = 25;
 		Vector2 max_acorn_bounds = Vector2{10, 10};
 		Vector2 min_acorn_bounds = Vector2{-10, 10};
-		int numCollected = 0;
+		int num_collected = 0;
 
 		static void _register_methods();
 
@@ -31,8 +31,9 @@ namespace godot {
 		void _ready();
 		void _process(float delta);
 
-		void collect_acorns(int64_t id);
-		void remove_acorns();
+		void collect_acorn(int64_t id);
+		void on_collect_acorn(int64_t id, int num_collected);
+		void remove_acorn(int64_t id);
 	};
 }
 

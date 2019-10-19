@@ -12,7 +12,7 @@
 #include <Control.hpp>
 #include "basic_movement.h"
 #include "gui.h"
-
+#include <Timer.hpp>
 
 namespace godot {
 
@@ -45,6 +45,7 @@ public:
     void start_game();
 
 private:
+    bool is_started;
     Ref<PackedScene> player_scene;
     String SERVER_IP = "127.0.0.1";
     const int64_t SERVER_PORT = 31400;

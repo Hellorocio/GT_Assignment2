@@ -63,13 +63,9 @@ void PlayerHandler::_create_player() {
 }
 
 void PlayerHandler::_create_acorns() {
-	int num_acorns = (int)get_node("/root/Game/GameState")->get("num_acorns");
-	Vector2 max_acorn_bounds = (Vector2)get_node("/root/Game/GameState")->get("max_acorn_bounds");
-	Vector2 min_acorn_bounds = (Vector2)get_node("/root/Game/GameState")->get("min_acorn_bounds");
-
-	std::random_device r;
-	std::seed_seq seed{ r(), r(), r(), r(), r(), r(), r(), r() };
-	std::mt19937 eng{ seed };
+	int num_acorns = (int) get_node("/root/Game/GameState")->get("num_acorns");
+	Vector2 max_acorn_bounds = (Vector2) get_node("/root/Game/GameState")->get("max_acorn_bounds");
+	Vector2 min_acorn_bounds = (Vector2) get_node("/root/Game/GameState")->get("min_acorn_bounds");
 
 	for (int i = 0; i < num_acorns; ++i) {
 		godot::Collectable* acorn = Object::cast_to<Collectable>(AcornScene->instance());
@@ -78,6 +74,10 @@ void PlayerHandler::_create_acorns() {
 		//get a random num for x and z position
 		std::uniform_real_distribution<> x_dist(min_acorn_bounds.x, max_acorn_bounds.x);
 		std::uniform_real_distribution<> z_dist(min_acorn_bounds.y, max_acorn_bounds.y);
+
+		std::random_device r;
+		std::seed_seq seed{ r(), r(), r(), r(), r(), r(), r(), r() };
+		std::mt19937 eng{ seed };
 
 		Vector3 new_position = Vector3(x_dist(eng), 40, z_dist(eng));
 		acorn->init(new_position);

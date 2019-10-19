@@ -93,25 +93,25 @@ surfaces/2 = {
 "vertex_count": 108
 }
 
-[sub_resource type="DynamicFont" id=18]
+[sub_resource type="DynamicFont" id=14]
 size = 50
 font_data = ExtResource( 10 )
 
-[sub_resource type="QuadMesh" id=19]
+[sub_resource type="QuadMesh" id=15]
 size = Vector2( 2, 2 )
 
-[sub_resource type="ViewportTexture" id=20]
+[sub_resource type="ViewportTexture" id=16]
 flags = 5
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="SpatialMaterial" id=21]
+[sub_resource type="SpatialMaterial" id=17]
 resource_local_to_scene = true
 flags_unshaded = true
 flags_albedo_tex_force_srgb = true
 params_diffuse_mode = 1
 params_cull_mode = 2
 params_billboard_mode = 2
-albedo_texture = SubResource( 20 )
+albedo_texture = SubResource( 16 )
 distance_fade_mode = 1
 distance_fade_min_distance = 0.0
 distance_fade_max_distance = 10.0
@@ -243,10 +243,10 @@ margin_right = 200.0
 margin_bottom = 200.0
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="Viewport/Control"]
+[node name="PlayerTag" type="Label" parent="Viewport/Control"]
 margin_right = 210.0
 margin_bottom = 200.0
-custom_fonts/font = SubResource( 18 )
+custom_fonts/font = SubResource( 14 )
 text = "Player1"
 align = 1
 valign = 1
@@ -255,5 +255,5 @@ valign = 1
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Area"]
-mesh = SubResource( 19 )
-material/0 = SubResource( 21 )
+mesh = SubResource( 15 )
+material/0 = SubResource( 17 )

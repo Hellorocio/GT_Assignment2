@@ -22,6 +22,7 @@ void Network::_register_methods() {
 
     register_property<Network, Dictionary>("self_data", &Network::self_data, Dictionary(), GODOT_METHOD_RPC_MODE_DISABLED);
     register_property<Network, Dictionary>("players", &Network::players, Dictionary(), GODOT_METHOD_RPC_MODE_DISABLED);
+    register_property<Network, bool>("is_started", &Network::is_started, false, GODOT_METHOD_RPC_MODE_DISABLED);
 }
 
 Network::Network() {
@@ -33,6 +34,7 @@ Network::~Network() {
 }
 
 void Network::_init() {
+    is_started = false;
     self_data["name"] = "";
     self_data["position"] = Vector3(0, 2, 0);
 }
@@ -91,6 +93,9 @@ void Network::_connected_to_server() {
 
 void Network::_on_player_disconnected(int64_t id) {
     players.erase(id);
+
+    auto disconnected_player = get_node("/root/Game/" + String::num_int64(id));
+    disconnected_player->queue_free();
 }
 
 void Network::_on_player_connected(int64_t connectedPlayerId) {
@@ -124,8 +129,12 @@ void Network::_send_player_info(int64_t id, Dictionary info) {
 
     players[id] = info;
 
+    if (get_tree()->is_network_server()) {
+        rset_id(localPlayerId, "is_started", is_started);
+    }
+
     //update lobby if we're in the lobby
-    Label* label = (Label*) get_node("/root/Game/LobbyMenu/PlayerList");
+    Label* label = Object::cast_to<Label>(get_node("/root/Game/LobbyMenu/PlayerList"));
     label->set_text(label->get_text()+info["name"]+"\n");
 
     //add player to the scene
@@ -147,6 +156,12 @@ void Network::update_position(int64_t id, Vector3 position) {
 // This is called by the client when they press play in the lobby
 void Network::set_play_pressed() {
     self_data["play_pressed"] = true;
+
+    if (is_started) {
+        start_game();
+        return;
+    }
+
     if (!get_tree()->is_network_server())
         rpc_id(1, "update_play_pressed", get_tree()->get_network_unique_id());    
     else
@@ -161,7 +176,6 @@ void Network::update_play_pressed(int64_t id) {
     Dictionary player_info = players[id];    
     player_info["play_pressed"] = true;
     
-
     //check if all players and the have pressed the play button
     Array keys = players.keys();
     bool start_game = true;
@@ -177,17 +191,19 @@ void Network::update_play_pressed(int64_t id) {
     }
 
     if (start_game) {
+        if (!is_started) {
+            Timer* timer = Object::cast_to<Timer>(get_parent()->get_node("/root/Game/GUI/Timer"));
+            timer->start(120);
+        }
         rpc("start_game");
     }
 }
 
-void Network::start_game () {
+void Network::start_game() {    
+    is_started = true;
 	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("/root/Game/LobbyMenu"));
     if (lobby_menu) {
 		lobby_menu->hide();
 		get_tree()->set_pause(false);
     }
-
-    get_node("/root/Game")->call("_create_player");	
 }
-

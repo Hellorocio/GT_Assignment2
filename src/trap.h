@@ -24,6 +24,7 @@ namespace godot {
 		void _process(float delta);
 
 		void _on_body_entered(Node * body);
+		void _on_player_hit(int64_t id);
 		void _on_body_exited(Node * body);
 	};
 }

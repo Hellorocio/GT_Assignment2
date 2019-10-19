@@ -23,6 +23,11 @@ void Gui::_register_methods() {
     register_method("_ready", &Gui::_ready);
     register_method("_process", &Gui::_process);
     register_method("_WinMenu_show", &Gui::_WinMenu_show);	
+	register_method("_update_timer", &Gui::_update_timer);
+	register_method("_set_time_label", &Gui::_set_time_label);
+	register_method("_on_timeout", &Gui::_on_timeout);
+
+	register_property<Gui, int>("time_left", &Gui::time_left, 0, GODOT_METHOD_RPC_MODE_PUPPET);	
 }
 
 Gui::Gui() {
@@ -114,6 +119,11 @@ void Gui::_ready() {
 	if (volume_slider) {
 		volume_slider->connect("value_changed", this, "_on_VolumeSlider_changed");
 	}
+
+	Node* timeout = get_node("Timer");
+	if (timeout) {
+		timeout->connect("timeout", this, "_on_timeout");
+	}	
 }
 
 void Gui::_process() {
@@ -126,6 +136,16 @@ void Gui::_process() {
 			else
 				_on_MenuButton_pressed();
 		}
+	}
+
+	_set_time_label();	
+
+	// update timer
+	if (!get_tree()->has_network_peer()) {
+
+	}
+	else if (get_tree()->is_network_server()) {
+		_update_timer();
 	}
 }
 
@@ -206,7 +226,7 @@ void Gui::_on_CreateMain_pressed () {
 		lobby_menu->show();
     	main_menu2->hide();
 		//get_tree()->set_pause(false);
-		Label* label = (Label*) get_parent()->get_node("LobbyMenu/PlayerList");
+		Label* label = Object::cast_to<Label>(get_parent()->get_node("LobbyMenu/PlayerList"));
 		label->set_text("Player\n");
     }
 }
@@ -239,8 +259,13 @@ void Gui::_on_LobbyPlay_pressed () {
 		Network* netw = Object::cast_to<Network>(get_node("/root/network"));
 		netw->set_play_pressed();
 
+		Control* play_button = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu/PlayLobby"));
+		if (play_button)
+			play_button->hide();
 		//lobby_menu->hide();
 		//get_tree()->set_pause(false);
+
+ 		get_node("/root/Game")->call("_create_player");	
     }	
 }
 
@@ -253,7 +278,7 @@ void Gui::_on_JoinIPMain_pressed () {
 	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu"));
     if (main_menu && lobby_menu) {
 		//update lobby names- loop through dictionary 
-		Label* label = (Label*) get_parent()->get_node("LobbyMenu/PlayerList");
+		Label* label = Object::cast_to<Label>(get_parent()->get_node("LobbyMenu/PlayerList"));
 		Dictionary players = Dictionary(get_node("/root/network")->get("players"));
 		String player_names = "";
 
@@ -293,11 +318,32 @@ void Gui::_on_VolumeSlider_changed(float value) {
 
 // Called when acorn count is incremented or decremented
 void Gui::_update_acorn_count (String count) {
-	Label* label = (Label*) get_parent()->get_node("GUI/HSplitContainer/NinePatchRect/AcornCounter/NumAcorns");
+	Label* label = Object::cast_to<Label>(get_node("HSplitContainer/NinePatchRect/AcornCounter/NumAcorns"));
 	if (label) {
 		label->set_text(count);
 	}
 }
 
+void Gui::_update_timer () {
+	Timer* timer = Object::cast_to<Timer>(get_node("Timer"));
+	time_left = timer->get_time_left();
 
+	rset_unreliable("time_left", time_left);
+}
+
+void Gui::_set_time_label () {
+	int minutes = time_left / 60;
+	int seconds = time_left % 60;
+	String second_string = String::num_int64(seconds);
+	if (seconds < 10) {
+		second_string = "0" + second_string;
+	}
+
+	Label* time_label = Object::cast_to<Label>(get_node("HSplitContainer/TimerLabel"));
+	time_label->set_text(String::num_int64(minutes) + ":" + second_string);
+}
+
+void Gui::_on_timeout () {
+	get_tree()->quit();
+}
 

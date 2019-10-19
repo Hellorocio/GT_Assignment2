@@ -43,7 +43,10 @@ void Collectable::_on_body_entered(Node * body)
 		int64_t player_id = body->get_name().to_int();
 
 		GameState *state = Object::cast_to<GameState>(get_node("/root/Game/GameState"));
-		state->collect_acorns(player_id);
+		if (get_tree()->has_network_peer())
+    		state->rpc_id(1, "collect_acorn", player_id);
+		else
+			state->collect_acorn(player_id);
 
 		if (get_tree()->has_network_peer())
     		rpc("_on_collection", player_id);

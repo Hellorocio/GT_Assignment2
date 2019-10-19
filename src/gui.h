@@ -11,6 +11,7 @@
 #include "network.h"
 #include <LineEdit.hpp>
 #include <Label.hpp>
+#include <Timer.hpp>
 #include <list>
 
 namespace godot {
@@ -24,6 +25,7 @@ private:
     Vector3 oldPos;
     bool soundEffect;
     bool backgroundSound;
+    int time_left;            
 
 public:
     static void _register_methods();
@@ -66,6 +68,12 @@ public:
     void _on_VolumeSlider_changed(float value);
 
     void _update_acorn_count (String count);
+
+    void _update_timer();
+
+    void _set_time_label();
+
+    void _on_timeout();
 };
 
 }

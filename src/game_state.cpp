@@ -4,8 +4,9 @@ using namespace godot;
 
 void GameState::_register_methods() {
 	register_method("_ready", &GameState::_ready);
-	register_method("collect_acorns", &GameState::collect_acorns);
-	register_method("remove_acorns", &GameState::remove_acorns);
+	register_method("collect_acorn", &GameState::collect_acorn, GODOT_METHOD_RPC_MODE_REMOTE);
+	register_method("on_collect_acorn", &GameState::on_collect_acorn, GODOT_METHOD_RPC_MODE_REMOTESYNC);
+	register_method("remove_acorn", &GameState::remove_acorn);
 	register_method("_process", &GameState::_process);
 
 	register_property<GameState, int>("num_acorns", &GameState::num_acorns, 25);
@@ -26,33 +27,47 @@ void GameState::_process(float delta) {
 }
 
 void GameState::_ready() {
-	numCollected = 0;
+	num_collected = 0;
 }
 
-void GameState::collect_acorns(int64_t id) {
-	String gs1 = String::num_int64(numCollected);
-	++numCollected;
+// only called by server
+void GameState::collect_acorn(int64_t id) {
+	++num_collected;
 	Dictionary self_data = Dictionary(get_node("/root/network")->get("self_data"));
-	self_data["acorns_collected"] = numCollected;
+	self_data["acorns_collected"] = num_collected;
 
-	String gs2 = String::num_int64(self_data["acorns_collected"]);
+	if (get_tree()->has_network_peer())
+		rpc("on_collect_acorn", id, num_collected);
+	else
+		on_collect_acorn(id, num_collected);
+}
 
-	Gui* gui = (Gui*) get_parent()->get_node("GUI");
+// called for everyone
+void GameState::on_collect_acorn(int64_t id, int num) {
+	Dictionary self_data = Dictionary(get_node("/root/network")->get("self_data"));
+	num_collected = num;
+	self_data["acorns_collected"] = num;
+
+	String gs2 = String::num_int64(num);
+	Gui* gui = Object::cast_to<Gui>(get_parent()->get_node("GUI"));
 	gui->_update_acorn_count(gs2);
 
-	if (numCollected >= 20) {
+	// singleplayer win condition
+	if (!get_tree()->has_network_peer() && num >= 20) {
 		gui->_WinMenu_show();
 	}
 }
 
-void GameState::remove_acorns() {
+// only called by server
+void GameState::remove_acorn(int64_t id) {
 	Dictionary self_data = Dictionary(get_node("/root/network")->get("self_data"));
-	if (numCollected > 0) {
-		--numCollected;
+	if (num_collected > 0) {
+		--num_collected;
 	}
-	self_data["acorns_collected"] = numCollected;
-	String gs1 = String::num_int64(numCollected);
+	self_data["acorns_collected"] = num_collected;
 
-	Gui* gui = (Gui*) get_parent()->get_node("GUI");
-	gui->_update_acorn_count(gs1);
+	if (get_tree()->has_network_peer())
+		rpc("on_collect_acorn", id, num_collected);
+	else
+		on_collect_acorn(id, num_collected);
 }
