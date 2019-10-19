@@ -1,4 +1,5 @@
 #include "gui.h"
+#include <AudioServer.hpp>
 
 using namespace godot;
 
@@ -148,15 +149,13 @@ void Gui::_on_ExitButton_pressed() {
 }
 
 void Gui::_on_SFX_pressed() {
-	AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Spatial/Player/AcornSound"));
-	AudioStreamPlayer3D *a2 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Spatial/Player/TrapSound"));
+	AudioServer *audio = AudioServer::get_singleton();
+	auto bus = audio->get_bus_index("Sfx");
 	if (soundEffect) {
-		a1->set_unit_db(-80);
-		a2->set_unit_db(-80);
+		audio->set_bus_mute(bus, true);
 		soundEffect = false;
 	} else {
-		a1->set_unit_db(10);
-		a2->set_unit_db(10);
+		audio->set_bus_mute(bus, false);
 		soundEffect = true;
 	}
 }

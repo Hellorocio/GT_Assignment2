@@ -23,7 +23,7 @@ PlayerHandler::~PlayerHandler() {
 void PlayerHandler::_ready()
 {
 	OS* os = OS::get_singleton();
-	os->set_window_size(os->get_screen_size());
+	//os->set_window_size(os->get_screen_size());
 
 	acorn_positions.resize(5);
 	acorn_positions[0] = Vector3(11.9, 1.56, -4);
