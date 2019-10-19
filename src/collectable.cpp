@@ -39,6 +39,8 @@ void Collectable::_on_body_entered(Node * body)
 	BasicMovement * player = Object::cast_to<BasicMovement>(body);
 	if (!is_killed && player != nullptr && (!get_tree()->has_network_peer() || player->is_network_master()))
 	{
+		// called by player's network master
+
 		//increment player's acorn count
 		int64_t player_id = body->get_name().to_int();
 
@@ -55,6 +57,7 @@ void Collectable::_on_body_entered(Node * body)
 	}
 }
 
+// called by everyone
 void Collectable::_on_collection(int64_t id)
 {
 	AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Game/" + String::num_int64(id) + "/AcornSound"));

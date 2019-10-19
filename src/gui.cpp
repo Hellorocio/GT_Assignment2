@@ -22,7 +22,7 @@ void Gui::_register_methods() {
 
     register_method("_ready", &Gui::_ready);
     register_method("_process", &Gui::_process);
-    register_method("_WinMenu_show", &Gui::_WinMenu_show);	
+    register_method("_WinMenu_show", &Gui::_WinMenu_show, GODOT_METHOD_RPC_MODE_REMOTE);	
 	register_method("_update_timer", &Gui::_update_timer);
 	register_method("_set_time_label", &Gui::_set_time_label);
 	register_method("_on_timeout", &Gui::_on_timeout);
@@ -141,10 +141,7 @@ void Gui::_process() {
 	_set_time_label();	
 
 	// update timer
-	if (!get_tree()->has_network_peer()) {
-
-	}
-	else if (get_tree()->is_network_server()) {
+	if (!get_tree()->has_network_peer() || get_tree()->is_network_server()) {
 		_update_timer();
 	}
 }
@@ -194,12 +191,6 @@ void Gui::_on_RotateStrafe_pressed() {
 
 void Gui::_on_PlayAgain_pressed() {
 	get_tree()->reload_current_scene();
-
-	Control* menu = Object::cast_to<Control>(get_parent()->get_node("WinMenu"));
-	if (menu) {
-		menu->hide();
-		get_tree()->set_pause(false);
-	}
 }
 
 void Gui::_on_QuitButton_pressed() {
@@ -210,8 +201,10 @@ void Gui::_on_PlayMain_pressed() {
 	Control* main_menu2 = Object::cast_to<Control>(get_parent()->get_node("MainMenu"));
     if (main_menu2) {
     	main_menu2->hide();
-		get_tree()->set_pause(false);
+		get_tree()->set_pause(false);	
     }
+	Timer* timer = Object::cast_to<Timer>(get_parent()->get_node("/root/Game/GUI/Timer"));
+    timer->start();
 
 	get_node("/root/Game")->call("_create_player");	
 }
@@ -272,6 +265,10 @@ void Gui::_on_LobbyPlay_pressed () {
 void Gui::_on_JoinIPMain_pressed () {
 	LineEdit* ip_field = Object::cast_to<LineEdit>(get_node("../MainMenu/IPField"));
 	LineEdit* name_field = Object::cast_to<LineEdit>(get_node("../MainMenu/NameField"));
+
+	if (ip_field->get_text().empty() || name_field->get_text().empty())
+		return;
+
 	get_node("/root/network")->call("connect_to_server", name_field->get_text(), ip_field->get_text());
 
 	Control* main_menu = Object::cast_to<Control>(get_parent()->get_node("MainMenu"));
@@ -302,9 +299,19 @@ void Gui::_on_JoinIPMain_pressed () {
 
 }
 
-void Gui::_WinMenu_show() {
+void Gui::_WinMenu_show(bool win) {
 	Control* win_menu = Object::cast_to<Control>(get_parent()->get_node("WinMenu"));
+
 	if (win_menu) {
+
+		Label* message = Object::cast_to<Label>(get_parent()->get_node("WinMenu/Message"));
+		Control* play_again =  Object::cast_to<Control>(get_parent()->get_node("WinMenu/PlayAgain"));
+		if (!win && message) {
+			message->set_text("You Lose!");
+
+			//don't let players play again if they lost
+			play_again->hide();
+		}
 		win_menu->show();
 		//get_tree()->set_pause(true);
 	}
@@ -327,8 +334,12 @@ void Gui::_update_acorn_count (String count) {
 void Gui::_update_timer () {
 	Timer* timer = Object::cast_to<Timer>(get_node("Timer"));
 	time_left = timer->get_time_left();
-
-	rset_unreliable("time_left", time_left);
+	
+	if (get_tree()->has_network_peer())
+	{
+		rset_unreliable("time_left", time_left);
+	}
+		
 }
 
 void Gui::_set_time_label () {
@@ -344,6 +355,11 @@ void Gui::_set_time_label () {
 }
 
 void Gui::_on_timeout () {
-	get_tree()->quit();
+
+	if (get_tree()->has_network_peer())
+	{
+		rpc("_WinMenu_show", false);
+	}
+	_WinMenu_show(false);
 }
 

@@ -25,7 +25,7 @@ private:
     Vector3 oldPos;
     bool soundEffect;
     bool backgroundSound;
-    int time_left;            
+    int time_left = 0;            
 
 public:
     static void _register_methods();
@@ -63,7 +63,7 @@ public:
 
     void _on_JoinIPMain_pressed();
 
-    void _WinMenu_show();
+    void _WinMenu_show(bool win);
 
     void _on_VolumeSlider_changed(float value);
 

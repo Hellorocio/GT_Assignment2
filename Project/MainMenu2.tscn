@@ -138,7 +138,8 @@ margin_top = 280.0
 margin_right = 630.0
 margin_bottom = 350.0
 custom_fonts/font = SubResource( 3 )
-text = "IP Address"
+text = "localhost"
+placeholder_text = "IP Address"
 
 [node name="NameField" type="LineEdit" parent="."]
 visible = false
@@ -147,4 +148,5 @@ margin_top = 370.0
 margin_right = 630.0
 margin_bottom = 440.0
 custom_fonts/font = SubResource( 3 )
-text = "Name"
+text = "squirrel friend"
+placeholder_text = "Name"

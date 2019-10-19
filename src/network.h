@@ -43,6 +43,7 @@ public:
     void set_play_pressed();
     void update_play_pressed(int64_t id);
     void start_game();
+    void disconnect_all();
 
 private:
     bool is_started;

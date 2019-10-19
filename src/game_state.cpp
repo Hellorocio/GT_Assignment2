@@ -54,7 +54,7 @@ void GameState::on_collect_acorn(int64_t id, int num) {
 
 	// singleplayer win condition
 	if (!get_tree()->has_network_peer() && num >= 20) {
-		gui->_WinMenu_show();
+		gui->_WinMenu_show(true);
 	}
 }
 

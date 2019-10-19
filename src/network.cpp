@@ -18,7 +18,7 @@ void Network::_register_methods() {
     register_method("set_play_pressed", &Network::set_play_pressed, GODOT_METHOD_RPC_MODE_DISABLED);
     register_method("update_play_pressed", &Network::update_play_pressed, GODOT_METHOD_RPC_MODE_REMOTE);
     register_method("start_game", &Network::start_game, GODOT_METHOD_RPC_MODE_REMOTESYNC);
-
+    register_method("disconnect_all", &Network::disconnect_all, GODOT_METHOD_RPC_MODE_REMOTESYNC);
 
     register_property<Network, Dictionary>("self_data", &Network::self_data, Dictionary(), GODOT_METHOD_RPC_MODE_DISABLED);
     register_property<Network, Dictionary>("players", &Network::players, Dictionary(), GODOT_METHOD_RPC_MODE_DISABLED);
@@ -193,7 +193,7 @@ void Network::update_play_pressed(int64_t id) {
     if (start_game) {
         if (!is_started) {
             Timer* timer = Object::cast_to<Timer>(get_parent()->get_node("/root/Game/GUI/Timer"));
-            timer->start(120);
+            timer->start();
         }
         rpc("start_game");
     }
@@ -206,4 +206,17 @@ void Network::start_game() {
 		lobby_menu->hide();
 		get_tree()->set_pause(false);
     }
+}
+
+void Network::disconnect_all() {
+    is_started = false;
+
+    Array keys = players.keys();
+    for (int i = 0; i < keys.size(); ++i) {
+        auto player = get_node("/root/Game/" + String::num_int64(keys[i]));
+        if (player)
+            player->queue_free();
+    }
+
+    get_tree()->set_network_peer(nullptr);
 }
