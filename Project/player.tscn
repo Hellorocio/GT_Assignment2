@@ -184,16 +184,19 @@ cast_to = Vector3( 0, 0, 2 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0766945, 0 )
 stream = ExtResource( 3 )
 unit_db = 10.0
+bus = "Sfx"
 
 [node name="TrapSound" type="AudioStreamPlayer3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0 )
 stream = ExtResource( 4 )
 unit_db = 10.0
+bus = "Sfx"
 
 [node name="BackgroundMusic" type="AudioStreamPlayer3D" parent="."]
 pause_mode = 2
 stream = ExtResource( 5 )
 autoplay = true
+bus = "Music"
 
 [node name="Particles" parent="." instance=ExtResource( 6 )]
 process_material = SubResource( 12 )
@@ -202,3 +205,4 @@ draw_pass_1 = SubResource( 13 )
 [node name="GreatSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 9 )
 unit_db = 10.0
+bus = "Sfx"
