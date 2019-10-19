@@ -95,7 +95,7 @@ void Network::_on_player_disconnected(int64_t id) {
 
 void Network::_on_player_connected(int64_t connectedPlayerId) {
     int64_t localPlayerId = get_tree()->get_network_unique_id();
-    Godot::print("Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(connectedPlayerId));
+    Godot::print("_on_player_connected: Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(connectedPlayerId));
     if(!get_tree()->is_network_server()) {
         rpc_id(1, "_request_player_info", localPlayerId, connectedPlayerId);
     }
@@ -120,7 +120,7 @@ void Network::_request_players(int64_t requestFromId) {
 // This is sent as an RPC to all clients and servers when a client joins
 void Network::_send_player_info(int64_t id, Dictionary info) {
     int64_t localPlayerId = get_tree()->get_network_unique_id();
-    Godot::print("Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(id));
+    Godot::print("send_player_info: Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(id));
 
     players[id] = info;
 
@@ -136,7 +136,7 @@ void Network::_send_player_info(int64_t id, Dictionary info) {
     player->set_network_master(id);
     get_node("/root/Game")->add_child(player);
     Godot::print(String::num_int64(players.size()));
-    player->init(info["name"], info["position"], true);
+    player->init(info["name"], info["position"], true);    
 }
 
 void Network::update_position(int64_t id, Vector3 position) {
@@ -146,7 +146,6 @@ void Network::update_position(int64_t id, Vector3 position) {
 
 // This is called by the client when they press play in the lobby
 void Network::set_play_pressed() {
-    Godot::print("set_play_pressed: start");
     self_data["play_pressed"] = true;
     if (!get_tree()->is_network_server())
         rpc_id(1, "update_play_pressed", get_tree()->get_network_unique_id());    
@@ -157,18 +156,10 @@ void Network::set_play_pressed() {
 // This is sent as an RPC to the server to update the play_pressed key in the player dictionary with the given id
 // The server then checks if all players have pressed play, and starts the game if they have
 void Network::update_play_pressed(int64_t id) {
-    Godot::print("update_play_pressed: start");
-    if (id != 1)
-    {
-        String id_string = String::num_int64(id);
-        Godot::print(id_string);
-        Dictionary player_info = players[id];    
-        player_info["play_pressed"] = true;
-    }
-    else
-    {
-        self_data["play_pressed"] = true;
-    }
+    String id_string = String::num_int64(id);
+    Godot::print(id_string);
+    Dictionary player_info = players[id];    
+    player_info["play_pressed"] = true;
     
 
     //check if all players and the have pressed the play button
@@ -176,25 +167,27 @@ void Network::update_play_pressed(int64_t id) {
     bool start_game = true;
     for (int i = 0; i < keys.size(); ++i) {
         Godot::print("update_play_pressed: checking player dict for play_pressed val");
-        if (!players[keys[i]]["play_pressed"]) {
+        Dictionary player_data = players[keys[i]];
+
+        if (!static_cast<bool>(player_data["play_pressed"])) {
             Godot::print("player play_pressed is false, don't start game");
             start_game = false;
             break;
         }
     }
 
-
-    if (start_game && self_data["play_pressed"]) {
+    if (start_game) {
         rpc("start_game");
     }
 }
 
 void Network::start_game () {
-    Godot::print("Network: start_game");
 	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("/root/Game/LobbyMenu"));
     if (lobby_menu) {
 		lobby_menu->hide();
 		get_tree()->set_pause(false);
     }
+
+    get_node("/root/Game")->call("_create_player");	
 }
 

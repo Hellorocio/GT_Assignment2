@@ -40,12 +40,15 @@ void Collectable::_on_body_entered(Node * body)
 	if (!is_killed && player != nullptr && (!get_tree()->has_network_peer() || player->is_network_master()))
 	{
 		//increment player's acorn count
-		GameState * state = Object::cast_to<GameState>(get_node("/root/Game/GameState"));
-		state->collect_acorns();
+		int64_t player_id = body->get_name().to_int();
+
+		GameState *state = Object::cast_to<GameState>(get_node("/root/Game/GameState"));
+		state->collect_acorns(player_id);
+
 		if (get_tree()->has_network_peer())
-    		rpc("_on_collection", body->get_name().to_int());
+    		rpc("_on_collection", player_id);
 		else
-			_on_collection(body->get_name().to_int());
+			_on_collection(player_id);
 	}
 }
 

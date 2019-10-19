@@ -241,9 +241,7 @@ void Gui::_on_LobbyPlay_pressed () {
 
 		//lobby_menu->hide();
 		//get_tree()->set_pause(false);
-    }
-
-	get_node("/root/Game")->call("_create_player");	
+    }	
 }
 
 void Gui::_on_JoinIPMain_pressed () {
@@ -276,8 +274,6 @@ void Gui::_on_JoinIPMain_pressed () {
 	/*Control* play_button = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu/PlayLobby"));
 	if (play_button)
 		play_button->hide();*/
-
-	get_node("/root/Game")->call("_create_player");	
 
 }
 
