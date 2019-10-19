@@ -9,7 +9,9 @@
 #include <ResourceLoader.hpp>
 #include <Label.hpp>
 #include <vector>
+#include <Control.hpp>
 #include "basic_movement.h"
+#include "gui.h"
 
 
 namespace godot {
@@ -37,6 +39,10 @@ public:
     void _request_players(int64_t requestFromId);
     void _send_player_info(int64_t id, Dictionary info);
     void update_position(int64_t id, Vector3 position);
+
+    void set_play_pressed();
+    void update_play_pressed(int64_t id);
+    void start_game();
 
 private:
     Ref<PackedScene> player_scene;

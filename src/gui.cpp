@@ -21,10 +21,7 @@ void Gui::_register_methods() {
 
     register_method("_ready", &Gui::_ready);
     register_method("_process", &Gui::_process);
-    register_method("_WinMenu_show", &Gui::_WinMenu_show);
-
-	register_method("start_game", &Gui::start_game, GODOT_METHOD_RPC_MODE_REMOTE);
-	
+    register_method("_WinMenu_show", &Gui::_WinMenu_show);	
 }
 
 Gui::Gui() {
@@ -240,12 +237,14 @@ void Gui::_on_JoinMain_pressed () {
 void Gui::_on_LobbyPlay_pressed () {
 	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu"));
     if (lobby_menu) {
-		lobby_menu->hide();
-		get_tree()->set_pause(false);
+		Network* netw = Object::cast_to<Network>(get_node("/root/network"));
+		netw->set_play_pressed();
+
+		//lobby_menu->hide();
+		//get_tree()->set_pause(false);
     }
 
 	get_node("/root/Game")->call("_create_player");	
-	rpc("start_game");
 }
 
 void Gui::_on_JoinIPMain_pressed () {
@@ -275,9 +274,9 @@ void Gui::_on_JoinIPMain_pressed () {
     }
 
 	//hide the play button for clients
-	Control* play_button = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu/PlayLobby"));
+	/*Control* play_button = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu/PlayLobby"));
 	if (play_button)
-		play_button->hide();
+		play_button->hide();*/
 
 	get_node("/root/Game")->call("_create_player");	
 
@@ -304,11 +303,5 @@ void Gui::_update_acorn_count (String count) {
 	}
 }
 
-void Gui::start_game () {
-	Control* lobby_menu = Object::cast_to<Control>(get_parent()->get_node("LobbyMenu"));
-    if (lobby_menu) {
-		lobby_menu->hide();
-		get_tree()->set_pause(false);
-    }
-}
+
 
