@@ -56,7 +56,7 @@ void PlayerHandler::_create_player() {
 	}
 	add_child(player);
 
-	Dictionary self_data = Dictionary(get_node("/root/network")->get("self_data"));
+	Dictionary self_data = (Dictionary) (get_node("/root/network")->get("self_data"));
     player->init(self_data["name"], self_data["position"], false);
 
 	_create_acorns();

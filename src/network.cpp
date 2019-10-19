@@ -103,6 +103,10 @@ void Network::_on_player_connected(int64_t connectedPlayerId) {
     Godot::print("_on_player_connected: Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(connectedPlayerId));
     if(!get_tree()->is_network_server()) {
         rpc_id(1, "_request_player_info", localPlayerId, connectedPlayerId);
+    } else {
+        // TODO: fix (create dedicated method to update counter)
+        auto gui = get_node("/root/Game/GUI");
+        gui->rpc_id(connectedPlayerId, "on_collect_acorn", 1, (int) self_data["acorns_collected"]);
     }
 }
 

@@ -276,7 +276,7 @@ void Gui::_on_JoinIPMain_pressed () {
     if (main_menu && lobby_menu) {
 		//update lobby names- loop through dictionary 
 		Label* label = Object::cast_to<Label>(get_parent()->get_node("LobbyMenu/PlayerList"));
-		Dictionary players = Dictionary(get_node("/root/network")->get("players"));
+		Dictionary players = (Dictionary) (get_node("/root/network")->get("players"));
 		String player_names = "";
 
 		Array keys = players.keys();
