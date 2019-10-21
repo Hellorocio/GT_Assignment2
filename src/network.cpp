@@ -20,7 +20,7 @@ void Network::_register_methods() {
     register_method("start_game", &Network::start_game, GODOT_METHOD_RPC_MODE_REMOTESYNC);
     register_method("disconnect_all", &Network::disconnect_all, GODOT_METHOD_RPC_MODE_REMOTESYNC);
 
-    register_method("add_acorns_server", &Network::add_acorns_server, GODOT_METHOD_RPC_MODE_REMOTESYNC);
+    register_method("add_acorns_server", &Network::add_acorns_server, GODOT_METHOD_RPC_MODE_DISABLED);
     register_method("remove_acorn", &Network::remove_acorn, GODOT_METHOD_RPC_MODE_REMOTESYNC);
     register_method("spawn_all_acorns", &Network::spawn_all_acorns, GODOT_METHOD_RPC_MODE_REMOTESYNC);
     register_method("update_acorn_position", &Network::update_acorn_position, GODOT_METHOD_RPC_MODE_REMOTESYNC);
@@ -121,7 +121,7 @@ void Network::_on_player_disconnected(int64_t id) {
 
 void Network::_on_player_connected(int64_t connectedPlayerId) {
     int64_t localPlayerId = get_tree()->get_network_unique_id();
-    Godot::print("_on_player_connected: Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(connectedPlayerId));
+    //Godot::print("_on_player_connected: Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(connectedPlayerId));
     if(!get_tree()->is_network_server()) {
         rpc_id(1, "_request_player_info", localPlayerId, connectedPlayerId);
     } else {
@@ -132,10 +132,13 @@ void Network::_on_player_connected(int64_t connectedPlayerId) {
 }
 
 // called by the server when a new client connects
+// requestFromId = newly joined client
+// player id = player to get info
 void Network::_request_player_info(int64_t requestFromId, int64_t playerId) {
     if(get_tree()->is_network_server()) {
-        if (is_started)
-            rpc_id(playerId, "spawn_all_acorns", acorns);
+        if (is_started) {
+            rpc_id(requestFromId, "spawn_all_acorns", acorns);
+        }
 
         rpc_id(requestFromId, "_send_player_info", playerId, players[playerId]);
     }
@@ -154,7 +157,7 @@ void Network::_request_players(int64_t requestFromId) {
 // This is sent as an RPC to all clients and servers when a client joins
 void Network::_send_player_info(int64_t id, Dictionary info) {
     int64_t localPlayerId = get_tree()->get_network_unique_id();
-    Godot::print("send_player_info: Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(id));
+    //Godot::print("send_player_info: Player connected to server " + String::num_int64(localPlayerId) + " " + String::num_int64(id));
 
     players[id] = info;
 
@@ -173,7 +176,7 @@ void Network::_send_player_info(int64_t id, Dictionary info) {
     player->set_name(String::num_int64(id));
     player->set_network_master(id);
     get_node("/root/Game")->add_child(player);
-    Godot::print(String::num_int64(players.size()));
+    //Godot::print(String::num_int64(players.size()));
     player->init(info["name"], info["position"], true);    
 }
 
@@ -201,7 +204,7 @@ void Network::set_play_pressed() {
 // The server then checks if all players have pressed play, and starts the game if they have
 void Network::update_play_pressed(int64_t id) {
     String id_string = String::num_int64(id);
-    Godot::print(id_string);
+    //Godot::print(id_string);
     Dictionary player_info = players[id];    
     player_info["play_pressed"] = true;
     
@@ -209,11 +212,11 @@ void Network::update_play_pressed(int64_t id) {
     Array keys = players.keys();
     bool start_game = true;
     for (int i = 0; i < keys.size(); ++i) {
-        Godot::print("update_play_pressed: checking player dict for play_pressed val");
+        //Godot::print("update_play_pressed: checking player dict for play_pressed val");
         Dictionary player_data = players[keys[i]];
 
         if (!static_cast<bool>(player_data["play_pressed"])) {
-            Godot::print("player play_pressed is false, don't start game");
+            //Godot::print("player play_pressed is false, don't start game");
             start_game = false;
             break;
         }
@@ -288,6 +291,7 @@ void Network::remove_acorn(String acornName) {
 
 // executed everyone, even newly joined clients. create all preexisting acorns
 void Network::spawn_all_acorns(Dictionary acorns) {
+    //Godot::print("spawn all");
     auto names = acorns.keys();
     for (int i = 0; i < names.size(); i++) {
         auto name = names[i];
@@ -302,8 +306,10 @@ void Network::spawn_all_acorns(Dictionary acorns) {
 void Network::update_acorn_position(String acornName, Vector3 position) {
     if (get_tree()->has_network_peer()) {
         if (get_tree()->is_network_server())
-            acorns[acornName] = position;                                
-        Object::cast_to<Spatial>(get_node("/root/network/" + acornName))->set_translation(position);        
+            acorns[acornName] = position;    
+        // auto acorn = get_node("/root/network/" + acornName);
+        // if (acorn)
+        //     Object::cast_to<Spatial>(acorn)->set_translation(position);        
     } else {
         acorns[acornName] = position;
     }    

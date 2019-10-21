@@ -201,12 +201,14 @@ void Gui::_on_PlayMain_pressed() {
 	Control* main_menu2 = Object::cast_to<Control>(get_parent()->get_node("MainMenu"));
     if (main_menu2) {
     	main_menu2->hide();
-		get_tree()->set_pause(false);	
+		get_tree()->set_pause(false);
     }
 	Timer* timer = Object::cast_to<Timer>(get_parent()->get_node("/root/Game/GUI/Timer"));
     timer->start();
 
-	get_node("/root/Game")->call("_create_player");	
+
+	get_node("/root/Game")->call("_create_player");
+	get_node("/root/network")->call("add_acorns_server");
 }
 
 void Gui::_on_CreateMain_pressed () {
