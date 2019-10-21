@@ -70,5 +70,12 @@ void Collectable::_on_collection(int64_t id)
 
 void Collectable::_process(float delta)
 {
+	auto network = get_node("/root/network");
+    if (get_tree()->has_network_peer()) {
+		if (get_tree()->is_network_server())
+        	network->rpc_unreliable("update_acorn_position", get_name(), get_translation());
+	}
+    else
+        network->call("update_acorn_position", get_name(), get_translation());
 }
 

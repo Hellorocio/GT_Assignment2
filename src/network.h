@@ -13,14 +13,17 @@
 #include "basic_movement.h"
 #include "gui.h"
 #include <Timer.hpp>
+#include "collectable.h"
+#include <random>
+#include <Ref.hpp>
+#include <PackedScene.hpp>
+
 
 namespace godot {
 
 class Network : public Node {
     GODOT_CLASS(Network, Node)
 
-private:
-    
 public:
     static void _register_methods();
 
@@ -45,14 +48,21 @@ public:
     void start_game();
     void disconnect_all();
 
+    void add_acorns_server();
+    void remove_acorn(String acornName);
+    void spawn_all_acorns(Dictionary acorns);
+    void update_acorn_position(String acornName, Vector3 position);
+
 private:
     bool is_started;
+    Ref<PackedScene> AcornScene;
     Ref<PackedScene> player_scene;
     String SERVER_IP = "127.0.0.1";
     const int64_t SERVER_PORT = 31400;
-    const int64_t MAX_PLAYERS = 2;
+    const int64_t MAX_PLAYERS = 4;
     Dictionary self_data;
     Dictionary players;
+    Dictionary acorns;
     std::vector<Vector3> init_positions;
     int init_pos_index = 1;
 };

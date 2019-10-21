@@ -7,7 +7,6 @@
 #include <PackedScene.hpp>
 #include "collectable.h"
 #include <vector>
-#include <random>
 
 namespace godot {
 
@@ -16,9 +15,8 @@ namespace godot {
 
 	private:
 		Ref<PackedScene> PlayerScene;
-		Ref<PackedScene> AcornScene;
 
-		std::vector<Vector3> acorn_positions;
+		std::vector<Collectable> acorn_positions;
 
 	public:
 		static void _register_methods();
@@ -29,7 +27,6 @@ namespace godot {
 		void _init();
 		void _ready();
 		void _create_player();
-		void _create_acorns();
 		void _process(float delta);
 	};
 }

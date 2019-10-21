@@ -155,7 +155,6 @@ mesh = SubResource( 3 )
 material/0 = null
 
 [node name="Ground" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="Ground" parent="Ground" instance=ExtResource( 1 )]
 editor/display_folded = true
@@ -168,7 +167,7 @@ transform = Transform( 16.9269, 0, 0, 0, 0.113214, 0, 0, 0, -34.4732, -51.1542, 
 transform = Transform( -20, 8.74228e-09, 0, 1.27577e-05, 0.729654, 0, 0, 0, 17, 32.6658, 24.8715, -28.2954 )
 
 [node name="Ground7" parent="Ground" instance=ExtResource( 1 )]
-transform = Transform( -22.3675, -0.295979, 0, -9.00598, 0.668416, 0, 0, 0, 17, 4.52658, 7.95085, 37.9381 )
+transform = Transform( -22.3674, -0.273039, 1.48619e-06, -9.00615, 0.67811, 0, 1.95542e-06, 2.38698e-08, 17, 4.52658, 7.95085, 37.9381 )
 
 [node name="Ground9" parent="Ground" instance=ExtResource( 1 )]
 transform = Transform( -20, 8.74228e-09, 0, 1.22587e-05, 0.701113, -4.70812, 3.53321e-06, 0.202076, 16.335, 54.3887, 20.2109, 4.2824 )

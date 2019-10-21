@@ -20,6 +20,11 @@ void Network::_register_methods() {
     register_method("start_game", &Network::start_game, GODOT_METHOD_RPC_MODE_REMOTESYNC);
     register_method("disconnect_all", &Network::disconnect_all, GODOT_METHOD_RPC_MODE_REMOTESYNC);
 
+    register_method("add_acorns_server", &Network::add_acorns_server, GODOT_METHOD_RPC_MODE_REMOTESYNC);
+    register_method("remove_acorn", &Network::remove_acorn, GODOT_METHOD_RPC_MODE_REMOTESYNC);
+    register_method("spawn_all_acorns", &Network::spawn_all_acorns, GODOT_METHOD_RPC_MODE_REMOTESYNC);
+    register_method("update_acorn_position", &Network::update_acorn_position, GODOT_METHOD_RPC_MODE_REMOTESYNC);
+
     register_property<Network, Dictionary>("self_data", &Network::self_data, Dictionary(), GODOT_METHOD_RPC_MODE_DISABLED);
     register_property<Network, Dictionary>("players", &Network::players, Dictionary(), GODOT_METHOD_RPC_MODE_DISABLED);
     register_property<Network, bool>("is_started", &Network::is_started, false, GODOT_METHOD_RPC_MODE_DISABLED);
@@ -37,6 +42,9 @@ void Network::_init() {
     is_started = false;
     self_data["name"] = "";
     self_data["position"] = Vector3(0, 2, 0);
+    
+	ResourceLoader* resourceLoader = ResourceLoader::get_singleton();
+    AcornScene = resourceLoader->load("res://player.tscn");
 }
 
 void Network::_ready() {
@@ -47,6 +55,9 @@ void Network::_ready() {
     init_positions[1] = Vector3(47,28,-31);
     init_positions[2] = Vector3(-18,14,39);
     init_positions[3] = Vector3(-42,1,-21);
+
+    ResourceLoader* resourceLoader = ResourceLoader::get_singleton();
+    AcornScene = resourceLoader->load("res://acorn_collectable.tscn");
 }
 
 // called by 1, the server
@@ -92,8 +103,18 @@ void Network::_connected_to_server() {
 }
 
 void Network::_on_player_disconnected(int64_t id) {
+    //remove from players list
     players.erase(id);
 
+    Dictionary player_data = players[id];
+
+    //remove player from lobby
+    Label* label = Object::cast_to<Label>(get_node("/root/Game/LobbyMenu/PlayerList"));
+    String lobbyList = label->get_text();
+    lobbyList= lobbyList.replace(player_data["name"], "");
+    label->set_text(lobbyList);
+
+    //remove player from scene
     auto disconnected_player = get_node("/root/Game/" + String::num_int64(id));
     disconnected_player->queue_free();
 }
@@ -110,8 +131,12 @@ void Network::_on_player_connected(int64_t connectedPlayerId) {
     }
 }
 
+// called by the server when a new client connects
 void Network::_request_player_info(int64_t requestFromId, int64_t playerId) {
     if(get_tree()->is_network_server()) {
+        if (is_started)
+            rpc_id(playerId, "spawn_all_acorns", acorns);
+
         rpc_id(requestFromId, "_send_player_info", playerId, players[playerId]);
     }
 }
@@ -194,10 +219,12 @@ void Network::update_play_pressed(int64_t id) {
         }
     }
 
-    if (start_game) {
+    if (start_game) {        
         if (!is_started) {
             Timer* timer = Object::cast_to<Timer>(get_parent()->get_node("/root/Game/GUI/Timer"));
             timer->start();
+
+            add_acorns_server();
         }
         rpc("start_game");
     }
@@ -224,3 +251,61 @@ void Network::disconnect_all() {
 
     get_tree()->set_network_peer(nullptr);
 }
+
+// called for the server, adds acorns to server acorn list
+void Network::add_acorns_server() {
+    int num_acorns = (int) get_node("/root/Game/GameState")->get("num_acorns");
+	Vector2 max_acorn_bounds = (Vector2) get_node("/root/Game/GameState")->get("max_acorn_bounds");
+	Vector2 min_acorn_bounds = (Vector2) get_node("/root/Game/GameState")->get("min_acorn_bounds");
+
+	for (int i = 0; i < num_acorns; ++i) {
+		//get a random num for x and z position
+		std::uniform_real_distribution<> x_dist(min_acorn_bounds.x, max_acorn_bounds.x);
+		std::uniform_real_distribution<> z_dist(min_acorn_bounds.y, max_acorn_bounds.y);
+
+		std::random_device r;
+		std::seed_seq seed{ r(), r(), r(), r(), r(), r(), r(), r() };
+		std::mt19937 eng{ seed };
+
+		Vector3 new_position = Vector3(x_dist(eng), 40, z_dist(eng));
+        acorns["acorn" + String::num_int64(i)] = new_position;
+	}
+
+    if (get_tree()->has_network_peer())
+        rpc("spawn_all_acorns", acorns);
+    else
+        spawn_all_acorns(acorns);
+}
+
+// called for everyone. Server should delete acorn from data
+void Network::remove_acorn(String acornName) {
+    if (get_tree()->is_network_server()) {
+        acorns.erase(acornName);
+    }
+
+    get_node("/root/network/" + acornName)->queue_free();
+}
+
+// executed everyone, even newly joined clients. create all preexisting acorns
+void Network::spawn_all_acorns(Dictionary acorns) {
+    auto names = acorns.keys();
+    for (int i = 0; i < names.size(); i++) {
+        auto name = names[i];
+		godot::Collectable* acorn = Object::cast_to<Collectable>(AcornScene->instance());
+        acorn->set_name(name);
+		acorn->init(acorns[name]);
+		add_child(acorn);
+    }
+}
+
+// called for everyone. Server should store position
+void Network::update_acorn_position(String acornName, Vector3 position) {
+    if (get_tree()->has_network_peer()) {
+        if (get_tree()->is_network_server())
+            acorns[acornName] = position;                                
+        Object::cast_to<Spatial>(get_node("/root/network/" + acornName))->set_translation(position);        
+    } else {
+        acorns[acornName] = position;
+    }    
+}
+
