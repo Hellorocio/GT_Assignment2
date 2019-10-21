@@ -19,3 +19,5 @@ collect acorns together
 Features:
 drop in/out multiplayer
 started on setup for lobby
+
+If a client disconnect, other clients and the server continue to work, but on server disconnect, all clients can no longer play and must quit.
