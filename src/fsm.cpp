@@ -1,4 +1,6 @@
-#include "AI/fsm.h"
+#include "fsm.h"
+
+using namespace godot;
 
 void FSM::update() {
     if (state != nullptr) {

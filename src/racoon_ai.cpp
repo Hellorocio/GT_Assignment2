@@ -1,4 +1,4 @@
-#include "AI/racoon_ai.h"
+#include "racoon_ai.h"
 
 using namespace godot;
 

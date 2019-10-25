@@ -1,21 +1,21 @@
-#ifndef RACOON_AI_H
-#define RACOON_AI_H
+#ifndef SQUIRREL_AI_H
+#define SQUIRREL_AI_H
 
 #include <Godot.hpp>
 #include <KinematicBody.hpp>
-#include "fsm.h"
+//#include "fsm.h"
 
 namespace godot {
 
-	class RacoonAI : public KinematicBody {
-		GODOT_CLASS(RacoonAI, KinematicBody)
+	class SquirrelAI : public KinematicBody {
+		GODOT_CLASS(SquirrelAI, KinematicBody)
 	private:
-        FSM brain;
+        //FSM brain;
 	public:
 		static void _register_methods();
 
-		RacoonAI();
-		~RacoonAI();
+		SquirrelAI();
+		~SquirrelAI();
 
 		void _init();
 		void _ready();

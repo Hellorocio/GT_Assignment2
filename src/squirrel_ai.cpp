@@ -1,4 +1,4 @@
-#include "AI/squirrel_ai.h"
+#include "squirrel_ai.h"
 
 using namespace godot;
 

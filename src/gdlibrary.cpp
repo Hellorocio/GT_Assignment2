@@ -5,9 +5,9 @@
 #include "gui.h"
 #include "player_handler.h"
 #include "network.h"
-#include "AI/squirrel_ai.h"
-#include "AI/racoon_ai.h"
-#include "AI/waypoint.h"
+#include "squirrel_ai.h"
+#include "racoon_ai.h"
+#include "waypoint.h"
 
 extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *o) {
     godot::Godot::gdnative_init(o);
