@@ -2,15 +2,13 @@
 #define FSM_H
 
 class AbstractState {
-private:
 
 public:
-
     AbstractState();
-    ~AbstractState();
+    virtual ~AbstractState();
 
     virtual void start() = 0;
-    virtual void excecute() = 0;
+    virtual void execute() = 0;
     virtual void end() = 0;
 };
 
@@ -25,7 +23,7 @@ public:
     ~FSM();
 
     void update();
-    void set_state();
+    void set_state(AbstractState* new_state);
 };
 
 #endif

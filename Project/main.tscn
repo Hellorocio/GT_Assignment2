@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://bin/player_handler.gdns" type="Script" id=1]
 [ext_resource path="res://bin/game_state.gdns" type="Script" id=2]
@@ -10,15 +10,13 @@
 [ext_resource path="res://WinMenu2.tscn" type="PackedScene" id=8]
 [ext_resource path="res://MainMenu2.tscn" type="PackedScene" id=9]
 [ext_resource path="res://LobbyMenu.tscn" type="PackedScene" id=10]
+[ext_resource path="res://bin/waypoint.gdns" type="TextFile" id=11]
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 1 )
 
 [node name="GameState" type="Node" parent="."]
 script = ExtResource( 2 )
-num_acorns = 35
-max_acorn_bounds = Vector2( 65, 30 )
-min_acorn_bounds = Vector2( -30, -40 )
 
 [node name="Traps" type="Node" parent="."]
 editor/display_folded = true
@@ -59,5 +57,21 @@ visible = false
 pause_mode = 2
 editor/display_folded = true
 visible = false
+
+[node name="Waypoint" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.359524, 2.09531, 8.16224 )
+script = ExtResource( 11 )
+
+[node name="Waypoint2" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -38.6974, 2.09531, 8.16224 )
+script = ExtResource( 11 )
+
+[node name="Waypoint4" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.359524, 2.09531, -21.0048 )
+script = ExtResource( 11 )
+
+[node name="Waypoint3" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -38.6974, 2.09531, -21.0048 )
+script = ExtResource( 11 )
 
 [editable path="LobbyMenu"]

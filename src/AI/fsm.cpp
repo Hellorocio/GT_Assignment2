@@ -1,8 +1,8 @@
-#include "fsm.h"
+#include "AI/fsm.h"
 
 void FSM::update() {
     if (state != nullptr) {
-        state->exectue();
+        state->execute();
     }
 }
 
