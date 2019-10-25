@@ -5,6 +5,8 @@
 #include "gui.h"
 #include "player_handler.h"
 #include "network.h"
+#include "AI/squirrel_ai.h"
+#include "AI/racoon_ai.h"
 
 extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *o) {
     godot::Godot::gdnative_init(o);
@@ -24,4 +26,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
     godot::register_class<godot::Gui>();
     godot::register_class<godot::PlayerHandler>();
     godot::register_class<godot::Network>();
+    godot::register_class<godot::SquirrelAI>();
+    godot::register_class<godot::RacoonAI>();
+
 }
