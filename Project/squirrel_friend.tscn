@@ -1,6 +1,6 @@
 [gd_scene load_steps=26 format=2]
 
-[ext_resource path="res://bin/basic_movement.gdns" type="Script" id=1]
+[ext_resource path="res://bin/squirrel_ai.gdns" type="Script" id=1]
 [ext_resource path="res://SquirrelFace2.png" type="Texture" id=2]
 [ext_resource path="res://hewing-carrot.wav" type="AudioStream" id=3]
 [ext_resource path="res://spiketrap.wav" type="AudioStream" id=4]
@@ -91,25 +91,25 @@ surfaces/2 = {
 "vertex_count": 108
 }
 
-[sub_resource type="DynamicFont" id=17]
+[sub_resource type="DynamicFont" id=14]
 size = 50
 font_data = ExtResource( 8 )
 
-[sub_resource type="QuadMesh" id=14]
+[sub_resource type="QuadMesh" id=15]
 size = Vector2( 2, 2 )
 
-[sub_resource type="ViewportTexture" id=15]
+[sub_resource type="ViewportTexture" id=16]
 flags = 5
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="SpatialMaterial" id=16]
+[sub_resource type="SpatialMaterial" id=17]
 resource_local_to_scene = true
 flags_unshaded = true
 flags_albedo_tex_force_srgb = true
 params_diffuse_mode = 1
 params_cull_mode = 2
 params_billboard_mode = 2
-albedo_texture = SubResource( 15 )
+albedo_texture = SubResource( 16 )
 distance_fade_mode = 1
 distance_fade_min_distance = 0.0
 distance_fade_max_distance = 10.0
@@ -117,9 +117,6 @@ distance_fade_max_distance = 10.0
 [node name="SquirrelFriend" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 script = ExtResource( 1 )
-horiz_camera_sensitivity = 1.0
-vert_camera_sensitivity = 1.0
-movement_speed = 12.0
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
@@ -172,7 +169,6 @@ process_material = SubResource( 12 )
 draw_pass_1 = SubResource( 13 )
 
 [node name="Viewport" type="Viewport" parent="."]
-editor/display_folded = true
 size = Vector2( 200, 200 )
 transparent_bg = true
 hdr = false
@@ -180,15 +176,15 @@ usage = 0
 render_target_v_flip = true
 
 [node name="Control" type="Control" parent="Viewport"]
-margin_right = 400.0
+margin_right = 200.0
 margin_bottom = 200.0
 mouse_filter = 1
 
 [node name="PlayerTag" type="Label" parent="Viewport/Control"]
-margin_right = 335.0
+margin_right = 200.0
 margin_bottom = 200.0
-custom_fonts/font = SubResource( 17 )
-text = "Squirrel Freind"
+custom_fonts/font = SubResource( 14 )
+text = "Friend"
 align = 1
 valign = 1
 
@@ -196,5 +192,5 @@ valign = 1
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Area"]
-mesh = SubResource( 14 )
-material/0 = SubResource( 16 )
+mesh = SubResource( 15 )
+material/0 = SubResource( 17 )

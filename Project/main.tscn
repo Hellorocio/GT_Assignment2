@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://bin/player_handler.gdns" type="Script" id=1]
 [ext_resource path="res://bin/game_state.gdns" type="Script" id=2]
@@ -10,6 +10,8 @@
 [ext_resource path="res://WinMenu2.tscn" type="PackedScene" id=8]
 [ext_resource path="res://MainMenu2.tscn" type="PackedScene" id=9]
 [ext_resource path="res://LobbyMenu.tscn" type="PackedScene" id=10]
+[ext_resource path="res://bin/waypoint.gdns" type="Script" id=11]
+[ext_resource path="res://squirrel_friend.tscn" type="PackedScene" id=12]
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 1 )
@@ -57,16 +59,26 @@ pause_mode = 2
 editor/display_folded = true
 visible = false
 
-[node name="Waypoint" type="Spatial" parent="."]
+[node name="Waypoints" type="Spatial" parent="."]
+editor/display_folded = true
+
+[node name="Waypoint1" type="Spatial" parent="Waypoints"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.359524, 2.09531, 8.16224 )
+script = ExtResource( 11 )
 
-[node name="Waypoint2" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -38.6974, 2.09531, 8.16224 )
+[node name="Waypoint2" type="Spatial" parent="Waypoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -40.6805, 2.09531, 8.16224 )
+script = ExtResource( 11 )
 
-[node name="Waypoint4" type="Spatial" parent="."]
+[node name="Waypoint3" type="Spatial" parent="Waypoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -40.6805, 2.09531, -21.0048 )
+script = ExtResource( 11 )
+
+[node name="Waypoint4" type="Spatial" parent="Waypoints"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.359524, 2.09531, -21.0048 )
+script = ExtResource( 11 )
 
-[node name="Waypoint3" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -38.6974, 2.09531, -21.0048 )
+[node name="SquirrelFriend" parent="." instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.18029, 1.54186, -22.6062 )
 
 [editable path="LobbyMenu"]

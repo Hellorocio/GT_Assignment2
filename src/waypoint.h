@@ -12,8 +12,8 @@ namespace godot {
         
         
 	public:
-        //PoolStringArray adjacent;
-
+        PoolStringArray adjacent;
+		
 		static void _register_methods();
 
 		Waypoint();
