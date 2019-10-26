@@ -12,6 +12,7 @@ namespace godot {
         virtual void execute() = 0;
         virtual void end() = 0;
     };
+    
 
     class FSM { 
 
@@ -26,6 +27,8 @@ namespace godot {
         void update();
         void set_state(AbstractState* new_state);
     };
+
+    
 }
 
 #endif
