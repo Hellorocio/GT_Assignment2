@@ -20,8 +20,6 @@ namespace godot {
         void update();
         void set_state(AbstractState* new_state);
     };
-
-    
 }
 
 #endif
