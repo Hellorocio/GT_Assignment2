@@ -8,7 +8,6 @@ void SquirrelAI::_register_methods() {
     register_method("_physics_process", &SquirrelAI::_physics_process);
     register_method("_rotate_player", &SquirrelAI::_rotate_player);
     register_method("_update_movement", &SquirrelAI::_update_movement);
-    register_method("_change_state", &SquirrelAI::_change_state);
     register_method("_get_closest_node", &SquirrelAI::_get_closest_node);
 }
 
@@ -16,33 +15,17 @@ SquirrelAI::SquirrelAI() {
 }
 
 SquirrelAI::~SquirrelAI() {
-    //delete(wanderState);
-    //delete(brain);
 }
 
 void SquirrelAI::_init() {
-    //brain->set_state(wanderState);
-    _change_state(WANDER);
+    brain.set_state(&wanderState);
 }
 
 void SquirrelAI::_ready() {
 }
 
 void SquirrelAI::_process(float delta) {
-    //brain->update();
-    switch (state)
-    {
-        case WANDER:
-            Godot::print("wandering");
-            if (current_waypoint != nullptr) {
-                Vector3 temp_motion = Object::cast_to<Spatial>(current_waypoint)->get_translation() - Object::cast_to<Spatial>(this)->get_translation();
-                motion = temp_motion.normalized() * wander_speed;
-            }
-            
-
-            break;
-
-    }
+    brain.update();
 }
 
 
@@ -57,34 +40,6 @@ void SquirrelAI::_rotate_player() {
 
 void SquirrelAI::_update_movement(float delta) {
     
-}
-
-
-void SquirrelAI::_change_state(int s) {
-
-    //stop current state
-    switch (state)
-    {
-        case WANDER:
-            Godot::print("end wander");
-            break;
-        default:
-            break;
-
-    }
-    
-    state = static_cast<AIState>(s);
-
-    switch (state)
-    {
-        case WANDER:
-            Godot::print("start wander");
-            current_waypoint = _get_closest_node();
-            
-            break;
-        default:
-            break;
-    }
 }
 
 Waypoint* SquirrelAI::_get_closest_node () {
@@ -111,24 +66,20 @@ Waypoint* SquirrelAI::_get_closest_node () {
     //return Object::cast_to<Waypoint>(children[min_index]);
 }
 
-/*
-Wander::Wander() {
-
-}
-
-Wander::~Wander() {
-    
-}
-
-void Wander::start() {
+void WanderState::start() {
     Godot::print("start wandering");
+    //current_waypoint = _get_closest_node();
 }
 
-void Wander::execute() {
+void WanderState::execute() {
     Godot::print("execute wandering");
+
+    // if (current_waypoint != nullptr) {
+    //     Vector3 temp_motion = Object::cast_to<Spatial>(current_waypoint)->get_translation() - Object::cast_to<Spatial>(this)->get_translation();
+    //     motion = temp_motion.normalized() * wander_speed;
+    // }
 }
 
-void Wander::end() {
-
+void WanderState::end() {
+    Godot::print("end wander");
 }
-*/

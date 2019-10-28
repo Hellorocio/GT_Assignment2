@@ -5,25 +5,18 @@ namespace godot {
     class AbstractState {
 
     public:
-        AbstractState();
-        virtual ~AbstractState();
-
-        virtual void start() = 0;
-        virtual void execute() = 0;
-        virtual void end() = 0;
+        virtual void start() {}
+        virtual void execute() {}
+        virtual void end() {}
     };
     
 
     class FSM { 
 
     private:
-        AbstractState* state;
+        AbstractState* state = nullptr;
 
     public:
-
-        FSM();
-        ~FSM();
-
         void update();
         void set_state(AbstractState* new_state);
     };
