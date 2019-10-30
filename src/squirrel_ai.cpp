@@ -32,6 +32,30 @@ void WanderState::end(Node* parent) {
     //Godot::print("end wander");
 }
 
+void FoundAcorn::start(Node* parent) {
+
+}
+
+void FoundAcorn::execute(Node* parent) {
+
+}
+
+void FoundAcorn::end(Node* parent) {
+
+}
+
+void ScareRacoon::start(Node* parent) {
+
+}
+
+void ScareRacoon::execute(Node* parent) {
+
+}
+
+void ScareRacoon::end(Node* parent) {
+    
+}
+
 void SquirrelAI::_register_methods() {
 	register_method("_ready", &SquirrelAI::_ready);
     register_method("_process", &SquirrelAI::_process);

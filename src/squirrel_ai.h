@@ -13,15 +13,31 @@
 namespace godot {
 
 	class WanderState : public AbstractState {
-		public:
-			NodePath current_waypoint = "";
-			NodePath previous_waypoint = "";
-			NodePath temp_waypoint = "";
+	public:
+		NodePath current_waypoint = "";
+		NodePath previous_waypoint = "";
+		NodePath temp_waypoint = "";
 
-			void start(Node* parent) override;
-			void execute(Node* parent) override;
-			void end(Node* parent) override;
+		void start(Node* parent) override;
+		void execute(Node* parent) override;
+		void end(Node* parent) override;
 	};
+
+	class FoundAcorn : public AbstractState {
+	public:
+
+		void start(Node* parent) override;
+		void execute(Node* parent) override;
+		void end(Node* parent) override;
+	};
+
+	class ScareRacoon : public AbstractState {
+		public:
+
+		void start(Node* parent) override;
+		void execute(Node* parent) override;
+		void end(Node* parent) override;
+	}
 
 	class SquirrelAI : public KinematicBody {
 		GODOT_CLASS(SquirrelAI, KinematicBody)
