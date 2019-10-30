@@ -16,6 +16,7 @@ namespace godot {
 		public:
 			NodePath current_waypoint = "";
 			NodePath previous_waypoint = "";
+			NodePath temp_waypoint = "";
 
 			void start(Node* parent) override;
 			void execute(Node* parent) override;
@@ -34,6 +35,7 @@ namespace godot {
 	public:
 		//Wander* wanderState = new Wander();
 		float wander_speed = 2;
+		float gravity = -40.0;
 
 		static void _register_methods();
 

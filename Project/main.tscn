@@ -74,7 +74,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -40.6805, 2.09531, -21.0048 )
 script = ExtResource( 11 )
 
 [node name="Waypoint4" type="Spatial" parent="Waypoints"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.64048, 2.09531, -29.0048 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.64048, 2.09531, -26.0048 )
 script = ExtResource( 11 )
 
 [node name="SquirrelFriend" parent="." instance=ExtResource( 12 )]
