@@ -14,21 +14,19 @@ namespace godot {
 
 	class WanderState : public AbstractState {
 		public:
-			Waypoint* current_waypoint = nullptr;
-			Waypoint* previous_waypoint = nullptr;
-			Node* squirrelAI= nullptr;
+			NodePath current_waypoint = "";
+			NodePath previous_waypoint = "";
 
-			explicit WanderState(Node* squirrel) : squirrelAI(squirrel) {}
-			void start() override;
-			void execute() override;
-			void end() override;
+			void start(Node* parent) override;
+			void execute(Node* parent) override;
+			void end(Node* parent) override;
 	};
 
 	class SquirrelAI : public KinematicBody {
 		GODOT_CLASS(SquirrelAI, KinematicBody)
 	private:
         FSM brain;
-		WanderState wanderState{this};
+		WanderState wanderState;
 
 		Vector3 motion = Vector3(1, 0, 0);
 		
@@ -48,7 +46,7 @@ namespace godot {
 		void _physics_process(float delta);
 		void _rotate_player();
 		void _update_movement(Vector3 direction);
-		Waypoint* _get_closest_node();
+		NodePath _get_closest_node();
 	};
 }
 

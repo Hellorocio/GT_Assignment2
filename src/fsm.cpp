@@ -2,21 +2,21 @@
 
 using namespace godot;
 
-void FSM::update() {
+void FSM::update(Node* parent) {
     if (state != nullptr) {
-        state->execute();
+        state->execute(parent);
     }
 }
 
 
-void FSM::set_state(AbstractState* new_state) {
+void FSM::set_state(Node* parent, AbstractState* new_state) {
     if (state != nullptr) {
-        state->end();
+        state->end(parent);
     }
 
     state = new_state;
 
     if (state != nullptr) {
-        state->start();
+        state->start(parent);
     }
 }
