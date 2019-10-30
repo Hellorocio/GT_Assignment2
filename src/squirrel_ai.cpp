@@ -2,10 +2,6 @@
 
 using namespace godot;
 
-WanderState::WanderState(Node* squirrel) {
-    squirrelAI = squirrel;
-}
-
 void WanderState::start() {
     //Godot::print("start wandering");
     // TODO: this call is not working
@@ -41,7 +37,6 @@ SquirrelAI::SquirrelAI() {
 }
 
 SquirrelAI::~SquirrelAI() {
-    delete(wanderState);
 }
 
 void SquirrelAI::_init() {
@@ -49,8 +44,7 @@ void SquirrelAI::_init() {
 }
 
 void SquirrelAI::_ready() {
-    wanderState = new WanderState(get_parent()->get_node(this->get_name()));
-    brain.set_state(wanderState);
+    brain.set_state(&wanderState);
 }
 
 void SquirrelAI::_process(float delta) {
@@ -75,22 +69,22 @@ Waypoint* SquirrelAI::_get_closest_node () {
     Godot::print("_get_closest_node: start");
     Node* waypoint_parent = find_node("Waypoints", true, false);
     
-    auto children = waypoint_parent->get_children();
+    Array children = waypoint_parent->get_children();
     
-    Spatial* child_spatial = Object::cast_to<Spatial>(children[0]);
-    Spatial* this_spatial = Object::cast_to<Spatial>(this);
+    Spatial* child_spatial = Object::cast_to<Spatial>(get_node(children[0]));
+    Spatial* this_spatial = this;
     float min_dist = (this_spatial->get_translation()).distance_squared_to(child_spatial->get_translation());
     int min_index = 0;
     for (int i = 1; i < children.size(); ++i) {
         Godot::print("_get_closest_node");
-        child_spatial = Object::cast_to<Spatial>(children[i]);
+        child_spatial = Object::cast_to<Spatial>(get_node(children[i]));
         float new_dist = (this_spatial->get_translation()).distance_squared_to(child_spatial->get_translation());
         if (new_dist < min_dist) {
             min_dist = new_dist;
             min_index = i;
         }
     }
-    return Object::cast_to<Waypoint>(children[min_index]);
+    return Object::cast_to<Waypoint>(get_node(children[min_index]));
 }
 
 

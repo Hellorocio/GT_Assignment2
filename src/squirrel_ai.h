@@ -18,7 +18,7 @@ namespace godot {
 			Waypoint* previous_waypoint = nullptr;
 			Node* squirrelAI= nullptr;
 
-			WanderState(Node* squirrel);
+			explicit WanderState(Node* squirrel) : squirrelAI(squirrel) {}
 			void start() override;
 			void execute() override;
 			void end() override;
@@ -28,7 +28,7 @@ namespace godot {
 		GODOT_CLASS(SquirrelAI, KinematicBody)
 	private:
         FSM brain;
-		WanderState* wanderState = nullptr;
+		WanderState wanderState{this};
 
 		Vector3 motion = Vector3(1, 0, 0);
 		
