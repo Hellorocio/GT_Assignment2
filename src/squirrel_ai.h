@@ -9,6 +9,7 @@
 #include <Viewport.hpp>
 #include <string>
 #include "fsm.h"
+#include <Area.hpp>
 
 namespace godot {
 
@@ -19,15 +20,16 @@ namespace godot {
 		NodePath temp_waypoint = "";
 
 		void start(Node* parent) override;
-		void execute(Node* parent) override;
+		void execute(Node* parent, float delta) override;
 		void end(Node* parent) override;
 	};
 
 	class FoundAcorn : public AbstractState {
 	public:
+		NodePath current_acorn = "";
 
 		void start(Node* parent) override;
-		void execute(Node* parent) override;
+		void execute(Node* parent, float delta) override;
 		void end(Node* parent) override;
 	};
 
@@ -35,21 +37,25 @@ namespace godot {
 		public:
 
 		void start(Node* parent) override;
-		void execute(Node* parent) override;
+		void execute(Node* parent, float delta) override;
 		void end(Node* parent) override;
 	};
 
 	class SquirrelAI : public KinematicBody {
 		GODOT_CLASS(SquirrelAI, KinematicBody)
 	private:
-        FSM brain;
-		WanderState wanderState;
-
 		Vector3 motion = Vector3(1, 0, 0);
+		FSM brain;
 		
-
+		friend class WanderState;
+		friend class FoundAcorn;
+		friend class ScareRacoon;
 	public:
-		//Wander* wanderState = new Wander();
+
+		WanderState wanderState;
+		FoundAcorn foundAcorn;
+		ScareRacoon scareRacoon;
+
 		float wander_speed = 2;
 		float gravity = -40.0;
 
@@ -63,6 +69,7 @@ namespace godot {
 		void _process(float delta);
 		void _physics_process(float delta);
 		void _rotate_player();
+		void _on_area_entered (Area* area);
 		void _update_movement(Vector3 direction);
 		void _turn_to_face(Vector3 target);
 		NodePath _get_closest_node();

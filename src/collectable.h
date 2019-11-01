@@ -4,6 +4,7 @@
 #include <Godot.hpp>
 #include <RigidBody.hpp>
 #include <AudioStreamPlayer3D.hpp>
+#include "squirrel_ai.h"
 
 namespace godot {
 
@@ -24,7 +25,7 @@ namespace godot {
 		void _process(float delta);
 		void init(Vector3 start_position);
 		void _on_body_entered(Node * body);
-		void _on_collection(int64_t id);
+		void _on_collection(String name);
 	};
 }
 

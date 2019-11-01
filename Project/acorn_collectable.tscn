@@ -32,3 +32,9 @@ mesh = ExtResource( 2 )
 material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
 material/2 = ExtResource( 4 )
+
+[node name="AcornArea" type="Area" parent="."]
+
+[node name="CollisionShape2" type="CollisionShape" parent="AcornArea"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+shape = SubResource( 1 )

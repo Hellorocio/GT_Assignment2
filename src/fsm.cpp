@@ -2,9 +2,9 @@
 
 using namespace godot;
 
-void FSM::update(Node* parent) {
+void FSM::update(Node* parent, float delta) {
     if (state != nullptr) {
-        state->execute(parent);
+        state->execute(parent, delta);
     }
 }
 

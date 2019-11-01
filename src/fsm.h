@@ -7,18 +7,16 @@ namespace godot {
 
     public:
         virtual void start(Node* parent) {}
-        virtual void execute(Node* parent) {}
+        virtual void execute(Node* parent, float delta) {}
         virtual void end(Node* parent) {}
     };
     
 
     class FSM { 
 
-    private:
-        AbstractState* state = nullptr;
-
     public:
-        void update(Node* parent);
+        AbstractState* state = nullptr;
+        void update(Node* parent, float delta);
         void set_state(Node* parent, AbstractState* new_state);
     };
 }

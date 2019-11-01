@@ -37,7 +37,8 @@ void Collectable::_ready()
 void Collectable::_on_body_entered(Node * body)
 {
 	BasicMovement * player = Object::cast_to<BasicMovement>(body);
-	if (!is_killed && player != nullptr && (!get_tree()->has_network_peer() || player->is_network_master()))
+	SquirrelAI * AI = Object::cast_to<SquirrelAI>(body);
+	if (!is_killed && (player != nullptr || AI) && (!get_tree()->has_network_peer() || player->is_network_master()))
 	{
 		// called by player's network master
 
@@ -53,14 +54,14 @@ void Collectable::_on_body_entered(Node * body)
 		if (get_tree()->has_network_peer())
     		rpc("_on_collection", player_id);
 		else
-			_on_collection(player_id);
+			_on_collection(body->get_name());
 	}
 }
 
 // called by everyone
-void Collectable::_on_collection(int64_t id)
+void Collectable::_on_collection(String name)
 {
-	AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Game/" + String::num_int64(id) + "/AcornSound"));
+	AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Game/" + name + "/AcornSound"));
 	a1->play();
 
 	//remove this node

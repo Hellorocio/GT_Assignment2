@@ -7,11 +7,11 @@ void WanderState::start(Node* parent) {
     current_waypoint = Object::cast_to<SquirrelAI>(parent)->_get_closest_node();
 }
 
-void WanderState::execute(Node* parent) {
+void WanderState::execute(Node* parent, float dt) {
     //Godot::print("execute wandering");
 
     auto current = parent->get_node("/root/Game/Waypoints/" + current_waypoint);
-    Godot::print(current_waypoint);
+    //Godot::print(current_waypoint);
 
     if (current != nullptr && !current_waypoint.is_empty()) {
         Vector3 delta = Object::cast_to<Spatial>(current)->get_translation() - Object::cast_to<Spatial>(parent)->get_translation();
@@ -23,7 +23,7 @@ void WanderState::execute(Node* parent) {
             previous_waypoint = temp_waypoint;
         } else {
             // move squirrel towards current waypoint
-            Object::cast_to<SquirrelAI>(parent)->_update_movement(delta.normalized() * 8);
+            Object::cast_to<SquirrelAI>(parent)->_update_movement(delta.normalized() * 6);
             Object::cast_to<SquirrelAI>(parent)->_turn_to_face(Object::cast_to<Spatial>(current)->get_translation());
         }
     }
@@ -34,11 +34,28 @@ void WanderState::end(Node* parent) {
 }
 
 void FoundAcorn::start(Node* parent) {
-
+    Godot::print("FoundAcorn: start");
 }
 
-void FoundAcorn::execute(Node* parent) {
+void FoundAcorn::execute(Node* parent, float dt) {
+    auto current = parent->get_node(current_acorn);
 
+    if (current != nullptr) {
+        // move squirrel towards current acorn
+        Vector3 delta = Object::cast_to<Spatial>(current)->get_translation() - Object::cast_to<Spatial>(parent)->get_translation();
+        delta.y = 0;
+
+        float len = delta.length();
+        Vector3 normalized_delta = delta * 6 / len;
+        if (len < 1)
+            normalized_delta = delta * 6;        
+
+        Object::cast_to<SquirrelAI>(parent)->_update_movement(normalized_delta);
+        Object::cast_to<SquirrelAI>(parent)->_turn_to_face(Object::cast_to<Spatial>(current)->get_translation());
+    } else {
+        // switch back to wanderState
+         Object::cast_to<SquirrelAI>(parent)->brain.set_state(parent, &(Object::cast_to<SquirrelAI>(parent)->wanderState));
+    }
 }
 
 void FoundAcorn::end(Node* parent) {
@@ -49,7 +66,7 @@ void ScareRacoon::start(Node* parent) {
 
 }
 
-void ScareRacoon::execute(Node* parent) {
+void ScareRacoon::execute(Node* parent, float dt) {
 
 }
 
@@ -64,6 +81,7 @@ void SquirrelAI::_register_methods() {
     register_method("_rotate_player", &SquirrelAI::_rotate_player);
     register_method("_update_movement", &SquirrelAI::_update_movement);
     register_method("_get_closest_node", &SquirrelAI::_get_closest_node);
+    register_method("_on_area_entered", &SquirrelAI::_on_area_entered);
 }
 
 
@@ -80,10 +98,12 @@ void SquirrelAI::_init() {
 
 void SquirrelAI::_ready() {
     brain.set_state(this, &wanderState);
+
+    get_node("SquirrelVision")->connect("area_entered", this, "_on_area_entered");
 }
 
 void SquirrelAI::_process(float delta) {
-    brain.update(this);
+    brain.update(this, delta);
 }
 
 void SquirrelAI::_physics_process(float delta) {
@@ -92,6 +112,19 @@ void SquirrelAI::_physics_process(float delta) {
 
 void SquirrelAI::_rotate_player() {
     
+}
+
+void SquirrelAI::_on_area_entered (Area* area) {
+    Node* areaNode = (Node*)area;
+	String name = areaNode->get_name();
+    
+    if (areaNode->get_name() == "AcornArea" && brain.state == &wanderState) {
+        Godot::print("area_entered signal: found acorn");
+        // change state to FoundAcorn if not already in FoundAcorn
+        foundAcorn.current_acorn = areaNode->get_parent()->get_path();
+        Godot::print(foundAcorn.current_acorn);
+        brain.set_state(this, &foundAcorn);
+    }
 }
 
 void SquirrelAI::_update_movement(Vector3 direction) {
@@ -106,7 +139,7 @@ void SquirrelAI::_turn_to_face(Vector3 target) {
 }
 
 NodePath SquirrelAI::_get_closest_node () {
-    Godot::print("_get_closest_node: start");
+    //Godot::print("_get_closest_node: start");
     Node* waypoint_parent = get_node("/root/Game/Waypoints");
     
     // With poolStringArray, get neighbors of current_waypoint instead of get_children() if current is not null.
@@ -126,7 +159,7 @@ NodePath SquirrelAI::_get_closest_node () {
     if (min_index == -1) {
         return "";
     }
-    Godot::print(Object::cast_to<Node>(Object::___get_from_variant(children[min_index]))->get_name());
+    //Godot::print(Object::cast_to<Node>(Object::___get_from_variant(children[min_index]))->get_name());
     return Object::cast_to<Node>(Object::___get_from_variant(children[min_index]))->get_name();
 }
 
