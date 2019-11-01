@@ -64,6 +64,7 @@ namespace godot {
 		void _physics_process(float delta);
 		void _rotate_player();
 		void _update_movement(Vector3 direction);
+		void _turn_to_face(Vector3 target);
 		NodePath _get_closest_node();
 	};
 }

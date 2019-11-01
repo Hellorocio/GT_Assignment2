@@ -4,7 +4,6 @@ using namespace godot;
 
 void WanderState::start(Node* parent) {
     Godot::print("start wandering");
-    // TODO: this call is not working
     current_waypoint = Object::cast_to<SquirrelAI>(parent)->_get_closest_node();
 }
 
@@ -18,12 +17,14 @@ void WanderState::execute(Node* parent) {
         Vector3 delta = Object::cast_to<Spatial>(current)->get_translation() - Object::cast_to<Spatial>(parent)->get_translation();
 
         if (delta.length() <= 2) {
+            // find a new waypoint to move to
             temp_waypoint = current_waypoint;
             current_waypoint = Object::cast_to<SquirrelAI>(parent)->_get_closest_node();
             previous_waypoint = temp_waypoint;
-        }
-        else {
+        } else {
+            // move squirrel towards current waypoint
             Object::cast_to<SquirrelAI>(parent)->_update_movement(delta.normalized() * 8);
+            Object::cast_to<SquirrelAI>(parent)->_turn_to_face(Object::cast_to<Spatial>(current)->get_translation());
         }
     }
 }
@@ -96,6 +97,12 @@ void SquirrelAI::_rotate_player() {
 void SquirrelAI::_update_movement(Vector3 direction) {
     direction.y = gravity;
     motion = direction;
+}
+
+void SquirrelAI::_turn_to_face(Vector3 target) {
+    Vector3 up = Vector3(0, 1, 0);
+    target.y = get_translation().y;
+    look_at(target, up);
 }
 
 NodePath SquirrelAI::_get_closest_node () {
