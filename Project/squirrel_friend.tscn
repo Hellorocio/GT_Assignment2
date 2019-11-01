@@ -1,7 +1,7 @@
 [gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://bin/squirrel_ai.gdns" type="Script" id=1]
-[ext_resource path="res://SquirrelFace2.png" type="Texture" id=2]
+[ext_resource path="res://SquirrelFriendFace3.png" type="Texture" id=2]
 [ext_resource path="res://hewing-carrot.wav" type="AudioStream" id=3]
 [ext_resource path="res://spiketrap.wav" type="AudioStream" id=4]
 [ext_resource path="res://AcornPaticles.tscn" type="PackedScene" id=5]
@@ -12,7 +12,7 @@
 [sub_resource type="CapsuleShape" id=1]
 
 [sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0.627451, 0.356863, 0.254902, 1 )
+albedo_color = Color( 0.74902, 0.447059, 0.329412, 1 )
 
 [sub_resource type="CapsuleMesh" id=3]
 material = SubResource( 2 )
@@ -22,7 +22,7 @@ radius = 0.65
 mid_height = 2.0
 
 [sub_resource type="SpatialMaterial" id=5]
-albedo_color = Color( 0.694118, 0.513726, 0.34902, 1 )
+albedo_color = Color( 0.572549, 0.32549, 0.227451, 1 )
 
 [sub_resource type="SpatialMaterial" id=6]
 albedo_texture = ExtResource( 2 )
@@ -33,7 +33,7 @@ material = SubResource( 6 )
 [sub_resource type="CylinderMesh" id=8]
 
 [sub_resource type="SpatialMaterial" id=9]
-albedo_color = Color( 0.627451, 0.356863, 0.254902, 1 )
+albedo_color = Color( 0.74902, 0.447059, 0.329412, 1 )
 
 [sub_resource type="Curve" id=10]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
@@ -123,7 +123,6 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0
 shape = SubResource( 1 )
 
 [node name="MeshParent" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="Meshses" type="Spatial" parent="MeshParent"]
 

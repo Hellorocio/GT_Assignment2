@@ -37,7 +37,7 @@ namespace godot {
 		void start(Node* parent) override;
 		void execute(Node* parent) override;
 		void end(Node* parent) override;
-	}
+	};
 
 	class SquirrelAI : public KinematicBody {
 		GODOT_CLASS(SquirrelAI, KinematicBody)

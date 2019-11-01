@@ -1,31 +1,34 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://bin/basic_movement.gdns" type="Script" id=1]
-[ext_resource path="res://SquirrelFace2.png" type="Texture" id=2]
-[ext_resource path="res://hewing-carrot.wav" type="AudioStream" id=3]
-[ext_resource path="res://spiketrap.wav" type="AudioStream" id=4]
-[ext_resource path="res://AcornPaticles.tscn" type="PackedScene" id=5]
-[ext_resource path="res://AcornMat1.tres" type="Material" id=6]
-[ext_resource path="res://AcornMat2.tres" type="Material" id=7]
-[ext_resource path="res://RobotoFont/Roboto-Black.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://RaccoonTail.png" type="Texture" id=2]
+[ext_resource path="res://RaccoonFace.png" type="Texture" id=3]
+[ext_resource path="res://hewing-carrot.wav" type="AudioStream" id=4]
+[ext_resource path="res://spiketrap.wav" type="AudioStream" id=5]
+[ext_resource path="res://AcornPaticles.tscn" type="PackedScene" id=6]
+[ext_resource path="res://AcornMat1.tres" type="Material" id=7]
+[ext_resource path="res://AcornMat2.tres" type="Material" id=8]
+[ext_resource path="res://RobotoFont/Roboto-Black.ttf" type="DynamicFontData" id=9]
 
 [sub_resource type="CapsuleShape" id=1]
 
 [sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0.627451, 0.356863, 0.254902, 1 )
+albedo_color = Color( 0.439216, 0.443137, 0.458824, 1 )
 
 [sub_resource type="CapsuleMesh" id=3]
 material = SubResource( 2 )
 
+[sub_resource type="SpatialMaterial" id=18]
+albedo_texture = ExtResource( 2 )
+uv1_offset = Vector3( 0.97, 0, 0 )
+
 [sub_resource type="CapsuleMesh" id=4]
+material = SubResource( 18 )
 radius = 0.65
 mid_height = 2.0
 
-[sub_resource type="SpatialMaterial" id=5]
-albedo_color = Color( 0.694118, 0.513726, 0.34902, 1 )
-
 [sub_resource type="SpatialMaterial" id=6]
-albedo_texture = ExtResource( 2 )
+albedo_texture = ExtResource( 3 )
 
 [sub_resource type="SphereMesh" id=7]
 material = SubResource( 6 )
@@ -33,7 +36,7 @@ material = SubResource( 6 )
 [sub_resource type="CylinderMesh" id=8]
 
 [sub_resource type="SpatialMaterial" id=9]
-albedo_color = Color( 0.627451, 0.356863, 0.254902, 1 )
+albedo_color = Color( 0.439216, 0.443137, 0.458824, 1 )
 
 [sub_resource type="Curve" id=10]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
@@ -61,7 +64,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97539,
 "index_count": 168,
-"material": ExtResource( 6 ),
+"material": ExtResource( 7 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 108
@@ -73,7 +76,7 @@ surfaces/1 = {
 "blend_shape_data": [  ],
 "format": 97539,
 "index_count": 168,
-"material": ExtResource( 7 ),
+"material": ExtResource( 8 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 112
@@ -85,31 +88,31 @@ surfaces/2 = {
 "blend_shape_data": [  ],
 "format": 97539,
 "index_count": 168,
-"material": ExtResource( 7 ),
+"material": ExtResource( 8 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 108
 }
 
-[sub_resource type="DynamicFont" id=17]
+[sub_resource type="DynamicFont" id=14]
 size = 50
-font_data = ExtResource( 8 )
+font_data = ExtResource( 9 )
 
-[sub_resource type="QuadMesh" id=14]
+[sub_resource type="QuadMesh" id=15]
 size = Vector2( 2, 2 )
 
-[sub_resource type="ViewportTexture" id=15]
+[sub_resource type="ViewportTexture" id=16]
 flags = 5
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="SpatialMaterial" id=16]
+[sub_resource type="SpatialMaterial" id=17]
 resource_local_to_scene = true
 flags_unshaded = true
 flags_albedo_tex_force_srgb = true
 params_diffuse_mode = 1
 params_cull_mode = 2
 params_billboard_mode = 2
-albedo_texture = SubResource( 15 )
+albedo_texture = SubResource( 16 )
 distance_fade_mode = 1
 distance_fade_min_distance = 0.0
 distance_fade_max_distance = 10.0
@@ -135,7 +138,6 @@ enabled = true
 cast_to = Vector3( 0, -1.5, 0 )
 
 [node name="MeshParent" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="Meshses" type="Spatial" parent="MeshParent"]
 
@@ -147,7 +149,7 @@ material/0 = null
 [node name="MeshInstance2" type="MeshInstance" parent="MeshParent/Meshses"]
 transform = Transform( 1, 0, 0, 0, 0.552907, -0.833243, 0, 0.833243, 0.552907, 0, 0.0563474, -1.14449 )
 mesh = SubResource( 4 )
-material/0 = SubResource( 5 )
+material/0 = null
 
 [node name="MeshInstance3" type="MeshInstance" parent="MeshParent/Meshses"]
 transform = Transform( -1.09452, 0, -9.72061e-08, 1.89314e-08, 1.03802, -0.21999, 1.01543e-07, -0.208091, -1.17996, 0, 1.02237, 0.0273015 )
@@ -166,22 +168,21 @@ material/0 = SubResource( 9 )
 
 [node name="AcornSound" type="AudioStreamPlayer3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0766945, 0 )
-stream = ExtResource( 3 )
+stream = ExtResource( 4 )
 unit_db = 10.0
 bus = "Sfx"
 
 [node name="TrapSound" type="AudioStreamPlayer3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0 )
-stream = ExtResource( 4 )
+stream = ExtResource( 5 )
 unit_db = 10.0
 bus = "Sfx"
 
-[node name="Particles" parent="." instance=ExtResource( 5 )]
+[node name="Particles" parent="." instance=ExtResource( 6 )]
 process_material = SubResource( 12 )
 draw_pass_1 = SubResource( 13 )
 
 [node name="Viewport" type="Viewport" parent="."]
-editor/display_folded = true
 size = Vector2( 200, 200 )
 transparent_bg = true
 hdr = false
@@ -196,8 +197,8 @@ mouse_filter = 1
 [node name="PlayerTag" type="Label" parent="Viewport/Control"]
 margin_right = 210.0
 margin_bottom = 200.0
-custom_fonts/font = SubResource( 17 )
-text = "Racoon"
+custom_fonts/font = SubResource( 14 )
+text = "Raccoon"
 align = 1
 valign = 1
 
@@ -205,5 +206,5 @@ valign = 1
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Area"]
-mesh = SubResource( 14 )
-material/0 = SubResource( 16 )
+mesh = SubResource( 15 )
+material/0 = SubResource( 17 )
