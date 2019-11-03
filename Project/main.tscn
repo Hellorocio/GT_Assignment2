@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://bin/player_handler.gdns" type="Script" id=1]
 [ext_resource path="res://bin/game_state.gdns" type="Script" id=2]
@@ -10,7 +10,7 @@
 [ext_resource path="res://WinMenu2.tscn" type="PackedScene" id=8]
 [ext_resource path="res://MainMenu2.tscn" type="PackedScene" id=9]
 [ext_resource path="res://LobbyMenu.tscn" type="PackedScene" id=10]
-[ext_resource path="res://bin/waypoint.gdns" type="Script" id=11]
+[ext_resource path="res://Waypoint.tscn" type="PackedScene" id=11]
 [ext_resource path="res://squirrel_friend.tscn" type="PackedScene" id=12]
 [ext_resource path="res://racoon.tscn" type="PackedScene" id=13]
 
@@ -61,93 +61,71 @@ visible = false
 
 [node name="Waypoints" type="Spatial" parent="."]
 
-[node name="Waypoint1" type="Spatial" parent="Waypoints"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.6805, 2.09531, 10.1622 )
-script = ExtResource( 11 )
+[node name="Waypoint1" parent="Waypoints" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.68, 2.095, 10.162 )
 
-[node name="Waypoint2" type="Spatial" parent="Waypoints"]
+[node name="Waypoint2" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -40.6805, 2.09531, 8.16224 )
-script = ExtResource( 11 )
 
-[node name="Waypoint3" type="Spatial" parent="Waypoints"]
+[node name="Waypoint3" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.6805, 2.09531, -17.8378 )
-script = ExtResource( 11 )
 
-[node name="Waypoint4" type="Spatial" parent="Waypoints"]
+[node name="Waypoint4" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -40.6805, 2.09531, -21.0048 )
-script = ExtResource( 11 )
 
-[node name="Waypoint5" type="Spatial" parent="Waypoints"]
+[node name="Waypoint5" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.359524, 2.09531, 8.16224 )
-script = ExtResource( 11 )
 
-[node name="Waypoint6" type="Spatial" parent="Waypoints"]
+[node name="Waypoint6" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.64048, 2.09531, -26.0048 )
-script = ExtResource( 11 )
 
-[node name="Waypoint7" type="Spatial" parent="Waypoints"]
+[node name="Waypoint7" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.64048, 2.09531, 29.9952 )
-script = ExtResource( 11 )
 
-[node name="Waypoint8" type="Spatial" parent="Waypoints"]
+[node name="Waypoint8" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35.3595, 14.0953, 29.9952 )
-script = ExtResource( 11 )
 
-[node name="Waypoint9" type="Spatial" parent="Waypoints"]
+[node name="Waypoint9" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35.3595, 14.0953, 12.9952 )
-script = ExtResource( 11 )
 
-[node name="Waypoint10" type="Spatial" parent="Waypoints"]
+[node name="Waypoint10" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.3595, 14.0953, -2.0048 )
-script = ExtResource( 11 )
 
-[node name="Waypoint11" type="Spatial" parent="Waypoints"]
+[node name="Waypoint11" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 43.3595, 14.0953, -2.0048 )
-script = ExtResource( 11 )
 
-[node name="Waypoint12" type="Spatial" parent="Waypoints"]
+[node name="Waypoint12" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.3595, 14.0953, -10.0048 )
-script = ExtResource( 11 )
 
-[node name="Waypoint13" type="Spatial" parent="Waypoints"]
+[node name="Waypoint13" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.3595, 14.0953, -31.0048 )
-script = ExtResource( 11 )
 
-[node name="Waypoint14" type="Spatial" parent="Waypoints"]
+[node name="Waypoint14" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 53.3595, 18.0953, 31.9952 )
-script = ExtResource( 11 )
 
-[node name="Waypoint15" type="Spatial" parent="Waypoints"]
+[node name="Waypoint15" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 49.3595, 18.0953, 11.9952 )
-script = ExtResource( 11 )
 
-[node name="Waypoint16" type="Spatial" parent="Waypoints"]
+[node name="Waypoint16" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 49.3595, 18.0953, -5.0048 )
-script = ExtResource( 11 )
 
-[node name="Waypoint17" type="Spatial" parent="Waypoints"]
+[node name="Waypoint17" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 57.3595, 19.0953, 12.9952 )
-script = ExtResource( 11 )
 
-[node name="Waypoint18" type="Spatial" parent="Waypoints"]
+[node name="Waypoint18" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 57.3595, 26.0953, -12.0048 )
-script = ExtResource( 11 )
 
-[node name="Waypoint19" type="Spatial" parent="Waypoints"]
+[node name="Waypoint19" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 57.3595, 26.0953, -40.0048 )
-script = ExtResource( 11 )
 
-[node name="Waypoint20" type="Spatial" parent="Waypoints"]
+[node name="Waypoint20" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 34.3595, 26.0953, -40.0048 )
-script = ExtResource( 11 )
 
-[node name="Waypoint21" type="Spatial" parent="Waypoints"]
+[node name="Waypoint21" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 34.3595, 26.0953, -15.0048 )
-script = ExtResource( 11 )
 
-[node name="Waypoint22" type="Spatial" parent="Waypoints"]
+[node name="Waypoint22" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 46.3595, 26.0953, -27.0048 )
-script = ExtResource( 11 )
 
 [node name="SquirrelFriend" parent="." instance=ExtResource( 12 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -7.18029, 1.54186, -22.6062 )
