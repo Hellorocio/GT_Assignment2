@@ -15,7 +15,6 @@ Waypoint::~Waypoint() {
 }
 
 void Waypoint::_init() {
-    Godot::print("hi again");
 }
 
 void Waypoint::_ready() {

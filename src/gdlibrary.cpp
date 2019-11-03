@@ -27,6 +27,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
     godot::register_class<godot::Gui>();
     godot::register_class<godot::PlayerHandler>();
     godot::register_class<godot::Network>();
+    godot::register_class<godot::BaseAI>();
     godot::register_class<godot::SquirrelAI>();
     godot::register_class<godot::RacoonAI>();
     godot::register_class<godot::Waypoint>();

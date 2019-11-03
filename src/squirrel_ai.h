@@ -2,6 +2,7 @@
 #define SQUIRREL_AI_H
 
 #include <Godot.hpp>
+#include "base_ai.h"
 #include <KinematicBody.hpp>
 #include "waypoint.h"
 #include <SceneTree.hpp>
@@ -12,17 +13,6 @@
 #include <Area.hpp>
 
 namespace godot {
-
-	class WanderState : public AbstractState {
-	public:
-		NodePath current_waypoint = "";
-		NodePath previous_waypoint = "";
-		NodePath temp_waypoint = "";
-
-		void start(Node* parent) override;
-		void execute(Node* parent, float delta) override;
-		void end(Node* parent) override;
-	};
 
 	class FoundAcorn : public AbstractState {
 	public:
@@ -41,23 +31,12 @@ namespace godot {
 		void end(Node* parent) override;
 	};
 
-	class SquirrelAI : public KinematicBody {
-		GODOT_CLASS(SquirrelAI, KinematicBody)
-	private:
-		Vector3 motion = Vector3(1, 0, 0);
-		FSM brain;
-		
-		friend class WanderState;
-		friend class FoundAcorn;
-		friend class ScareRacoon;
+	class SquirrelAI : public BaseAI {
+		GODOT_SUBCLASS(SquirrelAI, BaseAI)
 	public:
-
 		WanderState wanderState;
 		FoundAcorn foundAcorn;
 		ScareRacoon scareRacoon;
-
-		float wander_speed = 2;
-		float gravity = -40.0;
 
 		static void _register_methods();
 
@@ -66,13 +45,8 @@ namespace godot {
 
 		void _init();
 		void _ready();
-		void _process(float delta);
-		void _physics_process(float delta);
 		void _rotate_player();
 		void _on_area_entered (Area* area);
-		void _update_movement(Vector3 direction);
-		void _turn_to_face(Vector3 target);
-		NodePath _get_closest_node();
 	};
 }
 
