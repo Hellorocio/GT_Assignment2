@@ -374,7 +374,7 @@ void BasicMovement::update_movement(float delta) {
 	}
 
 	if (i->is_action_just_pressed("ui_squirrel")){
-		AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Game/Player/GreatSound"));
+		AudioStreamPlayer3D *a1 = Object::cast_to<AudioStreamPlayer3D>(get_node("/root/Game/1/GreatSound"));
 		a1->play();
 	}
 

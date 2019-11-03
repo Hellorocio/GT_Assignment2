@@ -5,10 +5,36 @@
 
 using namespace godot;
 
+class SleepState : public AbstractState {
+    float time_left;
+    AbstractState* next_state;
+public:
+    SleepState(float time_in_seconds, AbstractState* next_state) : time_left(time_in_seconds), next_state(next_state) {}
+
+    void execute(Node* parent, float delta) override {
+        time_left -= delta;
+        if (time_left < 0) {
+            Object::cast_to<BaseAI>(parent)->brain.set_state(parent, next_state);
+        }
+    }
+    void end(Node* parent) override {
+        delete this;
+    }
+};
+
+void BaseAI::sleep(float time_in_seconds, AbstractState* next_state) {
+    brain.set_state(this, new SleepState(time_in_seconds, next_state));
+}
+
 void WanderState::start(Node* parent) {
     Godot::print("start wandering");
     current_waypoint = Object::cast_to<BaseAI>(parent)->_get_closest_node(this);
-    path.clear();
+
+    if (just_awoke) {
+        just_awoke = false;
+    } else {
+        path.clear();
+    }
 }
 
 float randf(float min, float max) {
@@ -29,7 +55,10 @@ void WanderState::execute(Node* parent, float dt) {
                 path = parent_ai->get_shortest_path(parent_ai->get_translation(), random_spatial->get_translation());
                 break;
             }
-        }        
+        }
+        parent_ai->_update_movement(Vector3{0, 0, 0}, dt);
+        just_awoke = true;
+        parent_ai->sleep(randf(0.1f, 1.0f), this);
     } else {
         Vector3 target = path.back();
         bool finished = false;
@@ -65,10 +94,9 @@ void BaseAI::_physics_process(float delta) {
     move_and_slide(motion, Vector3(0, 1, 0), true, 4, 1.5f);
 }
 
-
 void BaseAI::_update_movement(Vector3 direction, float delta) {
-    motion.x = direction.x;
-    motion.z = direction.z;
+    motion.x = direction.x * movement_speed;
+    motion.z = direction.z * movement_speed;
 }
 
 void BaseAI::_turn_to_face(Vector3 target) {
@@ -79,15 +107,14 @@ void BaseAI::_turn_to_face(Vector3 target) {
 
 Vector3 BaseAI::get_movement_vector_to_target(Vector3 target, bool& finished) {
     Vector3 delta = target - this->get_translation();
-    const float speed = 6;
 
     float sqr_len = delta.length_squared();
     if (sqr_len <= 1) {
         finished = true;
-        return delta * speed;
+        return delta;
     } else {
         finished = false;
-        return delta * speed / (sqrt(sqr_len));
+        return delta / (sqrt(sqr_len));
     }
 }
 

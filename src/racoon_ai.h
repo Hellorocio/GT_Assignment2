@@ -7,6 +7,7 @@
 #include "squirrel_ai.h"
 #include "fsm.h"
 #include <Node.hpp>
+#include "game_state.h"
 
 namespace godot {
 	class ChaseState : public AbstractState {

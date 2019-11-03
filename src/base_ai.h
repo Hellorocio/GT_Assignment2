@@ -14,6 +14,7 @@
 namespace godot {
 
 	class WanderState : public AbstractState {
+		bool just_awoke = false;
 	public:
         Array path = Array{};
 
@@ -33,10 +34,13 @@ namespace godot {
 
 	public:
 		FSM brain;
-		float wander_speed = 2;
+		float movement_speed = 6;
 		float gravity = -40.0;
 
 		static void _register_methods();
+
+        void sleep(float time_in_seconds, AbstractState* next_state);
+        
         virtual void _process(float delta);
         virtual void _physics_process(float delta);
 		void _update_movement(Vector3 direction, float delta = 1.0f);
@@ -49,6 +53,7 @@ namespace godot {
         NodePath get_farthest_node_to_point(Vector3 pos);
 
         PoolVector3Array get_shortest_path(Vector3 from, Vector3 to);
+	private:
         PoolVector3Array calculate_shortest_path(NodePath from, NodePath to);
 	};
 }

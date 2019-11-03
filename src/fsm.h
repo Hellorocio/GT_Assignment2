@@ -10,7 +10,6 @@ namespace godot {
         virtual void execute(Node* parent, float delta) {}
         virtual void end(Node* parent) {}
     };
-    
 
     class FSM { 
 

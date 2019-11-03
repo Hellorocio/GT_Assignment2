@@ -43,7 +43,7 @@ void ScareRacoon::execute(Node* parent, float dt) {
         Object::cast_to<BaseAI>(parent)->_turn_to_face(Object::cast_to<Spatial>(current)->get_translation());
 
         Vector3 delta = Object::cast_to<Spatial>(current)->get_translation() - Object::cast_to<Spatial>(parent)->get_translation();
-        if (delta.length() >= 50)
+        if (delta.length() >= 30)
         {
             // switch back to wander
             Object::cast_to<BaseAI>(parent)->brain.set_state(parent, &(Object::cast_to<SquirrelAI>(parent)->wanderState));

@@ -19,7 +19,9 @@ script = ExtResource( 1 )
 
 [node name="GameState" type="Node" parent="."]
 script = ExtResource( 2 )
-num_acorns = 0
+num_acorns = 40
+max_acorn_bounds = Vector2( 55, 35 )
+min_acorn_bounds = Vector2( -10, -35 )
 
 [node name="Traps" type="Node" parent="."]
 editor/display_folded = true

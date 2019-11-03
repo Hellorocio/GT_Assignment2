@@ -18,17 +18,32 @@ void ChaseState::execute(Node* parent, float dt)
         Vector3 forward_current = Object::cast_to<Spatial>(current_rotation)->get_global_transform().basis.x;
 
         float rotation_delta = forward_parent.dot(forward_current);
-        Godot::print(String::num(rotation_delta));
         if (rotation_delta <= -0.9) {
             // change state to run away if squirrel faces the racoon
             Object::cast_to<RacoonAI>(parent)->runAwayState.current_waypoint = Object::cast_to<BaseAI>(parent)->get_farthest_node_to_point(Object::cast_to<Spatial>(current)->get_translation());
             Object::cast_to<BaseAI>(parent)->brain.set_state(parent, &(Object::cast_to<RacoonAI>(parent)->runAwayState));
         }
-
+        
         float len = delta.length();
         Vector3 normalized_delta = delta * 6 / len;
-        if (len < 1)
-            normalized_delta = delta * 6;        
+        Godot::print(String::num(len));
+        if (len <= 2.5) {
+            // steal acorns
+            GameState * state = Object::cast_to<GameState>(parent->get_node("/root/Game/GameState"));
+            state->remove_acorn(1);
+
+            //play particle effect
+            Particles * acornParticles = Object::cast_to<Particles>(parent->get_node((String)current_target + "/Particles"));
+            if (acornParticles) {
+                acornParticles->set_emitting(true);
+            }
+
+            // change state to run away
+            Object::cast_to<RacoonAI>(parent)->runAwayState.current_waypoint = Object::cast_to<BaseAI>(parent)->get_farthest_node_to_point(Object::cast_to<Spatial>(current)->get_translation());
+            Object::cast_to<BaseAI>(parent)->brain.set_state(parent, &(Object::cast_to<RacoonAI>(parent)->runAwayState));
+        }
+
+               
         
         Object::cast_to<BaseAI>(parent)->_update_movement(normalized_delta, dt);
         Object::cast_to<BaseAI>(parent)->_turn_to_face(Object::cast_to<Spatial>(current)->get_translation());
@@ -43,10 +58,11 @@ void ChaseState::end(Node* parent) {
 }
 
 void RunAwayState::start(Node* parent) {
-    Godot::print("Racoon: Run Away start");
 
-    path = Object::cast_to<BaseAI>(parent)->calculate_shortest_path(parent->get_path(), current_waypoint);
-    Object::cast_to<BaseAI>(parent)->wander_speed *= 2;
+    auto parent_ai = Object::cast_to<BaseAI>(parent);
+    auto current = parent->get_node("/root/Game/Waypoints")->get_node(current_waypoint);
+    path = parent_ai->get_shortest_path(Object::cast_to<Spatial>(parent_ai)->get_translation(), Object::cast_to<Spatial>(current)->get_translation());
+    parent_ai->movement_speed *= 1.5;
 }
 
 void RunAwayState::execute(Node* parent, float dt) {
@@ -73,7 +89,7 @@ void RunAwayState::execute(Node* parent, float dt) {
 }
 
 void RunAwayState::end(Node* parent) {
-    Object::cast_to<BaseAI>(parent)->wander_speed /= 2;  
+    Object::cast_to<BaseAI>(parent)->movement_speed /= 1.5;  
 }
 
 void RacoonAI::_register_methods() {
@@ -97,7 +113,7 @@ void RacoonAI::_ready() {
 }
 
 void RacoonAI::_on_body_entered (Node* body) {
-    if (brain.state != &chaseState && (body->get_name() == "SquirrelFriend" || body->get_name() == "1")) {
+    if (brain.state == &wanderState && (body->get_name() == "SquirrelFriend" || body->get_name() == "1")) {
         chaseState.current_target = body->get_path();
         chaseState.current_target_rotation = body->get_path();
         if (body->get_name() == "1") {
@@ -105,7 +121,6 @@ void RacoonAI::_on_body_entered (Node* body) {
         }
         brain.set_state(this, &chaseState);
     }
-    
 }
 
 
