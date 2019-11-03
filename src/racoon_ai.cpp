@@ -29,7 +29,7 @@ void ChaseState::execute(Node* parent, float dt)
         Vector3 normalized_delta = delta * 6 / len;
         if (len < 1)
             normalized_delta = delta * 6;        
-
+        
         Object::cast_to<BaseAI>(parent)->_update_movement(normalized_delta, dt);
         Object::cast_to<BaseAI>(parent)->_turn_to_face(Object::cast_to<Spatial>(current)->get_translation());
     } else {
@@ -60,14 +60,14 @@ void RunAwayState::execute(Node* parent, float dt) {
            
     } else {
         Vector3 target = path.back();
-        Vector3 movement = parent_ai->get_movement_vector_to_target(target, dt);
-        if (movement == Vector3{}) {
+        bool finished = false;
+        Vector3 movement = parent_ai->get_movement_vector_to_target(target, finished);
+
+        parent_ai->_update_movement(movement, dt);
+        parent_ai->_turn_to_face(target);
+
+        if (finished) {
             path.pop_back();
-            if (!path.empty()) {
-                parent_ai->_turn_to_face((Vector3) path.back());
-            }
-        } else {
-            parent_ai->_update_movement(movement, dt);
         }
     }
 }

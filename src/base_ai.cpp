@@ -32,14 +32,14 @@ void WanderState::execute(Node* parent, float dt) {
         }        
     } else {
         Vector3 target = path.back();
-        Vector3 movement = parent_ai->get_movement_vector_to_target(target, dt);
-        if (movement == Vector3{}) {
+        bool finished = false;
+        Vector3 movement = parent_ai->get_movement_vector_to_target(target, finished);
+
+        parent_ai->_update_movement(movement, dt);
+        parent_ai->_turn_to_face(target);
+
+        if (finished) {
             path.pop_back();
-            if (!path.empty()) {
-                parent_ai->_turn_to_face((Vector3) path.back());
-            }
-        } else {
-            parent_ai->_update_movement(movement, dt);
         }
     }
 
@@ -87,6 +87,7 @@ void BaseAI::_physics_process(float delta) {
 
 void BaseAI::_update_movement(Vector3 direction, float delta) {
     direction.y = gravity * delta;
+    Godot::print(direction);
     motion = direction;
 }
 
@@ -96,15 +97,17 @@ void BaseAI::_turn_to_face(Vector3 target) {
     look_at(target, up);
 }
 
-Vector3 BaseAI::get_movement_vector_to_target(Vector3 target, float dt) {
+Vector3 BaseAI::get_movement_vector_to_target(Vector3 target, bool& finished) {
     Vector3 delta = target - this->get_translation();
     const float speed = 6;
 
     float sqr_len = delta.length_squared();
-    if (sqr_len <= speed * dt * speed * dt) {
-        return Vector3{};
+    if (sqr_len <= 1) {
+        finished = true;
+        return delta * speed;
     } else {
-        return delta / (sqr_len * sqr_len);
+        finished = false;
+        return delta * speed / (sqrt(sqr_len));
     }
 }
 

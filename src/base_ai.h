@@ -42,7 +42,7 @@ namespace godot {
 		void _update_movement(Vector3 direction, float delta = 1.0f);
 		void _turn_to_face(Vector3 target);
 
-        Vector3 get_movement_vector_to_target(Vector3 target, float dt);
+        Vector3 get_movement_vector_to_target(Vector3 target, bool& finished);
 
 		NodePath _get_closest_node(WanderState* callingState);
 		NodePath get_closest_node_to_point(Vector3 pos, float lowest_y_delta = -1.0f/0.0f, float highest_y_delta = 1.0f/0.0f);
