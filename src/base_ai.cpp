@@ -42,28 +42,6 @@ void WanderState::execute(Node* parent, float dt) {
             path.pop_back();
         }
     }
-
-    //Godot::print("execute wandering");
-
-    // auto current = parent->get_node("/root/Game/Waypoints/" + current_waypoint);
-    // //Godot::print(current_waypoint);
-
-    // if (current != nullptr && !current_waypoint.is_empty()) {
-    //     //Godot::print(parent->get_name());
-    //     Vector3 delta = Object::cast_to<Spatial>(current)->get_translation() - Object::cast_to<BaseAI>(parent)->get_translation();
-
-    //     if (delta.length() <= 2) {
-    //         // find a new waypoint to move to
-    //         temp_waypoint = current_waypoint;
-    //         current_waypoint = Object::cast_to<BaseAI>(parent)->_get_closest_node(this);
-    //         previous_waypoint = temp_waypoint;
-    //     } else {
-    //         // move ai towards current waypoint
-    //         Object::cast_to<BaseAI>(parent)->_update_movement(delta.normalized() * 6, dt);
-    //         Object::cast_to<BaseAI>(parent)->_turn_to_face(Object::cast_to<Spatial>(current)->get_translation());
-            
-    //     }
-    // }
 }
 
 
@@ -81,14 +59,16 @@ void BaseAI::_process(float delta) {
 }
 
 void BaseAI::_physics_process(float delta) {
+    if (!is_on_floor()) {
+        motion.y += gravity * delta;
+    }
     move_and_slide(motion, Vector3(0, 1, 0), true, 4, 1.5f);
 }
 
 
 void BaseAI::_update_movement(Vector3 direction, float delta) {
-    direction.y = gravity * delta;
-    Godot::print(direction);
-    motion = direction;
+    motion.x = direction.x;
+    motion.z = direction.z;
 }
 
 void BaseAI::_turn_to_face(Vector3 target) {
