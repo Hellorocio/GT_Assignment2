@@ -45,7 +45,8 @@ namespace godot {
         Vector3 get_movement_vector_to_target(Vector3 target, float dt);
 
 		NodePath _get_closest_node(WanderState* callingState);
-		NodePath get_closest_node_to_point(Vector3 pos);
+		NodePath get_closest_node_to_point(Vector3 pos, float lowest_y_delta = -1.0f/0.0f, float highest_y_delta = 1.0f/0.0f);
+        NodePath get_farthest_node_to_point(Vector3 pos);
 
         PoolVector3Array get_shortest_path(Vector3 from, Vector3 to);
         PoolVector3Array calculate_shortest_path(NodePath from, NodePath to);

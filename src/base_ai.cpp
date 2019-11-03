@@ -133,7 +133,7 @@ NodePath BaseAI::_get_closest_node (WanderState* callingState) {
     return Object::cast_to<Node>(Object::___get_from_variant(children[min_index]))->get_name();
 }
 
-NodePath BaseAI::get_closest_node_to_point(Vector3 pos) {
+NodePath BaseAI::get_closest_node_to_point(Vector3 pos, float lowest_y_delta, float highest_y_delta) {
     Node* waypoint_parent = get_node("/root/Game/Waypoints");
     Array children = waypoint_parent->get_children();
     
@@ -141,6 +141,9 @@ NodePath BaseAI::get_closest_node_to_point(Vector3 pos) {
     int min_index = -1;
     for (int i = 0; i < children.size(); ++i) {
         Spatial* child_spatial = Object::cast_to<Spatial>(Object::___get_from_variant(children[i]));
+        float y_delta = child_spatial->get_translation().y - pos.y;
+        if (y_delta < lowest_y_delta || y_delta > highest_y_delta)
+            continue;
         float new_dist = pos.distance_squared_to(child_spatial->get_translation());
         if (new_dist < min_dist) {
             min_dist = new_dist;
@@ -151,6 +154,26 @@ NodePath BaseAI::get_closest_node_to_point(Vector3 pos) {
         return "";
     }
     return Object::cast_to<Node>(Object::___get_from_variant(children[min_index]))->get_name();
+}
+
+NodePath BaseAI::get_farthest_node_to_point(Vector3 pos) {
+    Node* waypoint_parent = get_node("/root/Game/Waypoints");
+    Array children = waypoint_parent->get_children();
+    
+    float max_dist = 0;
+    int max_index = -1;
+    for (int i = 0; i < children.size(); ++i) {
+        Spatial* child_spatial = Object::cast_to<Spatial>(Object::___get_from_variant(children[i]));
+        float new_dist = pos.distance_squared_to(child_spatial->get_translation());
+        if (new_dist > max_dist) {
+            max_dist = new_dist;
+            max_index = i;
+        }
+    }
+    if (max_index == -1) {
+        return "";
+    }
+    return Object::cast_to<Node>(Object::___get_from_variant(children[max_index]))->get_name();
 }
 
 struct NodeDistance {
@@ -165,8 +188,11 @@ struct NodeDistance {
  * returns a path where path[0] = to and path[len - 1] = from
  */
 PoolVector3Array BaseAI::get_shortest_path(Vector3 from, Vector3 to) {
-    NodePath from_node = get_closest_node_to_point(from);
-    NodePath to_node = get_closest_node_to_point(to);
+    NodePath from_node = get_closest_node_to_point(from, -1.0f/0.0f, 2);
+    NodePath to_node = get_closest_node_to_point(to, -2, 1.0f/0.0f);
+
+    if (from_node.is_empty() || to_node.is_empty())
+        return PoolVector3Array{};
 
     Array path = (Array) calculate_shortest_path(from_node, to_node);
     if (path.empty())
@@ -184,7 +210,10 @@ PoolVector3Array BaseAI::calculate_shortest_path(NodePath from, NodePath to) {
     auto from_spatial = Object::cast_to<Waypoint>(waypoint_parent->get_node(from));
     auto to_spatial = Object::cast_to<Waypoint>(waypoint_parent->get_node(to));
 
-    if (from == to)
+    if (from_spatial == nullptr || to_spatial == nullptr)
+        return PoolVector3Array{};
+
+    if (from_spatial->get_path() == to_spatial->get_path())
         return Array::make(to_spatial->get_path());
 
     auto comparer = [](NodeDistance a, NodeDistance b) {

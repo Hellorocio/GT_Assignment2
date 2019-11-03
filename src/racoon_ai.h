@@ -21,6 +21,8 @@ namespace godot {
 
 	class RunAwayState : public AbstractState {
 		public:
+		Array path = Array{};
+		NodePath current_waypoint = "";
 
 		void start(Node* parent) override;
 		void execute(Node* parent, float delta) override;

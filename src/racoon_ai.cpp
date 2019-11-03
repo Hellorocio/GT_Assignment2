@@ -20,9 +20,9 @@ void ChaseState::execute(Node* parent, float dt)
         float rotation_delta = forward_parent.dot(forward_current);
         Godot::print(String::num(rotation_delta));
         if (rotation_delta <= -0.9) {
-            Godot::print("Start run away");
             // change state to run away if squirrel faces the racoon
-            //Object::cast_to<BaseAI>(parent)->brain.set_state(parent, &(Object::cast_to<RacoonAI>(parent)->runAwayState));
+            Object::cast_to<RacoonAI>(parent)->runAwayState.current_waypoint = Object::cast_to<BaseAI>(parent)->get_farthest_node_to_point(Object::cast_to<Spatial>(current)->get_translation());
+            Object::cast_to<BaseAI>(parent)->brain.set_state(parent, &(Object::cast_to<RacoonAI>(parent)->runAwayState));
         }
 
         float len = delta.length();
@@ -44,14 +44,36 @@ void ChaseState::end(Node* parent) {
 
 void RunAwayState::start(Node* parent) {
     Godot::print("Racoon: Run Away start");
+
+    path = Object::cast_to<BaseAI>(parent)->calculate_shortest_path(parent->get_path(), current_waypoint);
+    Object::cast_to<BaseAI>(parent)->wander_speed *= 2;
 }
 
-void RunAwayState::execute(Node* parent, float delta) {
+void RunAwayState::execute(Node* parent, float dt) {
+    Node* waypoint_parent = parent->get_node("/root/Game/Waypoints");
 
+    BaseAI* parent_ai = Object::cast_to<BaseAI>(parent);
+
+    if (path.empty()) {
+        // go to wander state
+        Object::cast_to<BaseAI>(parent)->brain.set_state(parent, &(Object::cast_to<RacoonAI>(parent)->wanderState));
+           
+    } else {
+        Vector3 target = path.back();
+        Vector3 movement = parent_ai->get_movement_vector_to_target(target, dt);
+        if (movement == Vector3{}) {
+            path.pop_back();
+            if (!path.empty()) {
+                parent_ai->_turn_to_face((Vector3) path.back());
+            }
+        } else {
+            parent_ai->_update_movement(movement, dt);
+        }
+    }
 }
 
 void RunAwayState::end(Node* parent) {
-    
+    Object::cast_to<BaseAI>(parent)->wander_speed /= 2;  
 }
 
 void RacoonAI::_register_methods() {

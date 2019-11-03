@@ -25,6 +25,7 @@ namespace godot {
 
 	class ScareRacoon : public AbstractState {
 		public:
+		NodePath racoon = "";
 
 		void start(Node* parent) override;
 		void execute(Node* parent, float delta) override;
@@ -47,6 +48,7 @@ namespace godot {
 		void _ready();
 		void _rotate_player();
 		void _on_area_entered (Area* area);
+		void _on_body_entered (Node* body);
 	};
 }
 
