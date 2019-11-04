@@ -87,6 +87,8 @@ void BaseAI::_process(float delta) {
 void BaseAI::_physics_process(float delta) {
     if (!is_on_floor()) {
         motion.y += gravity * delta;
+    } else {
+        motion.y = 0;
     }
     move_and_slide(motion, Vector3(0, 1, 0), true, 4, 1.5f);
 

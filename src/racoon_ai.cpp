@@ -12,8 +12,10 @@ void ChaseState::execute(Node* parent, float dt)
     auto current_rotation = parent->get_node(current_target_rotation);
 
     if (current != nullptr) {
+        auto target = Object::cast_to<Spatial>(current)->get_translation();
+
         // move squirrel towards current acorn
-        Vector3 delta = Object::cast_to<Spatial>(current)->get_translation() - Object::cast_to<Spatial>(parent)->get_translation();
+        Vector3 delta = target - Object::cast_to<Spatial>(parent)->get_translation();
         Vector3 forward_parent = Object::cast_to<Spatial>(parent)->get_global_transform().basis.x;
         Vector3 forward_current = Object::cast_to<Spatial>(current_rotation)->get_global_transform().basis.x;
 
@@ -24,10 +26,11 @@ void ChaseState::execute(Node* parent, float dt)
             Object::cast_to<BaseAI>(parent)->brain.set_state(parent, &(Object::cast_to<RacoonAI>(parent)->runAwayState));
         }
         
-        float len = delta.length();
-        Vector3 normalized_delta = delta / len;
-        //Godot::print(String::num(len));
-        if (len <= 2.5) {
+        bool finished = false;
+        Vector3 movement = Object::cast_to<BaseAI>(parent)->get_movement_vector_to_target(target, finished);
+
+        float len = delta.length_squared();
+        if (len <= 2.5f * 2.5f) {
             // steal acorns
             GameState * state = Object::cast_to<GameState>(parent->get_node("/root/Game/GameState"));
             state->remove_acorn(1);
@@ -42,11 +45,9 @@ void ChaseState::execute(Node* parent, float dt)
             Object::cast_to<RacoonAI>(parent)->runAwayState.current_waypoint = Object::cast_to<BaseAI>(parent)->get_farthest_node_to_point(Object::cast_to<Spatial>(current)->get_translation());
             Object::cast_to<BaseAI>(parent)->brain.set_state(parent, &(Object::cast_to<RacoonAI>(parent)->runAwayState));
         }
-
-               
         
-        Object::cast_to<BaseAI>(parent)->_update_movement(normalized_delta, dt);
-        Object::cast_to<BaseAI>(parent)->_turn_to_face(Object::cast_to<Spatial>(current)->get_translation());
+        Object::cast_to<BaseAI>(parent)->_update_movement(movement, dt);
+        Object::cast_to<BaseAI>(parent)->_turn_to_face(target);
     } else {
         // switch back to wanderState
          Object::cast_to<BaseAI>(parent)->brain.set_state(parent, &(Object::cast_to<RacoonAI>(parent)->wanderState));

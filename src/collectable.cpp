@@ -36,14 +36,18 @@ void Collectable::_ready()
 
 void Collectable::_on_body_entered(Node * body)
 {
-	BasicMovement * player = Object::cast_to<BasicMovement>(body);
+	BasicMovement* player = Object::cast_to<BasicMovement>(body);
 	SquirrelAI * AI = Object::cast_to<SquirrelAI>(body);
-	if (!is_killed && (player != nullptr || AI) && (!get_tree()->has_network_peer() || player->is_network_master()))
+	if (!is_killed && (player != nullptr || AI != nullptr) && (!get_tree()->has_network_peer() || player->is_network_master()))
 	{
 		// called by player's network master
 
 		//increment player's acorn count
-		int64_t player_id = body->get_name().to_int();
+		int64_t player_id = 1;
+		if (player != nullptr)
+		{
+			player_id = body->get_name().to_int();
+		}
 
 		GameState *state = Object::cast_to<GameState>(get_node("/root/Game/GameState"));
 		if (get_tree()->has_network_peer())
