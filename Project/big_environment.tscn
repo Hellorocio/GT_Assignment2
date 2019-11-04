@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://environment.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Tree2.tscn" type="PackedScene" id=2]
@@ -15,10 +15,15 @@ albedo_color = Color( 0.866667, 0.537255, 0.356863, 1 )
 [sub_resource type="CubeMesh" id=3]
 material = SubResource( 2 )
 
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 1.34862, 1.50104, 4.49423 )
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 9.90024, 3.35583, 0.109518 )
+
 [node name="BigEnvironment" type="Spatial"]
 
 [node name="Walls" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="StaticBody" type="StaticBody" parent="Walls"]
 transform = Transform( 1.24019, 0, 0, 0, 38.0702, 0, 0, 0, 46.1484, -41.0224, 14.7333, -71.1162 )
@@ -99,6 +104,7 @@ mesh = SubResource( 3 )
 material/0 = null
 
 [node name="StaticBody4" type="StaticBody" parent="Walls"]
+editor/display_folded = true
 transform = Transform( -5.42104e-08, 0, 46.1484, 0, 38.0702, 0, -1.24019, 0, -2.01721e-06, -0.60709, 14.7333, -42.6599 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody4"]
@@ -155,6 +161,7 @@ mesh = SubResource( 3 )
 material/0 = null
 
 [node name="Ground" type="Spatial" parent="."]
+editor/display_folded = true
 
 [node name="Ground" parent="Ground" instance=ExtResource( 1 )]
 editor/display_folded = true
@@ -216,3 +223,18 @@ transform = Transform( 3.27, 0, 0, 0, 0.32, 0, 0, 0, 4.28, -27.943, 7.65747, 27.
 
 [node name="Block3" parent="." instance=ExtResource( 6 )]
 transform = Transform( 3.27, 0, 0, 0, 0.32, 0, 0, 0, 4.28, -27.943, 11.6736, 35.485 )
+
+[node name="InvisibleWalls" type="Spatial" parent="."]
+editor/display_folded = true
+
+[node name="wall1" type="StaticBody" parent="InvisibleWalls"]
+
+[node name="CollisionShape" type="CollisionShape" parent="InvisibleWalls/wall1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.0114, 1.61737, 34.9589 )
+shape = SubResource( 4 )
+
+[node name="wall2" type="StaticBody" parent="InvisibleWalls"]
+
+[node name="CollisionShape" type="CollisionShape" parent="InvisibleWalls/wall2"]
+transform = Transform( -0.927628, 0.373506, 0, -0.373506, -0.927628, 0, 0, 0, 1, -4.79419, 1.39216, 20.9558 )
+shape = SubResource( 5 )

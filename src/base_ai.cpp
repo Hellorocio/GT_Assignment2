@@ -269,7 +269,7 @@ PoolVector3Array BaseAI::calculate_shortest_path(NodePath from, NodePath to) {
         if (!predecessors.has(prev))
             return PoolVector3Array{};
         
-        Waypoint* pred = predecessors[prev];
+        Waypoint* pred = Object::cast_to<Waypoint>(Object::___get_from_variant(predecessors[prev]));
         path.push_back(pred->get_translation());
 
         prev = pred;
