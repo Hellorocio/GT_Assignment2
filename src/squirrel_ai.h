@@ -35,7 +35,6 @@ namespace godot {
 	class SquirrelAI : public BaseAI {
 		GODOT_SUBCLASS(SquirrelAI, BaseAI)
 	public:
-		WanderState wanderState;
 		FoundAcorn foundAcorn;
 		ScareRacoon scareRacoon;
 

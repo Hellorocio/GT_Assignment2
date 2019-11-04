@@ -27,9 +27,6 @@ void BaseAI::sleep(float time_in_seconds, AbstractState* next_state) {
 }
 
 void WanderState::start(Node* parent) {
-    Godot::print("start wandering");
-    current_waypoint = Object::cast_to<BaseAI>(parent)->_get_closest_node(this);
-
     if (just_awoke) {
         just_awoke = false;
     } else {
@@ -92,6 +89,20 @@ void BaseAI::_physics_process(float delta) {
         motion.y += gravity * delta;
     }
     move_and_slide(motion, Vector3(0, 1, 0), true, 4, 1.5f);
+
+    was_stopped = Vector2(motion.x, motion.z).length_squared() > 2 * 2
+        && prev_translation.distance_squared_to(get_translation()) < 0.0001f;
+    prev_translation = get_translation();
+
+    if (was_stopped) {
+        total_time_stuck += delta;
+        if (total_time_stuck > 3.0f) {
+            brain.set_state(this, &wanderState);
+            total_time_stuck = 0.0f;
+        }
+    } else {
+        total_time_stuck = 0.0f;
+    }
 }
 
 void BaseAI::_update_movement(Vector3 direction, float delta) {
@@ -116,31 +127,6 @@ Vector3 BaseAI::get_movement_vector_to_target(Vector3 target, bool& finished) {
         finished = false;
         return delta / (sqrt(sqr_len));
     }
-}
-
-NodePath BaseAI::_get_closest_node (WanderState* callingState) {
-    //Godot::print("_get_closest_node: start");
-    Node* waypoint_parent = get_node("/root/Game/Waypoints");
-    
-    // With poolStringArray, get neighbors of current_waypoint instead of get_children() if current is not null.
-    Array children = waypoint_parent->get_children();
-    
-    Spatial* child_spatial = Object::cast_to<Spatial>(Object::___get_from_variant(children[0]));
-    float min_dist = 1.0/0.0;//(this->get_translation()).distance_squared_to(child_spatial->get_translation());
-    int min_index = -1;
-    for (int i = 0; i < children.size(); ++i) {
-        child_spatial = Object::cast_to<Spatial>(Object::___get_from_variant(children[i]));
-        float new_dist = (this->get_translation()).distance_squared_to(child_spatial->get_translation());
-        if (child_spatial->get_name() != callingState->previous_waypoint && child_spatial->get_name() != callingState->current_waypoint && new_dist < min_dist) {
-            min_dist = new_dist;
-            min_index = i;
-        }
-    }
-    if (min_index == -1) {
-        return "";
-    }
-    //Godot::print(Object::cast_to<Node>(Object::___get_from_variant(children[min_index]))->get_name());
-    return Object::cast_to<Node>(Object::___get_from_variant(children[min_index]))->get_name();
 }
 
 NodePath BaseAI::get_closest_node_to_point(Vector3 pos, float lowest_y_delta, float highest_y_delta) {

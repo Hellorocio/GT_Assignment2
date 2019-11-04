@@ -36,7 +36,7 @@ void GameState::collect_acorn(int64_t id) {
 	Dictionary self_data = (Dictionary) (get_node("/root/network")->get("self_data"));
 	self_data["acorns_collected"] = num_collected;
 
-	Godot::print("collect acorn: " + String::num_int64(get_tree()->get_network_unique_id()));
+	//Godot::print("collect acorn: " + String::num_int64(get_tree()->get_network_unique_id()));
 	if (get_tree()->has_network_peer()) {
 		rpc("on_collect_acorn", id, num_collected);
 	}
@@ -46,7 +46,7 @@ void GameState::collect_acorn(int64_t id) {
 
 // called for everyone
 void GameState::on_collect_acorn(int64_t id, int num) {
-	Godot::print("on collect acorn: " + String::num_int64(get_tree()->get_network_unique_id()));
+	//Godot::print("on collect acorn: " + String::num_int64(get_tree()->get_network_unique_id()));
 	Dictionary self_data = (Dictionary) get_node("/root/network")->get("self_data");
 	num_collected = num;
 	self_data["acorns_collected"] = num;

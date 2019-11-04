@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://bin/player_handler.gdns" type="Script" id=1]
 [ext_resource path="res://bin/game_state.gdns" type="Script" id=2]
@@ -11,8 +11,6 @@
 [ext_resource path="res://MainMenu2.tscn" type="PackedScene" id=9]
 [ext_resource path="res://LobbyMenu.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Waypoint.tscn" type="PackedScene" id=11]
-[ext_resource path="res://squirrel_friend.tscn" type="PackedScene" id=12]
-[ext_resource path="res://racoon.tscn" type="PackedScene" id=13]
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 1 )
@@ -63,6 +61,7 @@ pause_mode = 2
 visible = false
 
 [node name="Waypoints" type="Spatial" parent="."]
+editor/display_folded = true
 
 [node name="Waypoint1" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.68, 2.095, 10.162 )
@@ -151,11 +150,5 @@ adjacent = PoolStringArray( "Waypoint11", "Waypoint12", "Waypoint13", "Waypoint1
 [node name="Waypoint22" parent="Waypoints" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 46.3595, 26.0953, -27.0048 )
 adjacent = PoolStringArray( "Waypoint18", "Waypoint19", "Waypoint20", "Waypoint21" )
-
-[node name="SquirrelFriend" parent="." instance=ExtResource( 12 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -7.18029, 1.54186, -22.6062 )
-
-[node name="Racoon" parent="." instance=ExtResource( 13 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.57396, 1.64325, 12.9678 )
 
 [editable path="LobbyMenu"]

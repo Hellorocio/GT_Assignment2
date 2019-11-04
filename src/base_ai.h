@@ -18,10 +18,6 @@ namespace godot {
 	public:
         Array path = Array{};
 
-		NodePath current_waypoint = "";
-		NodePath previous_waypoint = "";
-		NodePath temp_waypoint = "";
-
 		void start(Node* parent) override;
 		void execute(Node* parent, float delta) override;
 		void end(Node* parent) override;
@@ -31,11 +27,17 @@ namespace godot {
 		GODOT_CLASS(BaseAI, KinematicBody)
 	private:
 		Vector3 motion = Vector3(1, 0, 0);
+		Vector3 prev_translation = Vector3(0, 0, 0);
+
+		float total_time_stuck = 0.0f;
 
 	public:
 		FSM brain;
+		WanderState wanderState;
+		
 		float movement_speed = 6;
 		float gravity = -40.0;
+		bool was_stopped = false;
 
 		static void _register_methods();
 
@@ -48,7 +50,6 @@ namespace godot {
 
         Vector3 get_movement_vector_to_target(Vector3 target, bool& finished);
 
-		NodePath _get_closest_node(WanderState* callingState);
 		NodePath get_closest_node_to_point(Vector3 pos, float lowest_y_delta = -1.0f/0.0f, float highest_y_delta = 1.0f/0.0f);
         NodePath get_farthest_node_to_point(Vector3 pos);
 

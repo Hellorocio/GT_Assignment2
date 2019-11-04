@@ -206,6 +206,30 @@ void Gui::_on_PlayMain_pressed() {
 	Timer* timer = Object::cast_to<Timer>(get_parent()->get_node("/root/Game/GUI/Timer"));
     timer->start();
 
+	// load raccoon AI
+	ResourceLoader* resourceLoader = ResourceLoader::get_singleton();
+    Ref<PackedScene> racoonScene = resourceLoader->load("res://racoon.tscn");
+	RacoonAI* racoonAI = Object::cast_to<RacoonAI>(racoonScene->instance());
+	racoonAI->set_name("Racoon");
+	get_parent()->add_child(racoonAI);
+	racoonAI->set_translation(Vector3(-7.6, 1.6, 13));
+
+	RacoonAI* racoonAI2 = Object::cast_to<RacoonAI>(racoonScene->instance());
+	racoonAI2->set_name("Racoon");
+	get_parent()->add_child(racoonAI2);
+	racoonAI2->set_translation(Vector3(33.4, 14.6, 8));
+
+	// load squirrel AI
+    Ref<PackedScene> squirrelScene = resourceLoader->load("res://squirrel_friend.tscn");
+	SquirrelAI* squirrelAI = Object::cast_to<SquirrelAI>(squirrelScene->instance());
+	squirrelAI->set_name("SquirrelFriend");
+	get_parent()->add_child(squirrelAI);
+	squirrelAI->set_translation(Vector3(-7.2, 1.5, -22.6));
+
+	SquirrelAI* squirrelAI2 = Object::cast_to<SquirrelAI>(squirrelScene->instance());
+	squirrelAI2->set_name("SquirrelFriend");
+	get_parent()->add_child(squirrelAI2);
+	squirrelAI2->set_translation(Vector3(41, 27.1, -25.6));
 
 	get_node("/root/Game")->call("_create_player");
 	get_node("/root/network")->call("add_acorns_server");

@@ -7,8 +7,13 @@
 #include <AudioStreamPlayer3D.hpp>
 #include <SceneTree.hpp>
 #include <Range.hpp>
+#include <ResourceLoader.hpp>
+#include <Ref.hpp>
+#include <PackedScene.hpp>
 #include "basic_movement.h"
 #include "network.h"
+#include "racoon_ai.h"
+#include "squirrel_ai.h"
 #include <LineEdit.hpp>
 #include <Label.hpp>
 #include <Timer.hpp>

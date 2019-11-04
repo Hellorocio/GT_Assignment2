@@ -25,8 +25,8 @@ void Trap::_ready() {
 	this->connect("body_exited", this, "_on_body_exited");
 }
 
-void Trap::_on_body_entered(Node * body) {
-	BasicMovement * player = Object::cast_to<BasicMovement>(body);
+void Trap::_on_body_entered(Node* body) {
+	BasicMovement* player = Object::cast_to<BasicMovement>(body);
 	if (!hitPlayer && player != nullptr && (!get_tree()->has_network_peer() || player->is_network_master())) {
 		//decrement player's acorn count
 		int64_t player_id = body->get_name().to_int();

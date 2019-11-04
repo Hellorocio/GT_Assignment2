@@ -12,16 +12,16 @@ void FoundAcorn::execute(Node* parent, float dt) {
 
     if (current != nullptr) {
         // move squirrel towards current acorn
-        Vector3 delta = Object::cast_to<Spatial>(current)->get_translation() - Object::cast_to<Spatial>(parent)->get_translation();
-        delta.y = 0;
+        Vector3 target = Object::cast_to<Spatial>(current)->get_translation();
+        bool finished = false;
+        Vector3 movement = Object::cast_to<BaseAI>(parent)->get_movement_vector_to_target(target, finished);       
 
-        float len = delta.length();
-        Vector3 normalized_delta = delta * 6 / len;
-        if (len < 1)
-            normalized_delta = delta * 6;        
+        Object::cast_to<BaseAI>(parent)->_update_movement(movement, dt);
+        Object::cast_to<BaseAI>(parent)->_turn_to_face(target);
 
-        Object::cast_to<BaseAI>(parent)->_update_movement(normalized_delta, dt);
-        Object::cast_to<BaseAI>(parent)->_turn_to_face(Object::cast_to<Spatial>(current)->get_translation());
+        if (finished) {
+            current = nullptr;
+        }
     } else {
         // switch back to wanderState
         Object::cast_to<BaseAI>(parent)->brain.set_state(parent, &(Object::cast_to<SquirrelAI>(parent)->wanderState));

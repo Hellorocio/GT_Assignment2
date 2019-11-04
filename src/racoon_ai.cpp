@@ -25,8 +25,8 @@ void ChaseState::execute(Node* parent, float dt)
         }
         
         float len = delta.length();
-        Vector3 normalized_delta = delta * 6 / len;
-        Godot::print(String::num(len));
+        Vector3 normalized_delta = delta / len;
+        //Godot::print(String::num(len));
         if (len <= 2.5) {
             // steal acorns
             GameState * state = Object::cast_to<GameState>(parent->get_node("/root/Game/GameState"));

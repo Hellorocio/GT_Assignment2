@@ -33,7 +33,6 @@ namespace godot {
 	class RacoonAI : public BaseAI {
 		GODOT_SUBCLASS(RacoonAI, BaseAI)
 	public:
-		WanderState wanderState;
 		ChaseState chaseState;
 		RunAwayState runAwayState;
 

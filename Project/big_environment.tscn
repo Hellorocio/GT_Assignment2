@@ -24,8 +24,10 @@ extents = Vector3( 9.90024, 3.35583, 0.109518 )
 [node name="BigEnvironment" type="Spatial"]
 
 [node name="Walls" type="Spatial" parent="."]
+editor/display_folded = true
 
 [node name="StaticBody" type="StaticBody" parent="Walls"]
+editor/display_folded = true
 transform = Transform( 1.24019, 0, 0, 0, 38.0702, 0, 0, 0, 46.1484, -41.0224, 14.7333, -71.1162 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Walls/StaticBody"]
@@ -225,12 +227,11 @@ transform = Transform( 3.27, 0, 0, 0, 0.32, 0, 0, 0, 4.28, -27.943, 7.65747, 27.
 transform = Transform( 3.27, 0, 0, 0, 0.32, 0, 0, 0, 4.28, -27.943, 11.6736, 35.485 )
 
 [node name="InvisibleWalls" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="wall1" type="StaticBody" parent="InvisibleWalls"]
 
 [node name="CollisionShape" type="CollisionShape" parent="InvisibleWalls/wall1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.0114, 1.61737, 34.9589 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1.43666, -26.0114, 1.61737, 36.7031 )
 shape = SubResource( 4 )
 
 [node name="wall2" type="StaticBody" parent="InvisibleWalls"]
